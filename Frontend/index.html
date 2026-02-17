@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<div id="loading-screen">
+    <div class="loading-logo">Silent Help Plus</div>
+    <div class="spinner"></div>
+    <div class="loading-text">Loading your safe space...</div>
+</div>
+
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <div class="logo-section">
+            <a href="#home" class="logo">Silent Help Plus</a>
+            <div class="tagline">Anonymous University Support Platform</div>
+        </div>
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#features" class="nav-link">Features</a></li>
+            <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+            <li><a href="#preview" class="nav-link">Resources</a></li>
+            <li><a href="#faq" class="nav-link">FAQ</a></li>
+            <li><button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button></li>
+            <li class="auth-buttons">
+                <a href="#login" class="btn-login">Login</a>
+                <a href="#register" class="btn-register">Register</a>
+            </li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Silent Help Plus University Portal</h1>
+        <p class="hero-subtitle">Anonymous Academic Support | Study Resources | Scholarships & Jobs</p>
+        <p class="hero-description">Ask questions anonymously, share study materials, find mentors, discover scholarships, and connect with peers - all in one secure platform.</p>
+        <div class="trust-badges">
+            <div class="badge"><i class="fas fa-user-secret"></i><span>100% Anonymous Q&A</span></div>
+            <div class="badge"><i class="fas fa-filter"></i><span>Department-Wise Organization</span></div>
+            <div class="badge"><i class="fas fa-book-open"></i><span>Free Study Resources</span></div>
+        </div>
+        <div class="hero-buttons">
+            <a href="#register" class="btn btn-primary">Get Started Free <i class="fas fa-arrow-right"></i></a>
+            <a href="#features" class="btn btn-secondary">Explore Features</a>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+</section>
+
+<section class="statistics">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Active Students</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
+                <div class="stat-number">1000+</div>
+                <div class="stat-label">Questions Answered</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Study Resources</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Mentor Connections</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-image"><i class="fas fa-graduation-cap"></i></div>
+            <div class="about-text">
+                <span class="section-badge">About Silent Help Plus</span>
+                <h2>Built by Students, for Students</h2>
+                <p>University life comes with unique challenges - academic struggles, financial constraints, limited mentorship, and difficulty accessing quality study materials.</p>
+                <p>Our platform provides a safe, anonymous space where you can ask questions without judgment, share and access study resources, discover scholarships and job opportunities, connect with mentors, and report serious issues.</p>
+                <p>With department-wise content filtering and university-wide access to opportunities, we ensure you get relevant information without being overwhelmed.</p>
+                <div class="core-values">
+                    <div class="value-item"><i class="fas fa-check-circle"></i><span>Complete Anonymity with Admin Oversight</span></div>
+                    <div class="value-item"><i class="fas fa-check-circle"></i><span>Department-Based Academic Organization</span></div>
+                    <div class="value-item"><i class="fas fa-check-circle"></i><span>University-Wide Opportunity Access</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services" id="features">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Core Features</span>
+            <h2 class="section-title">Everything You Need in One Platform</h2>
+            <p class="section-subtitle">Seven powerful features to support your university journey</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card qa">
+                <div class="service-icon"><i class="fas fa-question-circle"></i></div>
+                <h3>Anonymous Q&A System</h3>
+                <p>Ask academic questions anonymously within your department. Get help from peers and seniors without revealing your identity.</p>
+                <ul class="service-features">
+                    <li>Department-wise question filtering</li>
+                    <li>Anonymous user IDs for privacy</li>
+                    <li>Answer voting system</li>
+                    <li>Category-based organization</li>
+                </ul>
+                <a href="#preview" class="service-link">View Sample Questions <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card resources">
+                <div class="service-icon"><i class="fas fa-book"></i></div>
+                <h3>Resource Library</h3>
+                <p>Upload and download study materials - lecture notes, past papers, assignments. Admin-approved content ensures quality.</p>
+                <ul class="service-features">
+                    <li>Upload lecture notes & papers</li>
+                    <li>Department-based filtering</li>
+                    <li>Admin approval for quality</li>
+                    <li>Search by subject/semester</li>
+                </ul>
+                <a href="#preview" class="service-link">Browse Resources <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card scholarship">
+                <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Scholarship Hub</h3>
+                <p>Discover scholarship opportunities accessible to all students. Filter by amount, deadline, and eligibility.</p>
+                <ul class="service-features">
+                    <li>University-wide access</li>
+                    <li>Filter by amount & deadline</li>
+                    <li>Eligibility criteria listed</li>
+                    <li>Auto-expiration system</li>
+                </ul>
+                <a href="#preview" class="service-link">Find Scholarships <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card jobs">
+                <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+                <h3>Job Board</h3>
+                <p>Browse part-time jobs, internships, and full-time positions. Filter by type, location, and salary.</p>
+                <ul class="service-features">
+                    <li>Part-time, internship, full-time</li>
+                    <li>Filter by type & location</li>
+                    <li>University-wide access</li>
+                    <li>Company contact info</li>
+                </ul>
+                <a href="#preview" class="service-link">View Job Listings <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card books">
+                <div class="service-icon"><i class="fas fa-book-open"></i></div>
+                <h3>Book Exchange Platform</h3>
+                <p>Buy, sell, or rent textbooks from fellow students. Save money on expensive course materials.</p>
+                <ul class="service-features">
+                    <li>Buy, sell, or rent options</li>
+                    <li>List book condition & price</li>
+                    <li>Direct student communication</li>
+                    <li>Manage listing status</li>
+                </ul>
+                <a href="#preview" class="service-link">Browse Books <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card mentorship">
+                <div class="service-icon"><i class="fas fa-users"></i></div>
+                <h3>Peer Mentorship Matching</h3>
+                <p>Connect with senior mentors for academic and career guidance. Search by expertise.</p>
+                <ul class="service-features">
+                    <li>Mentor profiles with expertise</li>
+                    <li>Filter by skills & availability</li>
+                    <li>Connection request system</li>
+                    <li>Optional anonymous messaging</li>
+                </ul>
+                <a href="#preview" class="service-link">Find a Mentor <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="service-card report">
+                <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Anonymous Reporting System</h3>
+                <p>Confidentially report harassment, bullying, or safety concerns. Admin investigates while protecting your identity.</p>
+                <ul class="service-features">
+                    <li>Complete reporter anonymity</li>
+                    <li>Multiple report categories</li>
+                    <li>Admin investigation capability</li>
+                    <li>Identity tracing audit logs</li>
+                </ul>
+                <a href="#register" class="service-link">Submit a Report <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="how-it-works" id="how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Simple Process</span>
+            <h2 class="section-title">Get Started in 4 Easy Steps</h2>
+            <p class="section-subtitle">Join thousands of students already using Silent Help Plus</p>
+        </div>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-icon">📝</div>
+                <h3>Register with Student ID</h3>
+                <p>Sign up using your university email and student ID. We verify your academic status while keeping your identity private.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-icon">✉️</div>
+                <h3>Verify Your Email</h3>
+                <p>Check your inbox for a verification link. Click it to activate your account and gain full access.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-icon">🎯</div>
+                <h3>Select Department</h3>
+                <p>Choose your department during registration. This automatically filters academic content relevant to your studies.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-icon">🚀</div>
+                <h3>Start Using Features</h3>
+                <p>Ask questions anonymously, upload resources, browse scholarships, find jobs, exchange books, connect with mentors!</p>
+            </div>
+        </div>
+        <div class="cta-center">
+            <a href="#register" class="btn btn-primary">Create Free Account</a>
+        </div>
+    </div>
+</section>
+
+<section class="why-choose">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Why Students Choose Silent Help Plus</h2>
+            <p class="section-subtitle">Features that make us different from traditional platforms</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Complete Anonymity</h3>
+                <p>System-generated anonymous IDs protect your identity in Q&A and reporting.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎓</div>
+                <h3>Department Filtering</h3>
+                <p>Academic content automatically filtered by your department.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>University-Wide Access</h3>
+                <p>Scholarships and jobs accessible to all students regardless of department.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>Admin Moderation</h3>
+                <p>Quality control through admin approval for resources and content.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Completely Free</h3>
+                <p>All features available at no cost. Save money through book exchange.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Peer Support Network</h3>
+                <p>Connect with seniors for mentorship, collaborate through Q&A.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Student Success Stories</h2>
+            <p class="section-subtitle">Real experiences from students who found help</p>
+            <small style="color: var(--text-tertiary);">*All testimonials anonymous to protect privacy</small>
+        </div>
+        <div class="testimonials-carousel">
+            <div class="testimonials-track" id="testimonials-track">
+                <div class="testimonial-card">
+                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">"I was struggling with Data Structures and too embarrassed to ask in class. Posted anonymously and got 5 detailed answers within an hour!"</p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-footer">
+                        <div class="testimonial-avatar">👤</div>
+                        <div>
+                            <div class="testimonial-label">Anonymous CS Student, 2nd Year</div>
+                            <span class="testimonial-tag">Q&A System</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">"Found all my semester's lecture notes and past papers in one place! The department filter shows only relevant materials."</p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-footer">
+                        <div class="testimonial-avatar">👤</div>
+                        <div>
+                            <div class="testimonial-label">Anonymous EEE Student, 3rd Year</div>
+                            <span class="testimonial-tag">Resource Library</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">"Discovered a scholarship worth $5000 I didn't even know existed! This platform literally paid for my semester."</p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-footer">
+                        <div class="testimonial-avatar">👤</div>
+                        <div>
+                            <div class="testimonial-label">Anonymous Student, 4th Year</div>
+                            <span class="testimonial-tag">Scholarship Hub</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">"Sold 3 textbooks and bought others at half price. Saved over $200 this semester through the book exchange!"</p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-footer">
+                        <div class="testimonial-avatar">👤</div>
+                        <div>
+                            <div class="testimonial-label">Anonymous Student, 1st Year</div>
+                            <span class="testimonial-tag">Book Exchange</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">"Connected with a senior mentor who guided me through career planning. Her advice helped me secure an internship!"</p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-footer">
+                        <div class="testimonial-avatar">👤</div>
+                        <div>
+                            <div class="testimonial-label">Anonymous BBA Student, 2nd Year</div>
+                            <span class="testimonial-tag">Peer Mentorship</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                    <p class="testimonial-text">"Was able to confidentially report a serious harassment issue. Admin investigated while protecting my identity throughout."</p>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-footer">
+                        <div class="testimonial-avatar">👤</div>
+                        <div>
+                            <div class="testimonial-label">Anonymous Student</div>
+                            <span class="testimonial-tag">Reporting System</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="carousel-dots" id="carousel-dots"></div>
+    </div>
+</section>
+
+<section class="preview-section" id="preview">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Platform Preview</span>
+            <h2 class="section-title">See What's Inside</h2>
+            <p class="section-subtitle">Sample questions, resources, and opportunities</p>
+        </div>
+        <div class="preview-tabs">
+            <button class="tab-btn active" data-tab="questions">Recent Questions</button>
+            <button class="tab-btn" data-tab="resources">Study Materials</button>
+            <button class="tab-btn" data-tab="scholarships">Scholarships</button>
+        </div>
+        <div class="preview-grid" id="preview-content">
+            <div class="preview-card">
+                <div class="preview-header">
+                    <span class="preview-category">CS Department</span>
+                    <div class="preview-title">How to implement Binary Search Tree in C++?</div>
+                    <div class="preview-meta">Posted by Anon_CS_2431 • 2 hours ago</div>
+                </div>
+                <div class="preview-content">
+                    <p class="preview-text">I'm having trouble understanding the delete operation in BST. Can someone explain with code examples?</p>
+                    <div class="preview-footer">
+                        <div class="preview-stats">
+                            <span class="preview-stat"><i class="fas fa-comment"></i> 8 answers</span>
+                            <span class="preview-stat"><i class="fas fa-arrow-up"></i> 15 votes</span>
+                        </div>
+                        <a href="#login" class="preview-link">View Answers <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="preview-card">
+                <div class="preview-header">
+                    <span class="preview-category">EEE Department</span>
+                    <div class="preview-title">Circuit Analysis - Thevenin's Theorem</div>
+                    <div class="preview-meta">Posted by Anon_EEE_1892 • 5 hours ago</div>
+                </div>
+                <div class="preview-content">
+                    <p class="preview-text">Need help solving a complex circuit problem using Thevenin's theorem. Anyone available to guide?</p>
+                    <div class="preview-footer">
+                        <div class="preview-stats">
+                            <span class="preview-stat"><i class="fas fa-comment"></i> 3 answers</span>
+                            <span class="preview-stat"><i class="fas fa-arrow-up"></i> 7 votes</span>
+                        </div>
+                        <a href="#login" class="preview-link">View Answers <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="preview-card">
+                <div class="preview-header">
+                    <span class="preview-category">BBA Department</span>
+                    <div class="preview-title">Marketing 101 Final Exam Preparation</div>
+                    <div class="preview-meta">Posted by Anon_BBA_3156 • 1 day ago</div>
+                </div>
+                <div class="preview-content">
+                    <p class="preview-text">What are the most important topics for Marketing 101 final? Looking for study tips and key concepts.</p>
+                    <div class="preview-footer">
+                        <div class="preview-stats">
+                            <span class="preview-stat"><i class="fas fa-comment"></i> 12 answers</span>
+                            <span class="preview-stat"><i class="fas fa-arrow-up"></i> 23 votes</span>
+                        </div>
+                        <a href="#login" class="preview-link">View Answers <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cta-center" style="margin-top: 40px;">
+            <a href="#register" class="btn btn-primary">Join to See More Content</a>
+        </div>
+    </div>
+</section>
+
+<section class="faq" id="faq">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know about the platform</p>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question"><span>How does anonymous Q&A work?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">When you post a question, the system generates a unique anonymous ID (like Anon_CS_2431) shown to other users instead of your real name. Admins can only trace identity in case of serious policy violations.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question"><span>Can I upload study materials?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">Yes! Click "Upload Resource", select your file, add subject, semester, and description. Your upload goes to admin for approval. Once approved, it becomes available to all students in your department.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question"><span>Are scholarships available to all departments?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">Absolutely! Scholarships and jobs are university-wide resources accessible to all students regardless of department. The system auto-removes expired opportunities.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question"><span>What is department filtering?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">Academic features (Q&A, study resources) are automatically filtered by your department. You'll only see questions and materials relevant to your courses.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question"><span>How do I become a mentor?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">Go to the Mentorship section and click "Register as Mentor". Fill in your expertise areas, availability, and a brief bio. Mentees can search and send connection requests.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question"><span>Is book exchange really free?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">The platform is free to use! List books at whatever price you choose. No platform fees or commissions. You keep 100% of your earnings!</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question"><span>How to report a serious issue?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">Click "Report Issue", select report type, provide description. Your reporter ID remains anonymous. Admin reviews all reports and investigates serious cases.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question"><span>Can admin see my real identity?</span><i class="fas fa-plus faq-icon"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">Under normal circumstances, no. For serious policy violations, admin can trace IDs - but only with documented reason and full audit trail logging.</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="auth-section" id="register">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Get Started</span>
+            <h2 class="section-title">Create Your Account</h2>
+            <p class="section-subtitle">Join thousands of students already benefiting from Silent Help Plus</p>
+        </div>
+        <div class="auth-container">
+            <div class="auth-form-container">
+                <h3>Register</h3>
+                <p>Create a new account to get started</p>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Student ID <span class="required">*</span></label>
+                        <input type="text" class="form-control" placeholder="e.g., 2021-1-60-001" required>
+                    </div>
+                    <div class="form-group">
+                        <label>University Email <span class="required">*</span></label>
+                        <input type="email" class="form-control" placeholder="your.email@university.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Department <span class="required">*</span></label>
+                        <select class="form-control" required>
+                            <option value="">Select your department</option>
+                            <option value="CSE">Computer Science & Engineering</option>
+                            <option value="EEE">Electrical & Electronic Engineering</option>
+                            <option value="BBA">Business Administration</option>
+                            <option value="CE">Civil Engineering</option>
+                            <option value="ME">Mechanical Engineering</option>
+                            <option value="ENG">English</option>
+                            <option value="LAW">Law</option>
+                            <option value="PHARM">Pharmacy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" class="form-control" placeholder="Create a strong password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password <span class="required">*</span></label>
+                        <input type="password" class="form-control" placeholder="Re-enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit"><span>Create Account</span><i class="fas fa-user-plus"></i></button>
+                    <div class="form-footer">Already have an account? <a href="#login">Login here</a></div>
+                </form>
+            </div>
+            <div class="auth-form-container" id="login">
+                <h3>Login</h3>
+                <p>Welcome back! Sign in to your account</p>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Email or Student ID <span class="required">*</span></label>
+                        <input type="text" class="form-control" placeholder="your.email@university.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me for 30 days</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit"><span>Sign In</span><i class="fas fa-sign-in-alt"></i></button>
+                    <div class="form-footer"><a href="#">Forgot password?</a><br>Don't have an account? <a href="#register">Register now</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="contact-content">
+            <div class="contact-info">
+                <h2>Get in Touch</h2>
+                <p>Have questions about the platform? Need technical support? We're here to help.</p>
+                <div class="contact-method">
+                    <i class="fas fa-envelope"></i>
+                    <div class="contact-details">
+                        <strong>General Inquiries</strong>
+                        <a href="mailto:support@silenthelpplus.edu">support@silenthelpplus.edu</a>
+                        <small>Response within 24 hours</small>
+                    </div>
+                </div>
+                <div class="contact-method">
+                    <i class="fas fa-headset"></i>
+                    <div class="contact-details">
+                        <strong>Technical Support</strong>
+                        <a href="mailto:tech@silenthelpplus.edu">tech@silenthelpplus.edu</a>
+                        <small>For platform issues and bugs</small>
+                    </div>
+                </div>
+                <div class="contact-method">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="contact-details">
+                        <strong>Office Address</strong>
+                        <a>Student Affairs Building, Room 305</a>
+                        <small>University Campus</small>
+                    </div>
+                </div>
+                <div style="margin-top: 30px;">
+                    <strong style="display: block; margin-bottom: 15px;">Connect With Us</strong>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3>Send Us a Message</h3>
+                <p>We'll respond as soon as possible</p>
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label>Your Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address <span class="required">*</span></label>
+                        <input type="email" class="form-control" placeholder="your.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject <span class="required">*</span></label>
+                        <select class="form-control" required>
+                            <option value="">Select a subject</option>
+                            <option>General Question</option>
+                            <option>Technical Issue</option>
+                            <option>Feature Request</option>
+                            <option>Feedback</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message <span class="required">*</span></label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="Type your message here..." maxlength="1000" required></textarea>
+                        <div class="char-counter"><span id="char-count">0</span>/1000</div>
+                    </div>
+                    <button type="submit" class="btn-submit"><span>Send Message</span><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="newsletter">
+    <div class="container">
+        <i class="fas fa-bell"></i>
+        <h2>Stay Updated</h2>
+        <p>Get weekly updates on new scholarships, job opportunities, and platform features</p>
+        <form class="newsletter-form" id="newsletter-form">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <small style="display: block; margin-top: 15px; opacity: 0.9;">We respect your privacy. Unsubscribe anytime.</small>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">Silent Help Plus</div>
+                <p>Anonymous university support platform providing academic help, resources, scholarships, jobs, mentorship, and safe reporting.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#about">About Platform</a></li>
+                    <li><a href="#features">Core Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Features</h3>
+                <ul class="footer-links">
+                    <li><a href="#features">Anonymous Q&A</a></li>
+                    <li><a href="#features">Study Resources</a></li>
+                    <li><a href="#features">Scholarships</a></li>
+                    <li><a href="#features">Job Board</a></li>
+                    <li><a href="#features">Book Exchange</a></li>
+                    <li><a href="#features">Mentorship</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal & Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Community Guidelines</a></li>
+                    <li><a href="#">Anonymity Explained</a></li>
+                    <li><a href="#">Admin Guidelines</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2025 Silent Help Plus. All Rights Reserved.</div>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+            <div>Built with 💚 for students</div>
+        </div>
+    </div>
+</footer>
+
+<div class="scroll-to-top" id="scroll-to-top"><i class="fas fa-arrow-up"></i></div>
+
+<script src="js/loading.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/darkmode.js"></script>
+<script src="js/carousel.js"></script>
+<script src="js/faq.js"></script>
+<script src="js/tabs.js"></script>
+<script src="js/forms.js"></script>
+</body>
+</html>

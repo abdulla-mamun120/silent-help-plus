@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Exchange - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --accent-teal: #00BCD4;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --light-teal: #E0F7FA;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 260px;
+            --navbar-height: 65px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #121212;
+            --light-blue: #1A2332;
+            --light-teal: #0A2A2E;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; z-index: 1000;
+        }
+
+        .navbar-left { display: flex; align-items: center; gap: 18px; }
+
+        .sidebar-toggle {
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text; text-decoration: none;
+        }
+
+        .navbar-right { display: flex; align-items: center; gap: 18px; }
+
+        .nav-icon-btn {
+            background: none; border: none;
+            font-size: 18px; cursor: pointer;
+            color: var(--text-tertiary); position: relative;
+        }
+
+        .notif-badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 16px; height: 16px;
+            background-color: #F44336; border-radius: 50%;
+            font-size: 9px; color: white;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 16px; cursor: pointer;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto; transition: transform 0.3s;
+            z-index: 900; padding: 20px 0;
+        }
+
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .sidebar-user {
+            padding: 15px 20px 20px;
+            border-bottom: 1px solid #E0E0E0; margin-bottom: 15px;
+        }
+
+        .sidebar-user-avatar {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 22px; margin-bottom: 10px;
+        }
+
+        .sidebar-user-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .sidebar-user-dept { font-size: 12px; color: var(--text-tertiary); }
+        .sidebar-user-id   { font-size: 11px; color: var(--secondary-green); margin-top: 4px; font-weight: 500; }
+
+        .nav-section-title {
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px 6px;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px;
+            font-weight: 500; transition: all 0.2s;
+            border: none; background: none; width: 100%;
+            text-align: left; cursor: pointer;
+        }
+
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+        .nav-item.active {
+            background-color: var(--light-teal); color: var(--accent-teal);
+            border-right: 3px solid var(--accent-teal);
+        }
+
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+
+        .nav-badge {
+            margin-left: auto; background-color: var(--primary-blue);
+            color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+        }
+
+        .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
+
+        /* Main */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px; transition: margin-left 0.3s;
+        }
+
+        .main-content.expanded { margin-left: 0; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #00BCD4, #26C6DA);
+            border-radius: 16px; padding: 30px;
+            margin-bottom: 25px; color: white;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 15px;
+        }
+
+        .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 5px; }
+        .page-header p  { opacity: 0.9; font-size: 14px; }
+
+        .btn-list-book {
+            padding: 11px 24px;
+            background-color: white; color: var(--accent-teal);
+            border: none; border-radius: 10px;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
+            font-family: 'Poppins', sans-serif; transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-list-book:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+
+        /* Stats */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 18px; margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px; padding: 18px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 14px;
+        }
+
+        .stat-icon {
+            width: 46px; height: 46px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white; flex-shrink: 0;
+        }
+
+        .stat-icon.teal   { background: linear-gradient(135deg, #00BCD4, #26C6DA); }
+        .stat-icon.blue   { background: linear-gradient(135deg, #1565C0, #1976D2); }
+        .stat-icon.green  { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+        .stat-icon.orange { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+
+        .stat-info h3 { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+        .stat-info p  { font-size: 12px; color: var(--text-tertiary); }
+
+        /* Filters */
+        .filters-bar {
+            background-color: var(--white); border-radius: 12px;
+            padding: 18px 22px; margin-bottom: 18px;
+            display: flex; gap: 12px; align-items: center;
+            flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .search-box { flex: 1; min-width: 200px; position: relative; }
+
+        .search-box i {
+            position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%); color: var(--text-tertiary); font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%; padding: 10px 15px 10px 38px;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus { outline: none; border-color: var(--accent-teal); background-color: var(--white); }
+
+        .filter-select {
+            padding: 10px 15px; border: 1.5px solid #E0E0E0;
+            border-radius: 8px; font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary); cursor: pointer;
+        }
+
+        .filter-select:focus { outline: none; border-color: var(--accent-teal); }
+
+        .btn-clear-filter {
+            padding: 10px 18px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 13px; font-family: 'Poppins', sans-serif;
+            color: var(--text-tertiary); cursor: pointer; transition: all 0.2s;
+        }
+
+        .btn-clear-filter:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+
+        /* Listing Type Tabs */
+        .type-tabs {
+            display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap;
+        }
+
+        .type-tab {
+            padding: 8px 18px; border-radius: 20px;
+            border: 1.5px solid #E0E0E0; background: none;
+            font-size: 13px; font-weight: 500; cursor: pointer;
+            color: var(--text-secondary); font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .type-tab:hover,
+        .type-tab.active { background-color: var(--accent-teal); color: white; border-color: var(--accent-teal); }
+
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* Book Card */
+        .book-card {
+            background-color: var(--white);
+            border-radius: 14px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s; border: 1px solid transparent;
+        }
+
+        .book-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+            border-color: var(--accent-teal);
+        }
+
+        .book-cover {
+            height: 150px; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 56px; position: relative;
+        }
+
+        .cover-cs     { background: linear-gradient(135deg, #E3F2FD, #BBDEFB); }
+        .cover-eee    { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); }
+        .cover-bba    { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); }
+        .cover-ce     { background: linear-gradient(135deg, #FCE4EC, #F8BBD0); }
+        .cover-pharm  { background: linear-gradient(135deg, #F3E5F5, #E1BEE7); }
+        .cover-other  { background: linear-gradient(135deg, #E0F7FA, #B2EBF2); }
+
+        .listing-badge {
+            position: absolute; top: 10px; right: 10px;
+            padding: 4px 11px; border-radius: 12px;
+            font-size: 11px; font-weight: 700;
+        }
+
+        .badge-sell     { background-color: #E3F2FD; color: var(--primary-blue); }
+        .badge-rent     { background-color: #E8F5E9; color: #2E7D32; }
+        .badge-exchange { background-color: #FFF3E0; color: #E65100; }
+
+        .book-body { padding: 16px; }
+
+        .book-title {
+            font-size: 14px; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 3px;
+            line-height: 1.4;
+        }
+
+        .book-author {
+            font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px;
+        }
+
+        .book-price-row {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 10px;
+        }
+
+        .book-price {
+            font-size: 20px; font-weight: 700; color: var(--accent-teal);
+        }
+
+        .book-original {
+            font-size: 12px; color: var(--text-tertiary);
+            text-decoration: line-through;
+        }
+
+        .cond-badge {
+            padding: 3px 10px; border-radius: 8px;
+            font-size: 11px; font-weight: 600;
+        }
+
+        .cond-new  { background-color: #E3F2FD; color: var(--primary-blue); }
+        .cond-good { background-color: #E8F5E9; color: #2E7D32; }
+        .cond-fair { background-color: #FFF3E0; color: #E65100; }
+
+        .book-details {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            font-size: 12px; color: var(--text-tertiary);
+            margin-bottom: 14px;
+        }
+
+        .book-details span { display: flex; align-items: center; gap: 4px; }
+        .book-details i { color: var(--accent-teal); }
+
+        .book-actions { display: flex; gap: 8px; }
+
+        .btn-contact {
+            flex: 1; padding: 9px;
+            background: linear-gradient(135deg, var(--accent-teal), #26C6DA);
+            color: white; border: none; border-radius: 8px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-contact:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,188,212,0.3); }
+
+        .btn-wishlist {
+            padding: 9px 13px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            cursor: pointer; color: var(--text-tertiary);
+            font-size: 15px; transition: all 0.2s;
+        }
+
+        .btn-wishlist:hover       { border-color: #ef5350; color: #ef5350; }
+        .btn-wishlist.wishlisted  { border-color: #ef5350; color: #ef5350; background-color: #FFEBEE; }
+
+        .book-footer {
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 16px;
+            border-top: 1px solid #F0F0F0;
+            font-size: 12px; color: var(--text-tertiary);
+        }
+
+        .seller-avatar {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: linear-gradient(135deg, #E1BEE7, #CE93D8);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; flex-shrink: 0;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center; padding: 70px 20px;
+            color: var(--text-tertiary); display: none;
+        }
+
+        .empty-state i { font-size: 60px; margin-bottom: 15px; opacity: 0.3; display: block; }
+        .empty-state p { font-size: 16px; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000; display: none;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background-color: var(--white); border-radius: 16px;
+            padding: 35px; width: 100%; max-width: 520px;
+            max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 6px;
+        }
+
+        .modal-header h2 { font-size: 22px; color: var(--accent-teal); }
+
+        .modal-header p  { font-size: 14px; color: var(--text-tertiary); margin-bottom: 22px; }
+
+        .modal-close {
+            background: none; border: none;
+            font-size: 22px; cursor: pointer; color: var(--text-tertiary);
+            align-self: flex-start;
+        }
+
+        .modal-subtitle { font-size: 14px; color: var(--text-tertiary); margin-bottom: 22px; }
+
+        .form-group { margin-bottom: 16px; }
+
+        .form-group label {
+            display: block; font-size: 13px;
+            font-weight: 600; color: var(--text-secondary); margin-bottom: 7px;
+        }
+
+        .required-star { color: #F44336; }
+
+        .form-control {
+            width: 100%; padding: 11px 15px;
+            border: 1.5px solid #DDDDDD; border-radius: 10px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--white); color: var(--text-primary); transition: all 0.2s;
+        }
+
+        .form-control:focus { outline: none; border-color: var(--accent-teal); box-shadow: 0 0 0 3px rgba(0,188,212,0.1); }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .privacy-note {
+            background-color: var(--light-teal); border-left: 4px solid var(--accent-teal);
+            padding: 12px 15px; border-radius: 0 8px 8px 0;
+            font-size: 13px; color: #006064;
+            display: flex; align-items: flex-start; gap: 8px;
+            margin-bottom: 20px; line-height: 1.5;
+        }
+
+        body.dark-mode .privacy-note { color: #80DEEA; }
+
+        .btn-submit {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg, var(--accent-teal), #26C6DA);
+            color: white; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            font-family: 'Poppins', sans-serif; transition: all 0.3s;
+        }
+
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,188,212,0.3); }
+
+        .btn-cancel {
+            width: 100%; padding: 11px; margin-top: 10px;
+            background: none; border: 1.5px solid #E0E0E0;
+            border-radius: 10px; font-size: 14px; cursor: pointer;
+            font-family: 'Poppins', sans-serif; color: var(--text-tertiary);
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover { border-color: #999; color: var(--text-secondary); }
+
+        /* Responsive */
+        @media (max-width: 1100px) { .books-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px 15px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .books-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a href="index.html" class="logo">Silent Help Plus</a>
+    </div>
+    <div class="navbar-right">
+        <button class="nav-icon-btn" id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+        <button class="nav-icon-btn" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notif-badge">3</span>
+        </button>
+        <div class="user-avatar" role="img" aria-label="User avatar">
+            <i class="fas fa-user"></i>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+        <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
+        <div class="sidebar-user-name">John Student</div>
+        <div class="sidebar-user-dept">CSE Department</div>
+        <div class="sidebar-user-id">Anon_CS_2431</div>
+    </div>
+
+    <div class="nav-section-title">Main Menu</div>
+    <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&amp;A Forum <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+    <div class="nav-section-title">Opportunities</div>
+    <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">6</span></a>
+    <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+    <a class="nav-item active" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+    <div class="nav-section-title">Connect</div>
+    <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+    <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content" id="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1><i class="fas fa-book-open"></i> Book Exchange</h1>
+            <p>Buy, sell, or rent textbooks from fellow students — save money!</p>
+        </div>
+        <button class="btn-list-book" type="button" id="btn-list-book">
+            <i class="fas fa-plus"></i> List a Book
+        </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon teal"><i class="fas fa-book-open"></i></div>
+            <div class="stat-info"><h3>82</h3><p>Active Listings</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-tag"></i></div>
+            <div class="stat-info"><h3>45</h3><p>For Sale</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-redo"></i></div>
+            <div class="stat-info"><h3>27</h3><p>For Rent</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-piggy-bank"></i></div>
+            <div class="stat-info"><h3>$200+</h3><p>Avg Savings</p></div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+                type="text"
+                class="search-input"
+                id="search-input"
+                placeholder="Search by title or author..."
+                aria-label="Search books"
+            >
+        </div>
+        <select class="filter-select" id="dept-filter" aria-label="Filter by department">
+            <option value="">All Departments</option>
+            <option value="cse">CSE</option>
+            <option value="eee">EEE</option>
+            <option value="bba">BBA</option>
+            <option value="ce">Civil Eng.</option>
+            <option value="pharm">Pharmacy</option>
+        </select>
+        <select class="filter-select" id="listing-filter" aria-label="Filter by listing type">
+            <option value="">All Types</option>
+            <option value="sell">For Sale</option>
+            <option value="rent">For Rent</option>
+            <option value="exchange">Exchange</option>
+        </select>
+        <select class="filter-select" id="cond-filter" aria-label="Filter by condition">
+            <option value="">Any Condition</option>
+            <option value="new">Like New</option>
+            <option value="good">Good</option>
+            <option value="fair">Fair</option>
+        </select>
+        <button class="btn-clear-filter" id="btn-clear" type="button">
+            <i class="fas fa-times"></i> Clear
+        </button>
+    </div>
+
+    <!-- Type Tabs -->
+    <div class="type-tabs">
+        <button class="type-tab active" type="button" data-tab="all">All Listings</button>
+        <button class="type-tab" type="button" data-tab="sell">For Sale</button>
+        <button class="type-tab" type="button" data-tab="rent">For Rent</button>
+        <button class="type-tab" type="button" data-tab="exchange">Exchange</button>
+    </div>
+
+    <!-- Books Grid -->
+    <div class="books-grid" id="books-grid">
+
+        <!-- Book 1 -->
+        <div class="book-card" data-type="sell" data-dept="cse" data-cond="good">
+            <div class="book-cover cover-cs">
+                📘
+                <span class="listing-badge badge-sell">For Sale</span>
+            </div>
+            <div class="book-body">
+                <div class="book-title">Introduction to Algorithms (3rd Ed.)</div>
+                <div class="book-author">Cormen, Leiserson, Rivest, Stein</div>
+                <div class="book-price-row">
+                    <div>
+                        <div class="book-price">$28</div>
+                        <div class="book-original">Original: $75</div>
+                    </div>
+                    <span class="cond-badge cond-good">Good</span>
+                </div>
+                <div class="book-details">
+                    <span><i class="fas fa-tag"></i> CSE</span>
+                    <span><i class="fas fa-layer-group"></i> 2nd–4th year</span>
+                </div>
+                <div class="book-actions">
+                    <button
+                        class="btn-contact"
+                        type="button"
+                        onclick="openContactModal('Anon_CS_2431', 'Introduction to Algorithms')"
+                    >
+                        <i class="fas fa-comment"></i> Contact Seller
+                    </button>
+                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="book-footer">
+                <div class="seller-avatar" aria-hidden="true">👤</div>
+                <span>Anon_CS_2431 &middot; 2 days ago</span>
+            </div>
+        </div>
+
+        <!-- Book 2 -->
+        <div class="book-card" data-type="rent" data-dept="eee" data-cond="new">
+            <div class="book-cover cover-eee">
+                📙
+                <span class="listing-badge badge-rent">For Rent</span>
+            </div>
+            <div class="book-body">
+                <div class="book-title">Engineering Electromagnetics</div>
+                <div class="book-author">William H. Hayt</div>
+                <div class="book-price-row">
+                    <div>
+                        <div class="book-price">$8/mo</div>
+                        <div class="book-original">Original: $60</div>
+                    </div>
+                    <span class="cond-badge cond-new">Like New</span>
+                </div>
+                <div class="book-details">
+                    <span><i class="fas fa-tag"></i> EEE</span>
+                    <span><i class="fas fa-calendar"></i> Min 1 month</span>
+                </div>
+                <div class="book-actions">
+                    <button
+                        class="btn-contact"
+                        type="button"
+                        onclick="openContactModal('Anon_EEE_1892', 'Engineering Electromagnetics')"
+                    >
+                        <i class="fas fa-comment"></i> Contact Seller
+                    </button>
+                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="book-footer">
+                <div class="seller-avatar" aria-hidden="true">👤</div>
+                <span>Anon_EEE_1892 &middot; 1 week ago</span>
+            </div>
+        </div>
+
+        <!-- Book 3 -->
+        <div class="book-card" data-type="sell" data-dept="bba" data-cond="good">
+            <div class="book-cover cover-bba">
+                📗
+                <span class="listing-badge badge-sell">For Sale</span>
+            </div>
+            <div class="book-body">
+                <div class="book-title">Principles of Marketing (16th Ed.)</div>
+                <div class="book-author">Philip Kotler &amp; Gary Armstrong</div>
+                <div class="book-price-row">
+                    <div>
+                        <div class="book-price">$22</div>
+                        <div class="book-original">Original: $65</div>
+                    </div>
+                    <span class="cond-badge cond-good">Good</span>
+                </div>
+                <div class="book-details">
+                    <span><i class="fas fa-tag"></i> BBA</span>
+                    <span><i class="fas fa-layer-group"></i> 2nd year</span>
+                </div>
+                <div class="book-actions">
+                    <button
+                        class="btn-contact"
+                        type="button"
+                        onclick="openContactModal('Anon_BBA_3156', 'Principles of Marketing')"
+                    >
+                        <i class="fas fa-comment"></i> Contact Seller
+                    </button>
+                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="book-footer">
+                <div class="seller-avatar" aria-hidden="true">👤</div>
+                <span>Anon_BBA_3156 &middot; 3 days ago</span>
+            </div>
+        </div>
+
+        <!-- Book 4 -->
+        <div class="book-card" data-type="exchange" data-dept="cse" data-cond="good">
+            <div class="book-cover cover-cs">
+                📓
+                <span class="listing-badge badge-exchange">Exchange</span>
+            </div>
+            <div class="book-body">
+                <div class="book-title">Computer Networks (5th Ed.)</div>
+                <div class="book-author">Andrew S. Tanenbaum</div>
+                <div class="book-price-row">
+                    <div>
+                        <div class="book-price">Exchange</div>
+                        <div class="book-original">Want: OS Book</div>
+                    </div>
+                    <span class="cond-badge cond-good">Good</span>
+                </div>
+                <div class="book-details">
+                    <span><i class="fas fa-tag"></i> CSE</span>
+                    <span><i class="fas fa-exchange-alt"></i> Swap offer</span>
+                </div>
+                <div class="book-actions">
+                    <button
+                        class="btn-contact"
+                        type="button"
+                        onclick="openContactModal('Anon_CS_4782', 'Computer Networks')"
+                    >
+                        <i class="fas fa-comment"></i> Propose Exchange
+                    </button>
+                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="book-footer">
+                <div class="seller-avatar" aria-hidden="true">👤</div>
+                <span>Anon_CS_4782 &middot; 5 days ago</span>
+            </div>
+        </div>
+
+        <!-- Book 5 -->
+        <div class="book-card" data-type="sell" data-dept="ce" data-cond="fair">
+            <div class="book-cover cover-ce">
+                📕
+                <span class="listing-badge badge-sell">For Sale</span>
+            </div>
+            <div class="book-body">
+                <div class="book-title">Structural Analysis (10th Ed.)</div>
+                <div class="book-author">Russell C. Hibbeler</div>
+                <div class="book-price-row">
+                    <div>
+                        <div class="book-price">$35</div>
+                        <div class="book-original">Original: $90</div>
+                    </div>
+                    <span class="cond-badge cond-fair">Fair</span>
+                </div>
+                <div class="book-details">
+                    <span><i class="fas fa-tag"></i> Civil Eng.</span>
+                    <span><i class="fas fa-layer-group"></i> 3rd year</span>
+                </div>
+                <div class="book-actions">
+                    <button
+                        class="btn-contact"
+                        type="button"
+                        onclick="openContactModal('Anon_CE_2019', 'Structural Analysis')"
+                    >
+                        <i class="fas fa-comment"></i> Contact Seller
+                    </button>
+                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="book-footer">
+                <div class="seller-avatar" aria-hidden="true">👤</div>
+                <span>Anon_CE_2019 &middot; Today</span>
+            </div>
+        </div>
+
+        <!-- Book 6 -->
+        <div class="book-card" data-type="rent" data-dept="pharm" data-cond="new">
+            <div class="book-cover cover-pharm">
+                📒
+                <span class="listing-badge badge-rent">For Rent</span>
+            </div>
+            <div class="book-body">
+                <div class="book-title">Pharmacology &amp; Pharmacotherapeutics</div>
+                <div class="book-author">R.S. Satoskar</div>
+                <div class="book-price-row">
+                    <div>
+                        <div class="book-price">$10/mo</div>
+                        <div class="book-original">Original: $55</div>
+                    </div>
+                    <span class="cond-badge cond-new">Like New</span>
+                </div>
+                <div class="book-details">
+                    <span><i class="fas fa-tag"></i> Pharmacy</span>
+                    <span><i class="fas fa-calendar"></i> Min 2 months</span>
+                </div>
+                <div class="book-actions">
+                    <button
+                        class="btn-contact"
+                        type="button"
+                        onclick="openContactModal('Anon_PH_1045', 'Pharmacology &amp; Pharmacotherapeutics')"
+                    >
+                        <i class="fas fa-comment"></i> Contact Seller
+                    </button>
+                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="book-footer">
+                <div class="seller-avatar" aria-hidden="true">👤</div>
+                <span>Anon_PH_1045 &middot; 2 days ago</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state">
+        <i class="fas fa-book-open"></i>
+        <p>No books found matching your filters.</p>
+    </div>
+
+</main>
+
+<!-- List a Book Modal -->
+<div class="modal-overlay" id="list-modal" role="dialog" aria-modal="true" aria-labelledby="list-modal-title">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="list-modal-title"><i class="fas fa-plus-circle"></i> List a Book</h2>
+            <button class="modal-close" type="button" id="list-modal-close" aria-label="Close modal">&#10005;</button>
+        </div>
+        <p class="modal-subtitle">Fill in the details to list your book for other students</p>
+
+        <form id="list-form" novalidate>
+            <div class="form-group">
+                <label for="book-title">Book Title <span class="required-star">*</span></label>
+                <input type="text" class="form-control" id="book-title" placeholder="Enter book title" required>
+            </div>
+            <div class="form-group">
+                <label for="book-author">Author</label>
+                <input type="text" class="form-control" id="book-author" placeholder="Author name">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="book-listing-type">Listing Type <span class="required-star">*</span></label>
+                    <select class="form-control" id="book-listing-type" required>
+                        <option value="">Select type</option>
+                        <option value="sell">For Sale</option>
+                        <option value="rent">For Rent</option>
+                        <option value="exchange">Exchange</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="book-price">Price / Rent per Month ($)</label>
+                    <input type="number" class="form-control" id="book-price" placeholder="0 for exchange" min="0">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="book-condition">Condition <span class="required-star">*</span></label>
+                    <select class="form-control" id="book-condition" required>
+                        <option value="">Select condition</option>
+                        <option value="new">Like New</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="book-dept">Department</label>
+                    <select class="form-control" id="book-dept">
+                        <option value="">Select department</option>
+                        <option value="cse">CSE</option>
+                        <option value="eee">EEE</option>
+                        <option value="bba">BBA</option>
+                        <option value="ce">Civil Engineering</option>
+                        <option value="pharm">Pharmacy</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="book-notes">Additional Notes</label>
+                <textarea class="form-control" id="book-notes" rows="3" placeholder="Any extra details about the book..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-check"></i> List My Book
+            </button>
+            <button type="button" class="btn-cancel" id="list-modal-cancel">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- Contact Seller Modal -->
+<div class="modal-overlay" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="contact-modal-title"><i class="fas fa-comment"></i> Contact Seller</h2>
+            <button class="modal-close" type="button" id="contact-modal-close" aria-label="Close modal">&#10005;</button>
+        </div>
+        <p class="modal-subtitle" id="contact-modal-subtitle">Send a message to arrange the transaction</p>
+
+        <div class="privacy-note">
+            <i class="fas fa-user-secret"></i>
+            <span>Your identity remains anonymous. The seller will only see your anonymous ID.</span>
+        </div>
+
+        <form id="contact-form" novalidate>
+            <div class="form-group">
+                <label for="contact-message">Your Message <span class="required-star">*</span></label>
+                <textarea
+                    class="form-control"
+                    id="contact-message"
+                    rows="4"
+                    placeholder="Hi, I am interested in your book. Is it still available?"
+                    required
+                ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="contact-info">Your Contact Info (optional)</label>
+                <input type="text" class="form-control" id="contact-info" placeholder="Phone or email for direct contact">
+            </div>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+            <button type="button" class="btn-cancel" id="contact-modal-cancel">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    /* ── Dark Mode ── */
+    const dmToggle = document.getElementById('dark-mode-toggle');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        dmToggle.textContent = '☀️';
+    }
+    dmToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        dmToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    });
+
+    /* ── Sidebar Toggle ── */
+    const sidebar     = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+    });
+
+    /* ── Filter Logic ── */
+    const cards       = Array.from(document.querySelectorAll('.book-card'));
+    const emptyState  = document.getElementById('empty-state');
+    const searchInput = document.getElementById('search-input');
+    const deptSel     = document.getElementById('dept-filter');
+    const listingSel  = document.getElementById('listing-filter');
+    const condSel     = document.getElementById('cond-filter');
+
+    function applyFilters() {
+        const q       = searchInput.value.toLowerCase().trim();
+        const dept    = deptSel.value;
+        const listing = listingSel.value;
+        const cond    = condSel.value;
+
+        let visible = 0;
+
+        cards.forEach(card => {
+            const titleText = card.querySelector('.book-title') ? card.querySelector('.book-title').textContent.toLowerCase() : '';
+            const authText  = card.querySelector('.book-author') ? card.querySelector('.book-author').textContent.toLowerCase() : '';
+
+            const matchSearch  = !q       || titleText.includes(q) || authText.includes(q);
+            const matchDept    = !dept    || card.dataset.dept === dept;
+            const matchListing = !listing || card.dataset.type === listing;
+            const matchCond    = !cond    || card.dataset.cond === cond;
+
+            const show = matchSearch && matchDept && matchListing && matchCond;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        emptyState.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    deptSel.addEventListener('change', applyFilters);
+    listingSel.addEventListener('change', applyFilters);
+    condSel.addEventListener('change', applyFilters);
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+        searchInput.value = '';
+        deptSel.value     = '';
+        listingSel.value  = '';
+        condSel.value     = '';
+        document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('.type-tab[data-tab="all"]').classList.add('active');
+        applyFilters();
+    });
+
+    /* ── Type Tabs ── */
+    document.querySelectorAll('.type-tab').forEach(tab => {
+        tab.addEventListener('click', function () {
+            document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            const filter = this.dataset.tab;
+            cards.forEach(card => {
+                card.style.display = (filter === 'all' || card.dataset.type === filter) ? '' : 'none';
+            });
+
+            const visible = cards.filter(c => c.style.display !== 'none').length;
+            emptyState.style.display = visible === 0 ? 'block' : 'none';
+
+            searchInput.value = '';
+            deptSel.value     = '';
+            listingSel.value  = '';
+            condSel.value     = '';
+        });
+    });
+
+    /* ── Wishlist Toggle ── */
+    function toggleWishlist(btn) {
+        btn.classList.toggle('wishlisted');
+    }
+
+    /* ── List a Book Modal ── */
+    const listModal = document.getElementById('list-modal');
+
+    function openListModal() { listModal.classList.add('show'); }
+    function closeListModal() { listModal.classList.remove('show'); }
+
+    document.getElementById('btn-list-book').addEventListener('click', openListModal);
+    document.getElementById('list-modal-close').addEventListener('click', closeListModal);
+    document.getElementById('list-modal-cancel').addEventListener('click', closeListModal);
+    listModal.addEventListener('click', e => { if (e.target === listModal) closeListModal(); });
+
+    document.getElementById('list-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const title = document.getElementById('book-title').value.trim();
+        const type  = document.getElementById('book-listing-type').value;
+        const cond  = document.getElementById('book-condition').value;
+        if (!title || !type || !cond) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+        closeListModal();
+        this.reset();
+        alert('Your book has been listed successfully! Other students can now see it.');
+    });
+
+    /* ── Contact Seller Modal ── */
+    const contactModal = document.getElementById('contact-modal');
+
+    function openContactModal(seller, bookTitle) {
+        document.getElementById('contact-modal-subtitle').textContent =
+            'Send a message to ' + seller + ' about "' + bookTitle + '"';
+        document.getElementById('contact-message').value =
+            'Hi, I am interested in your book "' + bookTitle + '". Is it still available?';
+        contactModal.classList.add('show');
+    }
+
+    function closeContactModal() { contactModal.classList.remove('show'); }
+
+    document.getElementById('contact-modal-close').addEventListener('click', closeContactModal);
+    document.getElementById('contact-modal-cancel').addEventListener('click', closeContactModal);
+    contactModal.addEventListener('click', e => { if (e.target === contactModal) closeContactModal(); });
+
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const msg = document.getElementById('contact-message').value.trim();
+        if (!msg) { alert('Please write a message first.'); return; }
+        closeContactModal();
+        this.reset();
+        alert('Message sent anonymously! The seller will be notified.');
+    });
+
+    /* ── Pagination (UI only) ── */
+    document.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (this.querySelector('i')) return;
+            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
+
+</body>
+</html>

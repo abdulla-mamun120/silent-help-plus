@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorship - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --accent-indigo: #3F51B5;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --light-indigo: #E8EAF6;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 260px;
+            --navbar-height: 65px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #121212;
+            --light-blue: #1A2332;
+            --light-indigo: #1A1C2E;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; z-index: 1000;
+        }
+
+        .navbar-left { display: flex; align-items: center; gap: 18px; }
+
+        .sidebar-toggle {
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text; text-decoration: none;
+        }
+
+        .navbar-right { display: flex; align-items: center; gap: 18px; }
+
+        .nav-icon-btn {
+            background: none; border: none;
+            font-size: 18px; cursor: pointer;
+            color: var(--text-tertiary); position: relative;
+        }
+
+        .notif-badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 16px; height: 16px;
+            background-color: #F44336; border-radius: 50%;
+            font-size: 9px; color: white;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 16px; cursor: pointer;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto; transition: transform 0.3s;
+            z-index: 900; padding: 20px 0;
+        }
+
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .sidebar-user {
+            padding: 15px 20px 20px;
+            border-bottom: 1px solid #E0E0E0; margin-bottom: 15px;
+        }
+
+        .sidebar-user-avatar {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 22px; margin-bottom: 10px;
+        }
+
+        .sidebar-user-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .sidebar-user-dept { font-size: 12px; color: var(--text-tertiary); }
+        .sidebar-user-id   { font-size: 11px; color: var(--secondary-green); margin-top: 4px; font-weight: 500; }
+
+        .nav-section-title {
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px 6px;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px;
+            font-weight: 500; transition: all 0.2s;
+            border: none; background: none; width: 100%;
+            text-align: left; cursor: pointer;
+        }
+
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+        .nav-item.active {
+            background-color: var(--light-indigo); color: var(--accent-indigo);
+            border-right: 3px solid var(--accent-indigo);
+        }
+
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+
+        .nav-badge {
+            margin-left: auto; background-color: var(--primary-blue);
+            color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+        }
+
+        .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
+
+        /* Main */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px; transition: margin-left 0.3s;
+        }
+
+        .main-content.expanded { margin-left: 0; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #3F51B5, #5C6BC0);
+            border-radius: 16px; padding: 30px;
+            margin-bottom: 25px; color: white;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 15px;
+        }
+
+        .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 5px; }
+        .page-header p  { opacity: 0.9; font-size: 14px; }
+
+        .btn-become-mentor {
+            padding: 11px 24px;
+            background-color: white; color: var(--accent-indigo);
+            border: none; border-radius: 10px;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
+            font-family: 'Poppins', sans-serif; transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-become-mentor:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+
+        /* Stats */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 18px; margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px; padding: 18px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 14px;
+        }
+
+        .stat-icon {
+            width: 46px; height: 46px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white; flex-shrink: 0;
+        }
+
+        .stat-icon.indigo { background: linear-gradient(135deg, #3F51B5, #5C6BC0); }
+        .stat-icon.green  { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+        .stat-icon.orange { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+        .stat-icon.teal   { background: linear-gradient(135deg, #00BCD4, #26C6DA); }
+
+        .stat-info h3 { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+        .stat-info p  { font-size: 12px; color: var(--text-tertiary); }
+
+        /* Filters */
+        .filters-bar {
+            background-color: var(--white); border-radius: 12px;
+            padding: 18px 22px; margin-bottom: 18px;
+            display: flex; gap: 12px; align-items: center;
+            flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .search-box { flex: 1; min-width: 200px; position: relative; }
+
+        .search-box i {
+            position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%); color: var(--text-tertiary); font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%; padding: 10px 15px 10px 38px;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus { outline: none; border-color: var(--accent-indigo); background-color: var(--white); }
+
+        .filter-select {
+            padding: 10px 15px; border: 1.5px solid #E0E0E0;
+            border-radius: 8px; font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary); cursor: pointer;
+        }
+
+        .filter-select:focus { outline: none; border-color: var(--accent-indigo); }
+
+        .btn-clear-filter {
+            padding: 10px 18px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 13px; font-family: 'Poppins', sans-serif;
+            color: var(--text-tertiary); cursor: pointer; transition: all 0.2s;
+        }
+
+        .btn-clear-filter:hover { border-color: var(--accent-indigo); color: var(--accent-indigo); }
+
+        /* Skill Chips */
+        .skill-chips {
+            display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap;
+        }
+
+        .skill-chip {
+            padding: 7px 16px; border-radius: 20px;
+            border: 1.5px solid #E0E0E0; background: none;
+            font-size: 12px; font-weight: 500; cursor: pointer;
+            color: var(--text-secondary); font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .skill-chip:hover,
+        .skill-chip.active { background-color: var(--accent-indigo); color: white; border-color: var(--accent-indigo); }
+
+        /* Mentors Grid */
+        .mentors-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* Mentor Card */
+        .mentor-card {
+            background-color: var(--white);
+            border-radius: 14px; padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #EEEEEE;
+            transition: all 0.3s;
+        }
+
+        .mentor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.11);
+        }
+
+        .mentor-top {
+            display: flex; gap: 16px;
+            margin-bottom: 14px; align-items: flex-start;
+        }
+
+        .mentor-avatar {
+            width: 68px; height: 68px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; flex-shrink: 0;
+        }
+
+        .avatar-blue   { background: linear-gradient(135deg, #E3F2FD, #90CAF9); }
+        .avatar-green  { background: linear-gradient(135deg, #E8F5E9, #A5D6A7); }
+        .avatar-purple { background: linear-gradient(135deg, #F3E5F5, #CE93D8); }
+        .avatar-orange { background: linear-gradient(135deg, #FFF3E0, #FFCC80); }
+
+        .mentor-basic { flex: 1; min-width: 0; }
+
+        .mentor-name-row {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; gap: 8px; margin-bottom: 3px;
+        }
+
+        .mentor-name { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+
+        .avail-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: 12px;
+            font-size: 11px; font-weight: 600; white-space: nowrap; flex-shrink: 0;
+        }
+
+        .avail-badge i { font-size: 7px; }
+        .badge-available { background-color: #E8F5E9; color: #2E7D32; }
+        .badge-limited   { background-color: #FFF3E0; color: #E65100; }
+
+        .mentor-title  { font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px; }
+
+        .mentor-rating {
+            display: flex; align-items: center; gap: 6px; font-size: 13px;
+        }
+
+        .stars       { color: #FFC107; }
+        .rating-num  { font-weight: 700; color: var(--text-primary); }
+        .rating-count { color: var(--text-tertiary); }
+
+        .mentor-bio {
+            font-size: 13px; line-height: 1.65;
+            color: var(--text-secondary); margin-bottom: 14px;
+        }
+
+        .skill-tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+
+        .skill-tag {
+            padding: 4px 11px; background-color: var(--light-indigo);
+            color: var(--accent-indigo); border-radius: 12px;
+            font-size: 11px; font-weight: 600;
+        }
+
+        .mentor-stats {
+            display: flex; gap: 0;
+            margin-bottom: 16px;
+            padding: 12px 0;
+            border-top: 1px solid #F0F0F0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .m-stat {
+            flex: 1; text-align: center;
+            border-right: 1px solid #F0F0F0;
+        }
+
+        .m-stat:last-child { border-right: none; }
+
+        .m-stat-val { font-size: 19px; font-weight: 700; color: var(--accent-indigo); }
+        .m-stat-lbl { font-size: 11px; color: var(--text-tertiary); }
+
+        .mentor-actions { display: flex; gap: 10px; }
+
+        .btn-connect {
+            flex: 1; padding: 10px;
+            background: linear-gradient(135deg, var(--accent-indigo), #5C6BC0);
+            color: white; border: none; border-radius: 8px;
+            font-weight: 600; font-size: 14px; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-connect:hover    { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(63,81,181,0.3); }
+        .btn-connect:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-connect.sent     { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+
+        .btn-view-profile {
+            padding: 10px 16px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 13px; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-secondary); transition: all 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .btn-view-profile:hover { border-color: var(--accent-indigo); color: var(--accent-indigo); }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center; padding: 70px 20px;
+            color: var(--text-tertiary); display: none;
+        }
+
+        .empty-state i { font-size: 60px; margin-bottom: 15px; opacity: 0.3; display: block; }
+        .empty-state p { font-size: 16px; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000; display: none;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background-color: var(--white); border-radius: 16px;
+            padding: 35px; width: 100%; max-width: 540px;
+            max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 6px;
+        }
+
+        .modal-header h2 { font-size: 22px; color: var(--accent-indigo); }
+
+        .modal-close {
+            background: none; border: none;
+            font-size: 22px; cursor: pointer;
+            color: var(--text-tertiary); align-self: flex-start;
+        }
+
+        .modal-subtitle { font-size: 14px; color: var(--text-tertiary); margin-bottom: 22px; }
+
+        .form-group { margin-bottom: 16px; }
+
+        .form-group label {
+            display: block; font-size: 13px;
+            font-weight: 600; color: var(--text-secondary); margin-bottom: 7px;
+        }
+
+        .required-star { color: #F44336; }
+
+        .form-control {
+            width: 100%; padding: 11px 15px;
+            border: 1.5px solid #DDDDDD; border-radius: 10px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--white); color: var(--text-primary); transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none; border-color: var(--accent-indigo);
+            box-shadow: 0 0 0 3px rgba(63,81,181,0.1);
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .privacy-note {
+            background-color: var(--light-indigo);
+            border-left: 4px solid var(--accent-indigo);
+            padding: 12px 15px; border-radius: 0 8px 8px 0;
+            font-size: 13px; color: #283593;
+            display: flex; align-items: flex-start; gap: 8px;
+            margin-bottom: 20px; line-height: 1.5;
+        }
+
+        body.dark-mode .privacy-note { color: #9FA8DA; }
+
+        .btn-submit {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg, var(--accent-indigo), #5C6BC0);
+            color: white; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            font-family: 'Poppins', sans-serif; transition: all 0.3s;
+        }
+
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(63,81,181,0.3); }
+
+        .btn-cancel {
+            width: 100%; padding: 11px; margin-top: 10px;
+            background: none; border: 1.5px solid #E0E0E0;
+            border-radius: 10px; font-size: 14px; cursor: pointer;
+            font-family: 'Poppins', sans-serif; color: var(--text-tertiary);
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover { border-color: #999; color: var(--text-secondary); }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .mentors-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px 15px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a href="index.html" class="logo">Silent Help Plus</a>
+    </div>
+    <div class="navbar-right">
+        <button class="nav-icon-btn" id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+        <button class="nav-icon-btn" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notif-badge">3</span>
+        </button>
+        <div class="user-avatar" role="img" aria-label="User avatar">
+            <i class="fas fa-user"></i>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+        <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
+        <div class="sidebar-user-name">John Student</div>
+        <div class="sidebar-user-dept">CSE Department</div>
+        <div class="sidebar-user-id">Anon_CS_2431</div>
+    </div>
+
+    <div class="nav-section-title">Main Menu</div>
+    <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&amp;A Forum <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+    <div class="nav-section-title">Opportunities</div>
+    <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">6</span></a>
+    <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+    <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+    <div class="nav-section-title">Connect</div>
+    <a class="nav-item active" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+    <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content" id="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1><i class="fas fa-users"></i> Peer Mentorship</h1>
+            <p>Connect with senior students for academic guidance and career advice</p>
+        </div>
+        <button class="btn-become-mentor" type="button" id="btn-become-mentor">
+            <i class="fas fa-chalkboard-teacher"></i> Become a Mentor
+        </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon indigo"><i class="fas fa-chalkboard-teacher"></i></div>
+            <div class="stat-info"><h3>34</h3><p>Active Mentors</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-handshake"></i></div>
+            <div class="stat-info"><h3>127</h3><p>Connections Made</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-star"></i></div>
+            <div class="stat-info"><h3>4.7</h3><p>Avg Rating</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon teal"><i class="fas fa-smile"></i></div>
+            <div class="stat-info"><h3>96%</h3><p>Satisfaction</p></div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+                type="text"
+                class="search-input"
+                id="search-input"
+                placeholder="Search by name or expertise..."
+                aria-label="Search mentors"
+            >
+        </div>
+        <select class="filter-select" id="dept-filter" aria-label="Filter by department">
+            <option value="">All Departments</option>
+            <option value="cse">CSE</option>
+            <option value="eee">EEE</option>
+            <option value="bba">BBA</option>
+            <option value="ce">Civil Eng.</option>
+        </select>
+        <select class="filter-select" id="avail-filter" aria-label="Filter by availability">
+            <option value="">Any Availability</option>
+            <option value="available">Available Now</option>
+            <option value="limited">Limited</option>
+        </select>
+        <select class="filter-select" id="year-filter" aria-label="Filter by year">
+            <option value="">Any Year</option>
+            <option value="3rd">3rd Year</option>
+            <option value="4th">4th Year</option>
+            <option value="alumni">Alumni</option>
+        </select>
+        <button class="btn-clear-filter" type="button" id="btn-clear">
+            <i class="fas fa-times"></i> Clear
+        </button>
+    </div>
+
+    <!-- Skill Chips -->
+    <div class="skill-chips">
+        <button class="skill-chip active" type="button" data-skill="all">All Skills</button>
+        <button class="skill-chip" type="button" data-skill="python">Python</button>
+        <button class="skill-chip" type="button" data-skill="ml">Machine Learning</button>
+        <button class="skill-chip" type="button" data-skill="dsa">Data Structures</button>
+        <button class="skill-chip" type="button" data-skill="web">Web Development</button>
+        <button class="skill-chip" type="button" data-skill="circuit">Circuit Design</button>
+        <button class="skill-chip" type="button" data-skill="marketing">Marketing</button>
+        <button class="skill-chip" type="button" data-skill="research">Research</button>
+    </div>
+
+    <!-- Mentors Grid -->
+    <div class="mentors-grid" id="mentors-grid">
+
+        <!-- Mentor 1 -->
+        <div class="mentor-card"
+             data-dept="cse"
+             data-avail="available"
+             data-year="4th"
+             data-skills="python dsa ml competitive">
+            <div class="mentor-top">
+                <div class="mentor-avatar avatar-blue" aria-hidden="true">🧑‍💻</div>
+                <div class="mentor-basic">
+                    <div class="mentor-name-row">
+                        <div class="mentor-name">Anon_Senior_CS_7821</div>
+                        <span class="avail-badge badge-available">
+                            <i class="fas fa-circle"></i> Available
+                        </span>
+                    </div>
+                    <div class="mentor-title">4th Year &middot; Computer Science</div>
+                    <div class="mentor-rating">
+                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                        <span class="rating-num">4.9</span>
+                        <span class="rating-count">(23 reviews)</span>
+                    </div>
+                </div>
+            </div>
+            <p class="mentor-bio">
+                Passionate about algorithms and competitive programming. Interned at 2 tech companies.
+                Happy to guide juniors on DSA, internship prep, and career paths in software engineering.
+            </p>
+            <div class="skill-tag-row">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Data Structures</span>
+                <span class="skill-tag">C++</span>
+                <span class="skill-tag">Machine Learning</span>
+                <span class="skill-tag">Competitive Programming</span>
+            </div>
+            <div class="mentor-stats">
+                <div class="m-stat">
+                    <div class="m-stat-val">18</div>
+                    <div class="m-stat-lbl">Mentees</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">8 hrs</div>
+                    <div class="m-stat-lbl">Per week</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">6 mo</div>
+                    <div class="m-stat-lbl">Experience</div>
+                </div>
+            </div>
+            <div class="mentor-actions">
+                <button
+                    class="btn-connect"
+                    type="button"
+                    onclick="sendRequest(this, 'Anon_Senior_CS_7821')"
+                >
+                    <i class="fas fa-user-plus"></i> Request Mentorship
+                </button>
+                <button
+                    class="btn-view-profile"
+                    type="button"
+                    onclick="viewProfile('CS_7821')"
+                >
+                    <i class="fas fa-eye"></i> Profile
+                </button>
+            </div>
+        </div>
+
+        <!-- Mentor 2 -->
+        <div class="mentor-card"
+             data-dept="eee"
+             data-avail="available"
+             data-year="4th"
+             data-skills="circuit matlab power research">
+            <div class="mentor-top">
+                <div class="mentor-avatar avatar-orange" aria-hidden="true">👩‍🔬</div>
+                <div class="mentor-basic">
+                    <div class="mentor-name-row">
+                        <div class="mentor-name">Anon_Senior_EEE_4521</div>
+                        <span class="avail-badge badge-available">
+                            <i class="fas fa-circle"></i> Available
+                        </span>
+                    </div>
+                    <div class="mentor-title">4th Year &middot; Electrical Engineering</div>
+                    <div class="mentor-rating">
+                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                        <span class="rating-num">4.8</span>
+                        <span class="rating-count">(17 reviews)</span>
+                    </div>
+                </div>
+            </div>
+            <p class="mentor-bio">
+                Research assistant in Power Systems Lab. Strong background in circuit analysis,
+                digital electronics, and signal processing. Can also guide on scholarship applications
+                and research paper writing.
+            </p>
+            <div class="skill-tag-row">
+                <span class="skill-tag">Circuit Design</span>
+                <span class="skill-tag">MATLAB</span>
+                <span class="skill-tag">Power Systems</span>
+                <span class="skill-tag">Research Writing</span>
+                <span class="skill-tag">Signal Processing</span>
+            </div>
+            <div class="mentor-stats">
+                <div class="m-stat">
+                    <div class="m-stat-val">12</div>
+                    <div class="m-stat-lbl">Mentees</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">5 hrs</div>
+                    <div class="m-stat-lbl">Per week</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">8 mo</div>
+                    <div class="m-stat-lbl">Experience</div>
+                </div>
+            </div>
+            <div class="mentor-actions">
+                <button
+                    class="btn-connect"
+                    type="button"
+                    onclick="sendRequest(this, 'Anon_Senior_EEE_4521')"
+                >
+                    <i class="fas fa-user-plus"></i> Request Mentorship
+                </button>
+                <button
+                    class="btn-view-profile"
+                    type="button"
+                    onclick="viewProfile('EEE_4521')"
+                >
+                    <i class="fas fa-eye"></i> Profile
+                </button>
+            </div>
+        </div>
+
+        <!-- Mentor 3 -->
+        <div class="mentor-card"
+             data-dept="bba"
+             data-avail="limited"
+             data-year="alumni"
+             data-skills="marketing brand cv interview business">
+            <div class="mentor-top">
+                <div class="mentor-avatar avatar-green" aria-hidden="true">🧑‍💼</div>
+                <div class="mentor-basic">
+                    <div class="mentor-name-row">
+                        <div class="mentor-name">Anon_Senior_BBA_2934</div>
+                        <span class="avail-badge badge-limited">
+                            <i class="fas fa-circle"></i> Limited
+                        </span>
+                    </div>
+                    <div class="mentor-title">Alumni (2024) &middot; Business Administration</div>
+                    <div class="mentor-rating">
+                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                        <span class="rating-num">4.7</span>
+                        <span class="rating-count">(31 reviews)</span>
+                    </div>
+                </div>
+            </div>
+            <p class="mentor-bio">
+                Currently working at a leading multinational. Specialized in digital marketing
+                and brand strategy. Happy to share corporate insights, review CVs,
+                and help with interview preparation.
+            </p>
+            <div class="skill-tag-row">
+                <span class="skill-tag">Marketing Strategy</span>
+                <span class="skill-tag">Brand Management</span>
+                <span class="skill-tag">CV Writing</span>
+                <span class="skill-tag">Interview Prep</span>
+                <span class="skill-tag">Business Analytics</span>
+            </div>
+            <div class="mentor-stats">
+                <div class="m-stat">
+                    <div class="m-stat-val">24</div>
+                    <div class="m-stat-lbl">Mentees</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">3 hrs</div>
+                    <div class="m-stat-lbl">Per week</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">1 yr</div>
+                    <div class="m-stat-lbl">Experience</div>
+                </div>
+            </div>
+            <div class="mentor-actions">
+                <button
+                    class="btn-connect"
+                    type="button"
+                    onclick="sendRequest(this, 'Anon_Senior_BBA_2934')"
+                >
+                    <i class="fas fa-user-plus"></i> Request Mentorship
+                </button>
+                <button
+                    class="btn-view-profile"
+                    type="button"
+                    onclick="viewProfile('BBA_2934')"
+                >
+                    <i class="fas fa-eye"></i> Profile
+                </button>
+            </div>
+        </div>
+
+        <!-- Mentor 4 -->
+        <div class="mentor-card"
+             data-dept="cse"
+             data-avail="available"
+             data-year="3rd"
+             data-skills="web react node github freelancing">
+            <div class="mentor-top">
+                <div class="mentor-avatar avatar-purple" aria-hidden="true">👩‍🎓</div>
+                <div class="mentor-basic">
+                    <div class="mentor-name-row">
+                        <div class="mentor-name">Anon_Senior_CS_6103</div>
+                        <span class="avail-badge badge-available">
+                            <i class="fas fa-circle"></i> Available
+                        </span>
+                    </div>
+                    <div class="mentor-title">3rd Year &middot; Computer Science</div>
+                    <div class="mentor-rating">
+                        <span class="stars">&#9733;&#9733;&#9733;&#9733;</span>
+                        <span class="rating-num">4.5</span>
+                        <span class="rating-count">(9 reviews)</span>
+                    </div>
+                </div>
+            </div>
+            <p class="mentor-bio">
+                Passionate about web development and open source. Active member of the university
+                coding club. Can guide on web dev stack (React / Node), project ideas,
+                and freelancing as a student.
+            </p>
+            <div class="skill-tag-row">
+                <span class="skill-tag">React.js</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">Web Development</span>
+                <span class="skill-tag">GitHub</span>
+                <span class="skill-tag">Freelancing</span>
+            </div>
+            <div class="mentor-stats">
+                <div class="m-stat">
+                    <div class="m-stat-val">7</div>
+                    <div class="m-stat-lbl">Mentees</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">6 hrs</div>
+                    <div class="m-stat-lbl">Per week</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">4 mo</div>
+                    <div class="m-stat-lbl">Experience</div>
+                </div>
+            </div>
+            <div class="mentor-actions">
+                <button
+                    class="btn-connect"
+                    type="button"
+                    onclick="sendRequest(this, 'Anon_Senior_CS_6103')"
+                >
+                    <i class="fas fa-user-plus"></i> Request Mentorship
+                </button>
+                <button
+                    class="btn-view-profile"
+                    type="button"
+                    onclick="viewProfile('CS_6103')"
+                >
+                    <i class="fas fa-eye"></i> Profile
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state">
+        <i class="fas fa-users"></i>
+        <p>No mentors found matching your filters.</p>
+    </div>
+
+</main>
+
+<!-- Become a Mentor Modal -->
+<div class="modal-overlay" id="mentor-modal" role="dialog" aria-modal="true" aria-labelledby="mentor-modal-title">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="mentor-modal-title"><i class="fas fa-chalkboard-teacher"></i> Register as Mentor</h2>
+            <button class="modal-close" type="button" id="mentor-modal-close" aria-label="Close modal">&#10005;</button>
+        </div>
+        <p class="modal-subtitle">Help fellow students by sharing your knowledge and experience</p>
+
+        <form id="mentor-form" novalidate>
+            <div class="form-group">
+                <label for="mentor-expertise">Expertise Areas <span class="required-star">*</span></label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="mentor-expertise"
+                    placeholder="e.g. Python, Data Structures, Web Development"
+                    required
+                >
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="mentor-year">Current Year / Status <span class="required-star">*</span></label>
+                    <select class="form-control" id="mentor-year" required>
+                        <option value="">Select</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
+                        <option value="alumni">Alumni</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="mentor-hours">Available Hours / Week <span class="required-star">*</span></label>
+                    <select class="form-control" id="mentor-hours" required>
+                        <option value="">Select</option>
+                        <option value="2-4">2 – 4 hours</option>
+                        <option value="5-8">5 – 8 hours</option>
+                        <option value="8+">8+ hours</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mentor-dept">Department <span class="required-star">*</span></label>
+                <select class="form-control" id="mentor-dept" required>
+                    <option value="">Select department</option>
+                    <option value="cse">CSE</option>
+                    <option value="eee">EEE</option>
+                    <option value="bba">BBA</option>
+                    <option value="ce">Civil Engineering</option>
+                    <option value="me">Mechanical Engineering</option>
+                    <option value="pharm">Pharmacy</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="mentor-bio">Bio &amp; What You Can Help With <span class="required-star">*</span></label>
+                <textarea
+                    class="form-control"
+                    id="mentor-bio"
+                    rows="4"
+                    placeholder="Describe your experience and what guidance you can offer to students..."
+                    required
+                ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="mentor-contact">Preferred Contact Method</label>
+                <select class="form-control" id="mentor-contact">
+                    <option value="platform">Platform messaging only</option>
+                    <option value="email">Allow email after connection</option>
+                    <option value="phone">Allow phone after connection</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-check"></i> Register as Mentor
+            </button>
+            <button type="button" class="btn-cancel" id="mentor-modal-cancel">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- Request Modal -->
+<div class="modal-overlay" id="request-modal" role="dialog" aria-modal="true" aria-labelledby="request-modal-title">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="request-modal-title"><i class="fas fa-paper-plane"></i> Send Mentorship Request</h2>
+            <button class="modal-close" type="button" id="request-modal-close" aria-label="Close modal">&#10005;</button>
+        </div>
+        <p class="modal-subtitle" id="request-modal-subtitle">Write a message to introduce yourself</p>
+
+        <div class="privacy-note">
+            <i class="fas fa-user-secret"></i>
+            <span>Your anonymous ID will be shared. Real identity is only revealed if both parties agree.</span>
+        </div>
+
+        <form id="request-form" novalidate>
+            <div class="form-group">
+                <label for="request-message">Your Message <span class="required-star">*</span></label>
+                <textarea
+                    class="form-control"
+                    id="request-message"
+                    rows="4"
+                    placeholder="Hi! I am a 2nd year CSE student looking for guidance on Data Structures and internship preparation..."
+                    required
+                ></textarea>
+            </div>
+            <div class="form-group">
+                <label for="request-topics">Topics You Need Help With</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="request-topics"
+                    placeholder="e.g. DSA, internship prep, project ideas"
+                >
+            </div>
+            <button type="submit" class="btn-submit" id="request-submit-btn">
+                <i class="fas fa-paper-plane"></i> Send Request
+            </button>
+            <button type="button" class="btn-cancel" id="request-modal-cancel">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    /* ── Dark Mode ── */
+    const dmToggle = document.getElementById('dark-mode-toggle');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        dmToggle.textContent = '☀️';
+    }
+    dmToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        dmToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    });
+
+    /* ── Sidebar Toggle ── */
+    const sidebar     = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+    });
+
+    /* ── Filter Logic ── */
+    const cards      = Array.from(document.querySelectorAll('.mentor-card'));
+    const emptyState = document.getElementById('empty-state');
+    const searchInput  = document.getElementById('search-input');
+    const deptSel      = document.getElementById('dept-filter');
+    const availSel     = document.getElementById('avail-filter');
+    const yearSel      = document.getElementById('year-filter');
+
+    function applyFilters() {
+        const q     = searchInput.value.toLowerCase().trim();
+        const dept  = deptSel.value;
+        const avail = availSel.value;
+        const year  = yearSel.value;
+
+        let visible = 0;
+
+        cards.forEach(card => {
+            const nameEl = card.querySelector('.mentor-name');
+            const bioEl  = card.querySelector('.mentor-bio');
+            const text   = (nameEl ? nameEl.textContent : '') + ' ' + (bioEl ? bioEl.textContent : '');
+
+            const matchSearch = !q     || text.toLowerCase().includes(q);
+            const matchDept   = !dept  || card.dataset.dept === dept;
+            const matchAvail  = !avail || card.dataset.avail === avail;
+            const matchYear   = !year  || card.dataset.year === year;
+
+            const show = matchSearch && matchDept && matchAvail && matchYear;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        emptyState.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    deptSel.addEventListener('change', applyFilters);
+    availSel.addEventListener('change', applyFilters);
+    yearSel.addEventListener('change', applyFilters);
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+        searchInput.value = '';
+        deptSel.value     = '';
+        availSel.value    = '';
+        yearSel.value     = '';
+        document.querySelectorAll('.skill-chip').forEach(c => c.classList.remove('active'));
+        document.querySelector('.skill-chip[data-skill="all"]').classList.add('active');
+        applyFilters();
+    });
+
+    /* ── Skill Chips ── */
+    document.querySelectorAll('.skill-chip').forEach(chip => {
+        chip.addEventListener('click', function () {
+            document.querySelectorAll('.skill-chip').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+
+            const skill = this.dataset.skill;
+            cards.forEach(card => {
+                if (skill === 'all') {
+                    card.style.display = '';
+                } else {
+                    const cardSkills = card.dataset.skills || '';
+                    card.style.display = cardSkills.includes(skill) ? '' : 'none';
+                }
+            });
+
+            const visible = cards.filter(c => c.style.display !== 'none').length;
+            emptyState.style.display = visible === 0 ? 'block' : 'none';
+
+            searchInput.value = '';
+            deptSel.value     = '';
+            availSel.value    = '';
+            yearSel.value     = '';
+        });
+    });
+
+    /* ── Become Mentor Modal ── */
+    const mentorModal = document.getElementById('mentor-modal');
+
+    function openMentorModal() { mentorModal.classList.add('show'); }
+    function closeMentorModal() { mentorModal.classList.remove('show'); }
+
+    document.getElementById('btn-become-mentor').addEventListener('click', openMentorModal);
+    document.getElementById('mentor-modal-close').addEventListener('click', closeMentorModal);
+    document.getElementById('mentor-modal-cancel').addEventListener('click', closeMentorModal);
+    mentorModal.addEventListener('click', e => { if (e.target === mentorModal) closeMentorModal(); });
+
+    document.getElementById('mentor-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const expertise = document.getElementById('mentor-expertise').value.trim();
+        const year      = document.getElementById('mentor-year').value;
+        const hours     = document.getElementById('mentor-hours').value;
+        const dept      = document.getElementById('mentor-dept').value;
+        const bio       = document.getElementById('mentor-bio').value.trim();
+
+        if (!expertise || !year || !hours || !dept || !bio) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+        closeMentorModal();
+        this.reset();
+        alert('Mentor registration submitted! Your profile will be reviewed and published within 24 hours.');
+    });
+
+    /* ── Request Modal ── */
+    const requestModal = document.getElementById('request-modal');
+    let pendingRequestBtn = null;
+
+    function sendRequest(btn, mentorName) {
+        pendingRequestBtn = btn;
+        document.getElementById('request-modal-subtitle').textContent =
+            'Send a request to ' + mentorName;
+        document.getElementById('request-message').value = '';
+        document.getElementById('request-topics').value  = '';
+        requestModal.classList.add('show');
+    }
+
+    function closeRequestModal() { requestModal.classList.remove('show'); }
+
+    document.getElementById('request-modal-close').addEventListener('click', closeRequestModal);
+    document.getElementById('request-modal-cancel').addEventListener('click', closeRequestModal);
+    requestModal.addEventListener('click', e => { if (e.target === requestModal) closeRequestModal(); });
+
+    document.getElementById('request-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const msg = document.getElementById('request-message').value.trim();
+        if (!msg) { alert('Please write a message first.'); return; }
+
+        if (pendingRequestBtn) {
+            pendingRequestBtn.innerHTML  = '<i class="fas fa-check"></i> Request Sent!';
+            pendingRequestBtn.classList.add('sent');
+            pendingRequestBtn.disabled   = true;
+            pendingRequestBtn = null;
+        }
+
+        closeRequestModal();
+        this.reset();
+        alert('Mentorship request sent! The mentor will respond within 48 hours.');
+    });
+
+    /* ── View Profile ── */
+    function viewProfile(id) {
+        alert('Viewing profile of Mentor ' + id + '\n\n(Full profile page — backend integration pending)');
+    }
+</script>
+
+</body>
+</html>

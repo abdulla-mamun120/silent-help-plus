@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A Forum - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 260px;
+            --navbar-height: 65px;
+            --error: #F44336;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #121212;
+            --light-blue: #1A2332;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            z-index: 1000;
+        }
+
+        .navbar-left { display: flex; align-items: center; gap: 18px; }
+
+        .sidebar-toggle {
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .navbar-right { display: flex; align-items: center; gap: 18px; }
+
+        .nav-icon-btn {
+            background: none; border: none;
+            font-size: 18px; cursor: pointer;
+            color: var(--text-tertiary);
+            position: relative;
+        }
+
+        .notif-badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 16px; height: 16px;
+            background-color: #F44336;
+            border-radius: 50%; font-size: 9px;
+            color: white; display: flex;
+            align-items: center; justify-content: center;
+        }
+
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 16px; cursor: pointer;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            position: fixed;
+            top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 900;
+            padding: 20px 0;
+        }
+
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .sidebar-user {
+            padding: 15px 20px 20px;
+            border-bottom: 1px solid #E0E0E0;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-user-avatar {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 22px; margin-bottom: 10px;
+        }
+
+        .sidebar-user-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .sidebar-user-dept { font-size: 12px; color: var(--text-tertiary); }
+        .sidebar-user-id { font-size: 11px; color: var(--secondary-green); margin-top: 4px; font-weight: 500; }
+
+        .nav-section-title {
+            font-size: 11px; font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px;
+            padding: 10px 20px 6px;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px;
+            text-decoration: none; color: var(--text-secondary);
+            font-size: 14px; font-weight: 500;
+            transition: all 0.2s; border: none;
+            background: none; width: 100%; text-align: left; cursor: pointer;
+        }
+
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+
+        .nav-item.active {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            border-right: 3px solid var(--primary-blue);
+        }
+
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+
+        .nav-badge {
+            margin-left: auto;
+            background-color: var(--primary-blue);
+            color: white; font-size: 10px;
+            padding: 2px 7px; border-radius: 10px;
+        }
+
+        .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
+
+        /* ── Main ── */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px;
+            transition: margin-left 0.3s;
+        }
+
+        .main-content.expanded { margin-left: 0; }
+
+        /* ── Page Header ── */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .page-header h1 { font-size: 26px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
+        .page-header p { font-size: 14px; color: var(--text-tertiary); }
+
+        .btn-ask {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--primary-blue), #1976D2);
+            color: white; border: none; border-radius: 10px;
+            font-size: 14px; font-weight: 600;
+            cursor: pointer; display: flex;
+            align-items: center; gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-ask:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(21,101,192,0.3); }
+
+        /* ── Filters ── */
+        .filters-bar {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin-bottom: 22px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary); font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px 10px 38px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background-color: var(--white);
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .filter-select:focus { outline: none; border-color: var(--primary-blue); }
+
+        .filter-tabs {
+            display: flex; gap: 8px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 20px;
+            font-size: 13px; font-weight: 500;
+            cursor: pointer; background: none;
+            color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover, .filter-tab.active {
+            background-color: var(--primary-blue);
+            color: white; border-color: var(--primary-blue);
+        }
+
+        /* ── Two Column Layout ── */
+        .qa-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 22px;
+        }
+
+        /* ── Question Cards ── */
+        .question-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .question-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+        }
+
+        .question-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .question-title {
+            font-size: 16px; font-weight: 600;
+            color: var(--text-primary); flex: 1;
+            line-height: 1.4;
+        }
+
+        .question-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+
+        .tag {
+            font-size: 11px; padding: 3px 10px;
+            border-radius: 10px; font-weight: 600;
+        }
+
+        .tag-cs { background-color: #E3F2FD; color: #1565C0; }
+        .tag-eee { background-color: #FFF3E0; color: #E65100; }
+        .tag-bba { background-color: #E8F5E9; color: #2E7D32; }
+        .tag-general { background-color: #F3E5F5; color: #7B1FA2; }
+        .tag-topic {
+            background-color: var(--light-gray);
+            color: var(--text-tertiary);
+        }
+
+        .question-preview {
+            font-size: 13px; color: var(--text-secondary);
+            line-height: 1.6; margin-bottom: 14px;
+        }
+
+        .question-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+
+        .question-meta {
+            display: flex; gap: 16px;
+            font-size: 12px; color: var(--text-tertiary);
+        }
+
+        .question-meta span { display: flex; align-items: center; gap: 5px; }
+
+        .vote-btn {
+            background: none; border: 1.5px solid #E0E0E0;
+            border-radius: 8px; padding: 5px 12px;
+            cursor: pointer; font-size: 13px;
+            display: flex; align-items: center; gap: 6px;
+            color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .vote-btn:hover, .vote-btn.voted {
+            background-color: var(--light-blue);
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .answer-count {
+            background-color: var(--secondary-green);
+            color: white; font-size: 11px;
+            padding: 4px 10px; border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .answer-count.zero {
+            background-color: #E0E0E0;
+            color: var(--text-tertiary);
+        }
+
+        /* ── Sidebar Right ── */
+        .sidebar-right .card {
+            background-color: var(--white);
+            border-radius: 12px; padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .sidebar-right .card h3 {
+            font-size: 15px; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 14px;
+        }
+
+        .trending-item {
+            display: flex; gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #F0F0F0;
+            cursor: pointer;
+        }
+
+        .trending-item:last-child { border-bottom: none; }
+
+        .trending-num {
+            font-size: 18px; font-weight: 700;
+            color: #E0E0E0; width: 25px;
+            flex-shrink: 0; line-height: 1;
+        }
+
+        .trending-title {
+            font-size: 13px; color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .trending-meta {
+            font-size: 11px; color: var(--text-tertiary); margin-top: 3px;
+        }
+
+        .dept-stat {
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 8px 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .dept-stat:last-child { border-bottom: none; }
+
+        .dept-name { font-size: 13px; color: var(--text-secondary); }
+
+        .dept-count {
+            font-size: 12px; font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        /* ── Ask Question Modal ── */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000; display: none;
+            align-items: center; justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background-color: var(--white);
+            border-radius: 16px; padding: 35px;
+            width: 100%; max-width: 600px;
+            max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 25px;
+        }
+
+        .modal-header h2 { font-size: 22px; color: var(--primary-blue); }
+
+        .modal-close {
+            background: none; border: none;
+            font-size: 22px; cursor: pointer;
+            color: var(--text-tertiary);
+        }
+
+        .form-group { margin-bottom: 18px; }
+
+        .form-group label {
+            display: block; font-size: 13px;
+            font-weight: 600; color: var(--text-secondary);
+            margin-bottom: 7px;
+        }
+
+        .form-control {
+            width: 100%; padding: 11px 15px;
+            border: 1.5px solid #DDDDDD;
+            border-radius: 10px; font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--white);
+            color: var(--text-primary); transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none; border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(21,101,192,0.1);
+        }
+
+        textarea.form-control { min-height: 120px; resize: vertical; }
+
+        .anon-notice {
+            background-color: var(--light-blue);
+            border-radius: 10px; padding: 12px 15px;
+            font-size: 13px; color: var(--primary-blue);
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .btn-submit {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg, var(--primary-blue), #1976D2);
+            color: white; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 600;
+            cursor: pointer; display: flex;
+            align-items: center; justify-content: center; gap: 10px;
+            font-family: 'Poppins', sans-serif; transition: all 0.3s;
+        }
+
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(21,101,192,0.3); }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .qa-layout { grid-template-columns: 1fr; }
+            .sidebar-right { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px 15px; }
+            .filter-tabs { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <button class="sidebar-toggle" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="index.html" class="logo">Silent Help Plus</a>
+        </div>
+        <div class="navbar-right">
+            <button class="nav-icon-btn" id="dark-mode-toggle">🌙</button>
+            <button class="nav-icon-btn">
+                <i class="fas fa-bell"></i>
+                <span class="notif-badge">3</span>
+            </button>
+            <div class="user-avatar"><i class="fas fa-user"></i></div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-user">
+            <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
+            <div class="sidebar-user-name">John Student</div>
+            <div class="sidebar-user-dept">CSE Department</div>
+            <div class="sidebar-user-id">Anon_CS_2431</div>
+        </div>
+
+        <div class="nav-section-title">Main Menu</div>
+        <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a class="nav-item active" href="qa.html"><i class="fas fa-question-circle"></i> Q&A Forum <span class="nav-badge">12</span></a>
+        <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+        <div class="nav-section-title">Opportunities</div>
+        <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">5</span></a>
+        <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+        <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+        <div class="nav-section-title">Connect</div>
+        <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+        <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+        <div class="sidebar-divider"></div>
+        <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+
+        <div class="page-header">
+            <div>
+                <h1>Anonymous Q&A Forum</h1>
+                <p>Ask questions anonymously — your identity is always protected</p>
+            </div>
+            <button class="btn-ask" id="ask-btn">
+                <i class="fas fa-plus"></i> Ask a Question
+            </button>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" id="search-input" placeholder="Search questions...">
+            </div>
+            <select class="filter-select" id="dept-filter">
+                <option value="">All Departments</option>
+                <option value="CSE" selected>CSE</option>
+                <option value="EEE">EEE</option>
+                <option value="BBA">BBA</option>
+                <option value="CE">Civil</option>
+                <option value="ME">Mechanical</option>
+            </select>
+            <select class="filter-select" id="sort-filter">
+                <option value="latest">Latest</option>
+                <option value="votes">Most Voted</option>
+                <option value="answers">Most Answered</option>
+                <option value="unanswered">Unanswered</option>
+            </select>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="mine">My Questions</button>
+                <button class="filter-tab" data-filter="unanswered">Unanswered</button>
+            </div>
+        </div>
+
+        <!-- Q&A Layout -->
+        <div class="qa-layout">
+
+            <!-- Questions List -->
+            <div id="questions-list">
+
+                <div class="question-card" data-dept="CSE">
+                    <div class="question-card-top">
+                        <div class="question-title">How to implement Binary Search Tree delete operation in C++?</div>
+                        <span class="answer-count">8 ans</span>
+                    </div>
+                    <div class="question-tags">
+                        <span class="tag tag-cs">CSE</span>
+                        <span class="tag tag-topic">Data Structures</span>
+                        <span class="tag tag-topic">C++</span>
+                    </div>
+                    <div class="question-preview">
+                        I'm having trouble understanding the delete operation in BST especially when the node has two children. Can someone explain the logic with code?
+                    </div>
+                    <div class="question-footer">
+                        <div class="question-meta">
+                            <span><i class="fas fa-user-secret"></i> Anon_CS_2431</span>
+                            <span><i class="fas fa-clock"></i> 2 hours ago</span>
+                        </div>
+                        <button class="vote-btn" onclick="vote(this)">
+                            <i class="fas fa-arrow-up"></i> <span>15</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="question-card" data-dept="CSE">
+                    <div class="question-card-top">
+                        <div class="question-title">Best free resources for learning Machine Learning from scratch?</div>
+                        <span class="answer-count">5 ans</span>
+                    </div>
+                    <div class="question-tags">
+                        <span class="tag tag-cs">CSE</span>
+                        <span class="tag tag-topic">Machine Learning</span>
+                        <span class="tag tag-topic">Python</span>
+                    </div>
+                    <div class="question-preview">
+                        I want to start learning ML but don't know where to begin. What are the best free resources, courses, or books for a beginner?
+                    </div>
+                    <div class="question-footer">
+                        <div class="question-meta">
+                            <span><i class="fas fa-user-secret"></i> Anon_CS_1102</span>
+                            <span><i class="fas fa-clock"></i> 5 hours ago</span>
+                        </div>
+                        <button class="vote-btn" onclick="vote(this)">
+                            <i class="fas fa-arrow-up"></i> <span>21</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="question-card" data-dept="CSE">
+                    <div class="question-card-top">
+                        <div class="question-title">Explain database normalization (1NF, 2NF, 3NF) with examples</div>
+                        <span class="answer-count">3 ans</span>
+                    </div>
+                    <div class="question-tags">
+                        <span class="tag tag-cs">CSE</span>
+                        <span class="tag tag-topic">Database</span>
+                        <span class="tag tag-topic">DBMS</span>
+                    </div>
+                    <div class="question-preview">
+                        I understand the theory but struggle with applying normalization to real tables. Can someone show practical examples?
+                    </div>
+                    <div class="question-footer">
+                        <div class="question-meta">
+                            <span><i class="fas fa-user-secret"></i> Anon_CS_3344</span>
+                            <span><i class="fas fa-clock"></i> 1 day ago</span>
+                        </div>
+                        <button class="vote-btn" onclick="vote(this)">
+                            <i class="fas fa-arrow-up"></i> <span>9</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="question-card" data-dept="EEE">
+                    <div class="question-card-top">
+                        <div class="question-title">How to solve Thevenin's theorem for complex circuits?</div>
+                        <span class="answer-count zero">0 ans</span>
+                    </div>
+                    <div class="question-tags">
+                        <span class="tag tag-eee">EEE</span>
+                        <span class="tag tag-topic">Circuit Analysis</span>
+                    </div>
+                    <div class="question-preview">
+                        I have a circuit with multiple voltage and current sources. Struggling to find the Thevenin equivalent. Need step by step help.
+                    </div>
+                    <div class="question-footer">
+                        <div class="question-meta">
+                            <span><i class="fas fa-user-secret"></i> Anon_EEE_1892</span>
+                            <span><i class="fas fa-clock"></i> 3 hours ago</span>
+                        </div>
+                        <button class="vote-btn" onclick="vote(this)">
+                            <i class="fas fa-arrow-up"></i> <span>7</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="question-card" data-dept="BBA">
+                    <div class="question-card-top">
+                        <div class="question-title">What are the most important topics for Marketing 101 final exam?</div>
+                        <span class="answer-count">12 ans</span>
+                    </div>
+                    <div class="question-tags">
+                        <span class="tag tag-bba">BBA</span>
+                        <span class="tag tag-topic">Marketing</span>
+                        <span class="tag tag-topic">Exam Prep</span>
+                    </div>
+                    <div class="question-preview">
+                        Final exam is in 2 weeks. Which chapters and concepts should I focus on? Any tips from seniors who took this course?
+                    </div>
+                    <div class="question-footer">
+                        <div class="question-meta">
+                            <span><i class="fas fa-user-secret"></i> Anon_BBA_3156</span>
+                            <span><i class="fas fa-clock"></i> 1 day ago</span>
+                        </div>
+                        <button class="vote-btn" onclick="vote(this)">
+                            <i class="fas fa-arrow-up"></i> <span>23</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar-right">
+                <div class="card">
+                    <h3>🔥 Trending Questions</h3>
+                    <div class="trending-item">
+                        <div class="trending-num">01</div>
+                        <div>
+                            <div class="trending-title">How to crack coding interviews?</div>
+                            <div class="trending-meta">32 votes • 18 answers</div>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-num">02</div>
+                        <div>
+                            <div class="trending-title">Best laptop for CSE students?</div>
+                            <div class="trending-meta">28 votes • 14 answers</div>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-num">03</div>
+                        <div>
+                            <div class="trending-title">Marketing 101 exam topics?</div>
+                            <div class="trending-meta">23 votes • 12 answers</div>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-num">04</div>
+                        <div>
+                            <div class="trending-title">ML resources for beginners?</div>
+                            <div class="trending-meta">21 votes • 5 answers</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Questions by Dept</h3>
+                    <div class="dept-stat">
+                        <span class="dept-name">CSE</span>
+                        <span class="dept-count">245 questions</span>
+                    </div>
+                    <div class="dept-stat">
+                        <span class="dept-name">EEE</span>
+                        <span class="dept-count">182 questions</span>
+                    </div>
+                    <div class="dept-stat">
+                        <span class="dept-name">BBA</span>
+                        <span class="dept-count">156 questions</span>
+                    </div>
+                    <div class="dept-stat">
+                        <span class="dept-name">Civil</span>
+                        <span class="dept-count">98 questions</span>
+                    </div>
+                    <div class="dept-stat">
+                        <span class="dept-name">Mechanical</span>
+                        <span class="dept-count">87 questions</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🔒 Anonymity Info</h3>
+                    <p style="font-size:13px; color:var(--text-tertiary); line-height:1.6;">
+                        Your real identity is never shown. Each post uses a system-generated ID like <strong>Anon_CS_2431</strong>. Only admins can trace identity for serious violations.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Ask Question Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Ask a Question</h2>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+
+            <div class="anon-notice">
+                <i class="fas fa-user-secret"></i>
+                Your question will be posted anonymously as <strong>Anon_CS_2431</strong>
+            </div>
+
+            <form id="ask-form">
+                <div class="form-group">
+                    <label>Question Title <span style="color:red">*</span></label>
+                    <input type="text" class="form-control" id="q-title" placeholder="Write a clear, specific title..." required>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select class="form-control" id="q-dept">
+                        <option value="CSE">CSE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="BBA">BBA</option>
+                        <option value="CE">Civil Engineering</option>
+                        <option value="ME">Mechanical Engineering</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-control" id="q-category">
+                        <option value="">Select category</option>
+                        <option>Data Structures</option>
+                        <option>Algorithms</option>
+                        <option>Database</option>
+                        <option>Web Development</option>
+                        <option>Machine Learning</option>
+                        <option>Circuit Analysis</option>
+                        <option>Marketing</option>
+                        <option>Finance</option>
+                        <option>Exam Preparation</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Details <span style="color:red">*</span></label>
+                    <textarea class="form-control" id="q-details" placeholder="Explain your question in detail..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Post Anonymously
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Dark Mode
+        const dmToggle = document.getElementById('dark-mode-toggle');
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            dmToggle.textContent = '☀️';
+        }
+        dmToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            dmToggle.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark ? 'enabled' : null);
+        });
+
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        document.getElementById('sidebar-toggle').addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('mobile-open');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            }
+        });
+
+        // Ask Modal
+        const modal = document.getElementById('modal-overlay');
+        document.getElementById('ask-btn').addEventListener('click', () => modal.classList.add('show'));
+        document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+        // Ask Form Submit
+        document.getElementById('ask-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('q-title').value.trim();
+            if (!title) return;
+            modal.classList.remove('show');
+            alert('✅ Question posted anonymously!');
+            this.reset();
+        });
+
+        // Vote Button
+        function vote(btn) {
+            btn.classList.toggle('voted');
+            const count = btn.querySelector('span');
+            count.textContent = btn.classList.contains('voted')
+                ? parseInt(count.textContent) + 1
+                : parseInt(count.textContent) - 1;
+        }
+
+        // Filter Tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('.question-card').forEach(card => {
+                const title = card.querySelector('.question-title').textContent.toLowerCase();
+                card.style.display = title.includes(query) ? 'block' : 'none';
+            });
+        });
+
+        // Department Filter
+        document.getElementById('dept-filter').addEventListener('change', function() {
+            const dept = this.value;
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.style.display = (!dept || card.dataset.dept === dept) ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

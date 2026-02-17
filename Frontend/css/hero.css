@@ -1,0 +1,50 @@
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #E3F2FD 0%, #B3E5FC 50%, #81D4FA 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 100px 20px 60px; position: relative; overflow: hidden;
+}
+body.dark-mode .hero { background: linear-gradient(135deg, #1A2332 0%, #1E3A5F 50%, #2C5F8D 100%); }
+.hero::before {
+    content: ''; position: absolute; width: 300px; height: 300px;
+    background: rgba(255,255,255,0.1); border-radius: 50%;
+    top: -100px; right: -100px; animation: float 6s ease-in-out infinite;
+}
+.hero::after {
+    content: ''; position: absolute; width: 200px; height: 200px;
+    background: rgba(255,255,255,0.1); border-radius: 50%;
+    bottom: -50px; left: -50px; animation: float 8s ease-in-out infinite;
+}
+.hero-content { max-width: 900px; text-align: center; position: relative; z-index: 1; }
+.hero h1 { font-size: 48px; font-weight: 700; color: var(--primary-blue); margin-bottom: 20px; line-height: 1.2; }
+body.dark-mode .hero h1 { color: #64B5F6; }
+.hero-subtitle { font-size: 22px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 500; }
+.hero-description { font-size: 17px; color: var(--text-tertiary); max-width: 700px; margin: 0 auto 40px; line-height: 1.7; }
+
+.trust-badges { display: flex; justify-content: center; gap: 25px; margin-bottom: 40px; flex-wrap: wrap; }
+.badge {
+    background-color: rgba(255,255,255,0.9); padding: 12px 20px;
+    border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500;
+}
+body.dark-mode .badge { background-color: rgba(30,30,30,0.8); }
+.badge i { font-size: 18px; color: var(--secondary-green); }
+
+.hero-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+.scroll-indicator {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px; color: var(--text-tertiary); font-size: 13px;
+    animation: bounce 2s infinite;
+}
+
+.statistics { background-color: var(--white); padding: 60px 20px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+.stat-item { text-align: center; }
+.stat-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; margin: 0 auto 20px; font-size: 30px; color: white;
+}
+.stat-number { font-size: 42px; font-weight: 700; color: var(--secondary-green); margin-bottom: 10px; }
+.stat-label { font-size: 15px; color: var(--text-tertiary); }

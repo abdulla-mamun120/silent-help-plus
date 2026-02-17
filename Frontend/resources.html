@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Resources - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 260px;
+            --navbar-height: 65px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #121212;
+            --light-blue: #1A2332;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; z-index: 1000;
+        }
+
+        .navbar-left { display: flex; align-items: center; gap: 18px; }
+
+        .sidebar-toggle {
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text; text-decoration: none;
+        }
+
+        .navbar-right { display: flex; align-items: center; gap: 18px; }
+
+        .nav-icon-btn {
+            background: none; border: none;
+            font-size: 18px; cursor: pointer;
+            color: var(--text-tertiary); position: relative;
+        }
+
+        .notif-badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 16px; height: 16px;
+            background-color: #F44336; border-radius: 50%;
+            font-size: 9px; color: white;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 16px; cursor: pointer;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto; transition: transform 0.3s;
+            z-index: 900; padding: 20px 0;
+        }
+
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .sidebar-user {
+            padding: 15px 20px 20px;
+            border-bottom: 1px solid #E0E0E0; margin-bottom: 15px;
+        }
+
+        .sidebar-user-avatar {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 22px; margin-bottom: 10px;
+        }
+
+        .sidebar-user-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .sidebar-user-dept { font-size: 12px; color: var(--text-tertiary); }
+        .sidebar-user-id { font-size: 11px; color: var(--secondary-green); margin-top: 4px; font-weight: 500; }
+
+        .nav-section-title {
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px 6px;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px;
+            font-weight: 500; transition: all 0.2s;
+            border: none; background: none; width: 100%;
+            text-align: left; cursor: pointer;
+        }
+
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+        .nav-item.active {
+            background-color: var(--light-blue); color: var(--primary-blue);
+            border-right: 3px solid var(--primary-blue);
+        }
+
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+
+        .nav-badge {
+            margin-left: auto; background-color: var(--primary-blue);
+            color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+        }
+
+        .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
+
+        /* Main */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px; transition: margin-left 0.3s;
+        }
+
+        .main-content.expanded { margin-left: 0; }
+
+        /* Page Header */
+        .page-header {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; margin-bottom: 25px;
+            flex-wrap: wrap; gap: 15px;
+        }
+
+        .page-header h1 { font-size: 26px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
+        .page-header p { font-size: 14px; color: var(--text-tertiary); }
+
+        .btn-upload {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--secondary-green), #43A047);
+            color: white; border: none; border-radius: 10px;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
+            font-family: 'Poppins', sans-serif; transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-upload:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76,175,80,0.3); }
+
+        /* Stats */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 18px; margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px; padding: 18px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 14px;
+        }
+
+        .stat-icon {
+            width: 46px; height: 46px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white; flex-shrink: 0;
+        }
+
+        .stat-icon.blue { background: linear-gradient(135deg, #1565C0, #1976D2); }
+        .stat-icon.green { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+        .stat-icon.orange { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+        .stat-icon.teal { background: linear-gradient(135deg, #00BCD4, #26C6DA); }
+
+        .stat-info h3 { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+        .stat-info p { font-size: 12px; color: var(--text-tertiary); }
+
+        /* Filters */
+        .filters-bar {
+            background-color: var(--white); border-radius: 12px;
+            padding: 18px 22px; margin-bottom: 22px;
+            display: flex; gap: 12px; align-items: center;
+            flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .search-box { flex: 1; min-width: 200px; position: relative; }
+
+        .search-box i {
+            position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%); color: var(--text-tertiary); font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%; padding: 10px 15px 10px 38px;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus { outline: none; border-color: var(--primary-blue); background-color: var(--white); }
+
+        .filter-select {
+            padding: 10px 15px; border: 1.5px solid #E0E0E0;
+            border-radius: 8px; font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary); cursor: pointer;
+        }
+
+        .filter-select:focus { outline: none; border-color: var(--primary-blue); }
+
+        .view-toggle { display: flex; gap: 5px; }
+
+        .view-btn {
+            width: 36px; height: 36px;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            background: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-tertiary); font-size: 15px; transition: all 0.2s;
+        }
+
+        .view-btn.active, .view-btn:hover {
+            background-color: var(--primary-blue); color: white; border-color: var(--primary-blue);
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap;
+        }
+
+        .cat-tab {
+            padding: 8px 18px; border-radius: 20px;
+            border: 1.5px solid #E0E0E0; background: none;
+            font-size: 13px; font-weight: 500; cursor: pointer;
+            color: var(--text-secondary); font-family: 'Poppins', sans-serif;
+            transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+        }
+
+        .cat-tab:hover, .cat-tab.active {
+            background-color: var(--secondary-green);
+            color: white; border-color: var(--secondary-green);
+        }
+
+        /* Resources Grid */
+        .resources-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .resources-grid.list-view { grid-template-columns: 1fr; }
+
+        .resource-card {
+            background-color: var(--white); border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow: hidden; transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-color: var(--secondary-green);
+        }
+
+        .resource-card-header {
+            padding: 18px 20px 14px;
+            display: flex; align-items: flex-start; gap: 14px;
+        }
+
+        .file-icon {
+            width: 48px; height: 48px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; flex-shrink: 0;
+        }
+
+        .file-icon.pdf { background-color: #FFEBEE; color: #F44336; }
+        .file-icon.doc { background-color: #E3F2FD; color: #1565C0; }
+        .file-icon.ppt { background-color: #FFF3E0; color: #FF9800; }
+        .file-icon.zip { background-color: #F3E5F5; color: #9C27B0; }
+
+        .resource-info { flex: 1; }
+
+        .resource-title {
+            font-size: 14px; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 5px; line-height: 1.4;
+        }
+
+        .resource-meta {
+            font-size: 12px; color: var(--text-tertiary);
+            display: flex; flex-wrap: wrap; gap: 10px;
+        }
+
+        .resource-meta span { display: flex; align-items: center; gap: 4px; }
+
+        .resource-tags {
+            padding: 0 20px 14px;
+            display: flex; gap: 7px; flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 11px; padding: 3px 10px;
+            border-radius: 10px; font-weight: 600;
+        }
+
+        .tag-cs { background-color: #E3F2FD; color: #1565C0; }
+        .tag-eee { background-color: #FFF3E0; color: #E65100; }
+        .tag-bba { background-color: #E8F5E9; color: #2E7D32; }
+        .tag-subject { background-color: var(--light-gray); color: var(--text-tertiary); }
+        .tag-approved { background-color: #E8F5E9; color: #2E7D32; }
+        .tag-pending { background-color: #FFF8E1; color: #F57F17; }
+
+        .resource-footer {
+            padding: 12px 20px;
+            border-top: 1px solid #F0F0F0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .resource-stats {
+            display: flex; gap: 14px;
+            font-size: 12px; color: var(--text-tertiary);
+        }
+
+        .resource-stats span { display: flex; align-items: center; gap: 4px; }
+
+        .btn-download {
+            padding: 7px 16px;
+            background: linear-gradient(135deg, var(--secondary-green), #43A047);
+            color: white; border: none; border-radius: 8px;
+            font-size: 12px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            font-family: 'Poppins', sans-serif; transition: all 0.2s;
+        }
+
+        .btn-download:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(76,175,80,0.3); }
+
+        /* List View */
+        .resources-grid.list-view .resource-card {
+            display: flex; flex-direction: row; align-items: center;
+        }
+
+        .resources-grid.list-view .resource-card-header { flex: 1; padding: 15px 20px; }
+        .resources-grid.list-view .resource-tags { padding: 0 10px; }
+        .resources-grid.list-view .resource-footer { border-top: none; border-left: 1px solid #F0F0F0; padding: 15px 20px; flex-direction: column; gap: 8px; }
+
+        /* Upload Modal */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000; display: none;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background-color: var(--white); border-radius: 16px;
+            padding: 35px; width: 100%; max-width: 560px;
+            max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 22px;
+        }
+
+        .modal-header h2 { font-size: 22px; color: var(--secondary-green); }
+
+        .modal-close {
+            background: none; border: none;
+            font-size: 22px; cursor: pointer; color: var(--text-tertiary);
+        }
+
+        .form-group { margin-bottom: 16px; }
+
+        .form-group label {
+            display: block; font-size: 13px;
+            font-weight: 600; color: var(--text-secondary); margin-bottom: 7px;
+        }
+
+        .form-control {
+            width: 100%; padding: 11px 15px;
+            border: 1.5px solid #DDDDDD; border-radius: 10px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--white); color: var(--text-primary); transition: all 0.2s;
+        }
+
+        .form-control:focus { outline: none; border-color: var(--secondary-green); box-shadow: 0 0 0 3px rgba(76,175,80,0.1); }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .file-upload-area {
+            border: 2px dashed #C8E6C9; border-radius: 12px;
+            padding: 30px; text-align: center; cursor: pointer;
+            transition: all 0.2s; background-color: #F9FBE7;
+        }
+
+        .file-upload-area:hover { border-color: var(--secondary-green); background-color: var(--light-green); }
+
+        body.dark-mode .file-upload-area { background-color: #1A2E1F; border-color: #2E7D32; }
+
+        .file-upload-area i { font-size: 36px; color: var(--secondary-green); margin-bottom: 10px; }
+        .file-upload-area p { font-size: 14px; color: var(--text-secondary); margin-bottom: 5px; }
+        .file-upload-area small { font-size: 12px; color: var(--text-tertiary); }
+
+        .notice-box {
+            background-color: #FFF8E1; border-radius: 10px;
+            padding: 12px 15px; font-size: 13px;
+            color: #F57F17; display: flex;
+            align-items: center; gap: 10px; margin-bottom: 16px;
+        }
+
+        body.dark-mode .notice-box { background-color: #2E2A1A; color: #FFB74D; }
+
+        .btn-submit {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg, var(--secondary-green), #43A047);
+            color: white; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            font-family: 'Poppins', sans-serif; transition: all 0.3s;
+        }
+
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76,175,80,0.3); }
+
+        /* Responsive */
+        @media (max-width: 1100px) { .resources-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px 15px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .resources-grid { grid-template-columns: 1fr; }
+            .resources-grid.list-view .resource-card { flex-direction: column; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <button class="sidebar-toggle" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="logo">Silent Help Plus</a>
+        </div>
+        <div class="navbar-right">
+            <button class="nav-icon-btn" id="dark-mode-toggle">🌙</button>
+            <button class="nav-icon-btn">
+                <i class="fas fa-bell"></i>
+                <span class="notif-badge">3</span>
+            </button>
+            <div class="user-avatar"><i class="fas fa-user"></i></div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-user">
+            <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
+            <div class="sidebar-user-name">John Student</div>
+            <div class="sidebar-user-dept">CSE Department</div>
+            <div class="sidebar-user-id">Anon_CS_2431</div>
+        </div>
+
+        <div class="nav-section-title">Main Menu</div>
+        <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&A Forum <span class="nav-badge">12</span></a>
+        <a class="nav-item active" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+        <div class="nav-section-title">Opportunities</div>
+        <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">5</span></a>
+        <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+        <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+        <div class="nav-section-title">Connect</div>
+        <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+        <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+        <div class="sidebar-divider"></div>
+        <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+
+        <div class="page-header">
+            <div>
+                <h1>Study Resources</h1>
+                <p>Download notes, past papers & assignments — or share your own</p>
+            </div>
+            <button class="btn-upload" id="upload-btn">
+                <i class="fas fa-upload"></i> Upload Resource
+            </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-info"><h3>524</h3><p>Total Resources</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-download"></i></div>
+                <div class="stat-info"><h3>12K+</h3><p>Total Downloads</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-upload"></i></div>
+                <div class="stat-info"><h3>3</h3><p>My Uploads</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon teal"><i class="fas fa-star"></i></div>
+                <div class="stat-info"><h3>4.8</h3><p>Avg Rating</p></div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" id="search-input" placeholder="Search resources...">
+            </div>
+            <select class="filter-select" id="dept-filter">
+                <option value="">All Departments</option>
+                <option value="CSE" selected>CSE</option>
+                <option value="EEE">EEE</option>
+                <option value="BBA">BBA</option>
+            </select>
+            <select class="filter-select" id="sem-filter">
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+            </select>
+            <select class="filter-select" id="type-filter">
+                <option value="">All Types</option>
+                <option value="notes">Lecture Notes</option>
+                <option value="past">Past Papers</option>
+                <option value="assignment">Assignments</option>
+                <option value="slides">Slides</option>
+            </select>
+            <div class="view-toggle">
+                <button class="view-btn active" id="grid-view-btn" title="Grid View"><i class="fas fa-th"></i></button>
+                <button class="view-btn" id="list-view-btn" title="List View"><i class="fas fa-list"></i></button>
+            </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="cat-tab active" data-type="all"><i class="fas fa-layer-group"></i> All</button>
+            <button class="cat-tab" data-type="notes"><i class="fas fa-file-alt"></i> Lecture Notes</button>
+            <button class="cat-tab" data-type="past"><i class="fas fa-file-pdf"></i> Past Papers</button>
+            <button class="cat-tab" data-type="assignment"><i class="fas fa-tasks"></i> Assignments</button>
+            <button class="cat-tab" data-type="slides"><i class="fas fa-desktop"></i> Slides</button>
+        </div>
+
+        <!-- Resources Grid -->
+        <div class="resources-grid" id="resources-grid">
+
+            <div class="resource-card" data-dept="CSE" data-type="notes">
+                <div class="resource-card-header">
+                    <div class="file-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                    <div class="resource-info">
+                        <div class="resource-title">Data Structures Complete Notes - Semester 4</div>
+                        <div class="resource-meta">
+                            <span><i class="fas fa-user"></i> Uploaded by Anon_CS_099</span>
+                            <span><i class="fas fa-calendar"></i> Jan 15, 2025</span>
+                            <span><i class="fas fa-file"></i> 4.2 MB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-tags">
+                    <span class="tag tag-cs">CSE</span>
+                    <span class="tag tag-subject">Sem 4</span>
+                    <span class="tag tag-subject">Data Structures</span>
+                    <span class="tag tag-approved">✓ Approved</span>
+                </div>
+                <div class="resource-footer">
+                    <div class="resource-stats">
+                        <span><i class="fas fa-download"></i> 234</span>
+                        <span><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                    <button class="btn-download" onclick="downloadResource(this)">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+
+            <div class="resource-card" data-dept="CSE" data-type="past">
+                <div class="resource-card-header">
+                    <div class="file-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                    <div class="resource-info">
+                        <div class="resource-title">Database Management System Past Papers 2022-2024</div>
+                        <div class="resource-meta">
+                            <span><i class="fas fa-user"></i> Uploaded by Anon_CS_201</span>
+                            <span><i class="fas fa-calendar"></i> Feb 2, 2025</span>
+                            <span><i class="fas fa-file"></i> 2.8 MB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-tags">
+                    <span class="tag tag-cs">CSE</span>
+                    <span class="tag tag-subject">Sem 5</span>
+                    <span class="tag tag-subject">DBMS</span>
+                    <span class="tag tag-approved">✓ Approved</span>
+                </div>
+                <div class="resource-footer">
+                    <div class="resource-stats">
+                        <span><i class="fas fa-download"></i> 189</span>
+                        <span><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                    <button class="btn-download" onclick="downloadResource(this)">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+
+            <div class="resource-card" data-dept="CSE" data-type="slides">
+                <div class="resource-card-header">
+                    <div class="file-icon ppt"><i class="fas fa-file-powerpoint"></i></div>
+                    <div class="resource-info">
+                        <div class="resource-title">Object Oriented Programming - Full Lecture Slides</div>
+                        <div class="resource-meta">
+                            <span><i class="fas fa-user"></i> Uploaded by Anon_CS_445</span>
+                            <span><i class="fas fa-calendar"></i> Jan 28, 2025</span>
+                            <span><i class="fas fa-file"></i> 8.1 MB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-tags">
+                    <span class="tag tag-cs">CSE</span>
+                    <span class="tag tag-subject">Sem 3</span>
+                    <span class="tag tag-subject">OOP</span>
+                    <span class="tag tag-approved">✓ Approved</span>
+                </div>
+                <div class="resource-footer">
+                    <div class="resource-stats">
+                        <span><i class="fas fa-download"></i> 312</span>
+                        <span><i class="fas fa-star"></i> 4.7</span>
+                    </div>
+                    <button class="btn-download" onclick="downloadResource(this)">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+
+            <div class="resource-card" data-dept="EEE" data-type="notes">
+                <div class="resource-card-header">
+                    <div class="file-icon doc"><i class="fas fa-file-word"></i></div>
+                    <div class="resource-info">
+                        <div class="resource-title">Circuit Theory Complete Notes with Examples</div>
+                        <div class="resource-meta">
+                            <span><i class="fas fa-user"></i> Uploaded by Anon_EEE_112</span>
+                            <span><i class="fas fa-calendar"></i> Feb 5, 2025</span>
+                            <span><i class="fas fa-file"></i> 3.5 MB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-tags">
+                    <span class="tag tag-eee">EEE</span>
+                    <span class="tag tag-subject">Sem 2</span>
+                    <span class="tag tag-subject">Circuit Theory</span>
+                    <span class="tag tag-approved">✓ Approved</span>
+                </div>
+                <div class="resource-footer">
+                    <div class="resource-stats">
+                        <span><i class="fas fa-download"></i> 145</span>
+                        <span><i class="fas fa-star"></i> 4.6</span>
+                    </div>
+                    <button class="btn-download" onclick="downloadResource(this)">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+
+            <div class="resource-card" data-dept="BBA" data-type="assignment">
+                <div class="resource-card-header">
+                    <div class="file-icon doc"><i class="fas fa-file-word"></i></div>
+                    <div class="resource-info">
+                        <div class="resource-title">Marketing Management Assignment Samples</div>
+                        <div class="resource-meta">
+                            <span><i class="fas fa-user"></i> Uploaded by Anon_BBA_334</span>
+                            <span><i class="fas fa-calendar"></i> Jan 20, 2025</span>
+                            <span><i class="fas fa-file"></i> 1.2 MB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-tags">
+                    <span class="tag tag-bba">BBA</span>
+                    <span class="tag tag-subject">Sem 3</span>
+                    <span class="tag tag-subject">Marketing</span>
+                    <span class="tag tag-pending">⏳ Pending</span>
+                </div>
+                <div class="resource-footer">
+                    <div class="resource-stats">
+                        <span><i class="fas fa-download"></i> 0</span>
+                        <span><i class="fas fa-star"></i> —</span>
+                    </div>
+                    <button class="btn-download" disabled style="opacity:0.5; cursor:not-allowed;">
+                        <i class="fas fa-clock"></i> Pending
+                    </button>
+                </div>
+            </div>
+
+            <div class="resource-card" data-dept="CSE" data-type="past">
+                <div class="resource-card-header">
+                    <div class="file-icon zip"><i class="fas fa-file-archive"></i></div>
+                    <div class="resource-info">
+                        <div class="resource-title">Algorithm Design Past Papers + Solutions Bundle</div>
+                        <div class="resource-meta">
+                            <span><i class="fas fa-user"></i> Uploaded by Anon_CS_567</span>
+                            <span><i class="fas fa-calendar"></i> Feb 10, 2025</span>
+                            <span><i class="fas fa-file"></i> 11.4 MB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="resource-tags">
+                    <span class="tag tag-cs">CSE</span>
+                    <span class="tag tag-subject">Sem 5</span>
+                    <span class="tag tag-subject">Algorithms</span>
+                    <span class="tag tag-approved">✓ Approved</span>
+                </div>
+                <div class="resource-footer">
+                    <div class="resource-stats">
+                        <span><i class="fas fa-download"></i> 278</span>
+                        <span><i class="fas fa-star"></i> 5.0</span>
+                    </div>
+                    <button class="btn-download" onclick="downloadResource(this)">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Upload Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Upload Resource</h2>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+
+            <div class="notice-box">
+                <i class="fas fa-info-circle"></i>
+                Your upload will be reviewed by admin before becoming available to others.
+            </div>
+
+            <form id="upload-form">
+                <div class="form-group">
+                    <label>Resource Title <span style="color:red">*</span></label>
+                    <input type="text" class="form-control" id="res-title" placeholder="e.g. Data Structures Notes Semester 4" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select class="form-control" id="res-dept">
+                            <option value="CSE">CSE</option>
+                            <option value="EEE">EEE</option>
+                            <option value="BBA">BBA</option>
+                            <option value="CE">Civil</option>
+                            <option value="ME">Mechanical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Semester</label>
+                        <select class="form-control" id="res-sem">
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Resource Type</label>
+                        <select class="form-control" id="res-type">
+                            <option value="notes">Lecture Notes</option>
+                            <option value="past">Past Papers</option>
+                            <option value="assignment">Assignments</option>
+                            <option value="slides">Slides</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject Name</label>
+                        <input type="text" class="form-control" id="res-subject" placeholder="e.g. Data Structures">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload File <span style="color:red">*</span></label>
+                    <div class="file-upload-area" id="file-upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to browse or drag & drop</p>
+                        <small>PDF, DOC, PPT, ZIP — Max 20MB</small>
+                        <input type="file" id="file-input" style="display:none" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description (optional)</label>
+                    <textarea class="form-control" id="res-desc" rows="3" placeholder="Briefly describe what this resource contains..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-upload"></i> Submit for Review
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Dark Mode
+        const dmToggle = document.getElementById('dark-mode-toggle');
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            dmToggle.textContent = '☀️';
+        }
+        dmToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            dmToggle.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark ? 'enabled' : null);
+        });
+
+        // Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        document.getElementById('sidebar-toggle').addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('mobile-open');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            }
+        });
+
+        // Upload Modal
+        const modal = document.getElementById('modal-overlay');
+        document.getElementById('upload-btn').addEventListener('click', () => modal.classList.add('show'));
+        document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+        // File Upload Area
+        const fileArea = document.getElementById('file-upload-area');
+        const fileInput = document.getElementById('file-input');
+        fileArea.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', function() {
+            if (this.files[0]) {
+                fileArea.innerHTML = `<i class="fas fa-check-circle" style="color:var(--secondary-green)"></i>
+                    <p style="color:var(--secondary-green); font-weight:600">${this.files[0].name}</p>
+                    <small>${(this.files[0].size / 1024 / 1024).toFixed(2)} MB</small>`;
+            }
+        });
+
+        // Upload Form
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('res-title').value.trim();
+            if (!title) return;
+            modal.classList.remove('show');
+            alert('✅ Resource submitted for admin review!');
+            this.reset();
+        });
+
+        // View Toggle
+        const grid = document.getElementById('resources-grid');
+        document.getElementById('grid-view-btn').addEventListener('click', function() {
+            grid.classList.remove('list-view');
+            this.classList.add('active');
+            document.getElementById('list-view-btn').classList.remove('active');
+        });
+        document.getElementById('list-view-btn').addEventListener('click', function() {
+            grid.classList.add('list-view');
+            this.classList.add('active');
+            document.getElementById('grid-view-btn').classList.remove('active');
+        });
+
+        // Category Tabs
+        document.querySelectorAll('.cat-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const type = this.dataset.type;
+                document.querySelectorAll('.resource-card').forEach(card => {
+                    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+                });
+            });
+        });
+
+        // Search
+        document.getElementById('search-input').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            document.querySelectorAll('.resource-card').forEach(card => {
+                const title = card.querySelector('.resource-title').textContent.toLowerCase();
+                card.style.display = title.includes(q) ? 'block' : 'none';
+            });
+        });
+
+        // Dept Filter
+        document.getElementById('dept-filter').addEventListener('change', function() {
+            const dept = this.value;
+            document.querySelectorAll('.resource-card').forEach(card => {
+                card.style.display = (!dept || card.dataset.dept === dept) ? 'block' : 'none';
+            });
+        });
+
+        // Download
+        function downloadResource(btn) {
+            btn.innerHTML = '<i class="fas fa-check"></i> Downloaded';
+            btn.style.background = 'linear-gradient(135deg, #1565C0, #1976D2)';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-download"></i> Download';
+                btn.style.background = '';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+@media (max-width: 1200px) {
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .preview-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 1024px) {
+    .steps-container { grid-template-columns: repeat(2, 1fr); }
+    .step-card:not(:last-child)::after { display: none; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .auth-container { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .nav-menu { position: fixed; right: -100%; top: 70px; flex-direction: column; background-color: var(--white); width: 100%; text-align: center; transition: right 0.3s; box-shadow: 0 10px 27px rgba(0,0,0,0.1); padding: 25px 0; gap: 0; }
+    .nav-menu.active { right: 0; }
+    .nav-menu li { margin: 12px 0; }
+    .hamburger { display: flex; }
+    .hero { padding: 110px 20px 50px; }
+    .hero h1 { font-size: 32px; }
+    .hero-subtitle { font-size: 18px; }
+    .hero-description { font-size: 15px; }
+    .trust-badges { flex-direction: column; gap: 12px; }
+    .hero-buttons { flex-direction: column; }
+    .btn { width: 100%; justify-content: center; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+    .about-content { grid-template-columns: 1fr; }
+    .about-image { height: 280px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .steps-container { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .testimonial-card { min-width: 100%; }
+    .preview-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .contact-content { grid-template-columns: 1fr; }
+    .newsletter-form { flex-direction: column; }
+    .newsletter-form button { width: 100%; }
+    .footer-content { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .footer-bottom-links { flex-direction: column; gap: 8px; }
+    .section-title { font-size: 28px; }
+}
+@media (max-width: 480px) {
+    .hero h1 { font-size: 26px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .nav-container { padding: 0 20px; }
+}

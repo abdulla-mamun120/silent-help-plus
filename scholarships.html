@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarships - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --accent-orange: #FF9800;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 260px;
+            --navbar-height: 65px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #121212;
+            --light-blue: #1A2332;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; z-index: 1000;
+        }
+
+        .navbar-left { display: flex; align-items: center; gap: 18px; }
+
+        .sidebar-toggle {
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text; text-decoration: none;
+        }
+
+        .navbar-right { display: flex; align-items: center; gap: 18px; }
+
+        .nav-icon-btn {
+            background: none; border: none;
+            font-size: 18px; cursor: pointer;
+            color: var(--text-tertiary); position: relative;
+        }
+
+        .notif-badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 16px; height: 16px;
+            background-color: #F44336; border-radius: 50%;
+            font-size: 9px; color: white;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 16px; cursor: pointer;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto; transition: transform 0.3s;
+            z-index: 900; padding: 20px 0;
+        }
+
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .sidebar-user {
+            padding: 15px 20px 20px;
+            border-bottom: 1px solid #E0E0E0; margin-bottom: 15px;
+        }
+
+        .sidebar-user-avatar {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 22px; margin-bottom: 10px;
+        }
+
+        .sidebar-user-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .sidebar-user-dept { font-size: 12px; color: var(--text-tertiary); }
+        .sidebar-user-id { font-size: 11px; color: var(--secondary-green); margin-top: 4px; font-weight: 500; }
+
+        .nav-section-title {
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px 6px;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px;
+            font-weight: 500; transition: all 0.2s;
+            border: none; background: none; width: 100%;
+            text-align: left; cursor: pointer;
+        }
+
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+        .nav-item.active {
+            background-color: var(--light-blue); color: var(--primary-blue);
+            border-right: 3px solid var(--primary-blue);
+        }
+
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+
+        .nav-badge {
+            margin-left: auto; background-color: var(--primary-blue);
+            color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+        }
+
+        .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
+
+        /* Main */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px; transition: margin-left 0.3s;
+        }
+
+        .main-content.expanded { margin-left: 0; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+            border-radius: 16px; padding: 30px;
+            margin-bottom: 25px; color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 15px;
+        }
+
+        .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 5px; }
+        .page-header p { opacity: 0.9; font-size: 14px; }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 18px; margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px; padding: 18px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 14px;
+        }
+
+        .stat-icon {
+            width: 46px; height: 46px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white; flex-shrink: 0;
+        }
+
+        .stat-icon.orange { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+        .stat-icon.green  { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+        .stat-icon.red    { background: linear-gradient(135deg, #F44336, #E57373); }
+        .stat-icon.blue   { background: linear-gradient(135deg, #1565C0, #1976D2); }
+
+        .stat-info h3 { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+        .stat-info p  { font-size: 12px; color: var(--text-tertiary); }
+
+        /* Filters Bar */
+        .filters-bar {
+            background-color: var(--white); border-radius: 12px;
+            padding: 18px 22px; margin-bottom: 22px;
+            display: flex; gap: 12px; align-items: center;
+            flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .search-box { flex: 1; min-width: 200px; position: relative; }
+
+        .search-box i {
+            position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%); color: var(--text-tertiary); font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%; padding: 10px 15px 10px 38px;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus { outline: none; border-color: var(--accent-orange); background-color: var(--white); }
+
+        .filter-select {
+            padding: 10px 15px; border: 1.5px solid #E0E0E0;
+            border-radius: 8px; font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary); cursor: pointer;
+        }
+
+        .filter-select:focus { outline: none; border-color: var(--accent-orange); }
+
+        .btn-clear-filter {
+            padding: 10px 18px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 13px; font-family: 'Poppins', sans-serif;
+            color: var(--text-tertiary); cursor: pointer; transition: all 0.2s;
+        }
+
+        .btn-clear-filter:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+
+        /* Scholarship Cards */
+        .scholarships-list {
+            display: flex; flex-direction: column; gap: 18px;
+        }
+
+        .scholarship-card {
+            background-color: var(--white);
+            border-radius: 14px; padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 5px solid var(--accent-orange);
+            transition: all 0.3s; position: relative;
+        }
+
+        .scholarship-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.11);
+        }
+
+        .scholarship-card.urgent { border-left-color: #F44336; }
+        .scholarship-card.new-item { border-left-color: var(--secondary-green); }
+
+        .card-top {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; margin-bottom: 12px; gap: 15px;
+        }
+
+        .scholarship-title {
+            font-size: 18px; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 4px;
+        }
+
+        .scholarship-org {
+            font-size: 13px; color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .amount-badge {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+            color: white; padding: 8px 18px;
+            border-radius: 20px; font-weight: 700;
+            font-size: 17px; white-space: nowrap; flex-shrink: 0;
+        }
+
+        .deadline-corner {
+            position: absolute; top: 0; right: 0;
+            background-color: #FFEBEE; color: #C62828;
+            padding: 6px 14px; border-radius: 0 14px 0 10px;
+            font-size: 11px; font-weight: 700;
+        }
+
+        .scholarship-desc {
+            font-size: 14px; line-height: 1.7;
+            color: var(--text-secondary); margin-bottom: 14px;
+        }
+
+        .scholarship-meta {
+            display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 14px;
+        }
+
+        .meta-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 13px; color: var(--text-tertiary);
+        }
+
+        .meta-item i { color: var(--accent-orange); width: 14px; }
+        .meta-item.urgent-date { color: #F44336; }
+        .meta-item.urgent-date i { color: #F44336; }
+
+        .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+
+        .tag {
+            padding: 4px 12px; border-radius: 12px;
+            font-size: 11px; font-weight: 600;
+        }
+
+        .tag-dept   { background-color: #E3F2FD; color: var(--primary-blue); }
+        .tag-type   { background-color: #FFF3E0; color: #E65100; }
+        .tag-new    { background-color: #E8F5E9; color: #2E7D32; }
+        .tag-urgent { background-color: #FFEBEE; color: #C62828; }
+
+        .card-actions { display: flex; gap: 12px; align-items: center; }
+
+        .btn-apply {
+            padding: 10px 26px;
+            background: linear-gradient(135deg, var(--accent-orange), #FFB74D);
+            color: white; border: none; border-radius: 8px;
+            font-weight: 600; font-size: 14px; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            display: flex; align-items: center; gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-apply:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,152,0,0.35); }
+        .btn-apply:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-save {
+            padding: 10px 18px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-save:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+        .btn-save.saved { border-color: var(--accent-orange); color: var(--accent-orange); background-color: #FFF3E0; }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center; padding: 70px 20px;
+            color: var(--text-tertiary); display: none;
+        }
+
+        .empty-state i { font-size: 60px; margin-bottom: 15px; opacity: 0.3; display: block; }
+        .empty-state p { font-size: 16px; }
+
+        /* Pagination */
+        .pagination {
+            display: flex; justify-content: center;
+            gap: 8px; margin-top: 30px;
+        }
+
+        .page-btn {
+            width: 38px; height: 38px;
+            border: 1.5px solid #E0E0E0; background: var(--white);
+            border-radius: 8px; cursor: pointer;
+            font-family: 'Poppins', sans-serif; font-size: 14px;
+            transition: all 0.2s; display: flex;
+            align-items: center; justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .page-btn.active { background-color: var(--accent-orange); color: white; border-color: var(--accent-orange); font-weight: 600; }
+        .page-btn:hover:not(.active) { border-color: var(--accent-orange); color: var(--accent-orange); }
+
+        /* Responsive */
+        @media (max-width: 1024px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px 15px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .card-top { flex-direction: column; }
+            .amount-badge { align-self: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a href="index.html" class="logo">Silent Help Plus</a>
+    </div>
+    <div class="navbar-right">
+        <button class="nav-icon-btn" id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+        <button class="nav-icon-btn" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notif-badge">5</span>
+        </button>
+        <div class="user-avatar" role="img" aria-label="User avatar">
+            <i class="fas fa-user"></i>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+        <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
+        <div class="sidebar-user-name">John Student</div>
+        <div class="sidebar-user-dept">CSE Department</div>
+        <div class="sidebar-user-id">Anon_CS_2431</div>
+    </div>
+
+    <div class="nav-section-title">Main Menu</div>
+    <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&amp;A Forum <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+    <div class="nav-section-title">Opportunities</div>
+    <a class="nav-item active" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">6</span></a>
+    <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+    <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+    <div class="nav-section-title">Connect</div>
+    <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+    <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content" id="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1><i class="fas fa-graduation-cap"></i> Scholarship Hub</h1>
+            <p>Discover funding opportunities available to all university students</p>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-graduation-cap"></i></div>
+            <div class="stat-info"><h3>24</h3><p>Active Scholarships</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-clock"></i></div>
+            <div class="stat-info"><h3>6</h3><p>Expiring Soon</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-plus-circle"></i></div>
+            <div class="stat-info"><h3>8</h3><p>New This Week</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-dollar-sign"></i></div>
+            <div class="stat-info"><h3>$2.4M</h3><p>Total Value</p></div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+                type="text"
+                class="search-input"
+                id="search-input"
+                placeholder="Search scholarships..."
+                aria-label="Search scholarships"
+            >
+        </div>
+        <select class="filter-select" id="eligibility-filter" aria-label="Filter by eligibility">
+            <option value="">All Eligibility</option>
+            <option value="merit">Merit-based</option>
+            <option value="need">Need-based</option>
+            <option value="research">Research</option>
+            <option value="leadership">Leadership</option>
+        </select>
+        <select class="filter-select" id="deadline-filter" aria-label="Filter by deadline">
+            <option value="">Any Deadline</option>
+            <option value="urgent">Urgent (within 2 weeks)</option>
+            <option value="month">Within 1 month</option>
+            <option value="later">Later</option>
+        </select>
+        <select class="filter-select" id="amount-filter" aria-label="Filter by amount">
+            <option value="">Any Amount</option>
+            <option value="low">Under $2,000</option>
+            <option value="mid">$2,000 – $6,000</option>
+            <option value="high">Above $6,000</option>
+        </select>
+        <button class="btn-clear-filter" id="btn-clear" type="button">
+            <i class="fas fa-times"></i> Clear
+        </button>
+    </div>
+
+    <!-- Scholarship List -->
+    <div class="scholarships-list" id="scholarships-list">
+
+        <!-- Card 1 -->
+        <div class="scholarship-card urgent"
+             data-eligibility="merit"
+             data-deadline="urgent"
+             data-amount="5000">
+            <div class="deadline-corner">⚠️ 5 days left</div>
+            <div class="card-top">
+                <div>
+                    <div class="scholarship-title">Academic Excellence Award 2025</div>
+                    <div class="scholarship-org">
+                        <i class="fas fa-university"></i> University Academic Affairs Office
+                    </div>
+                </div>
+                <div class="amount-badge">$5,000</div>
+            </div>
+            <p class="scholarship-desc">
+                Awarded to students maintaining a CGPA of 3.7 or above for two consecutive semesters.
+                Applications reviewed by the academic committee. Winners announced at annual convocation.
+            </p>
+            <div class="scholarship-meta">
+                <span class="meta-item urgent-date">
+                    <i class="fas fa-calendar-times"></i> Deadline: March 5, 2025
+                </span>
+                <span class="meta-item"><i class="fas fa-users"></i> 15 awards available</span>
+                <span class="meta-item"><i class="fas fa-star"></i> Min CGPA: 3.7</span>
+            </div>
+            <div class="tag-row">
+                <span class="tag tag-dept">All Departments</span>
+                <span class="tag tag-type">Merit-based</span>
+                <span class="tag tag-urgent">Urgent</span>
+            </div>
+            <div class="card-actions">
+                <button class="btn-apply" type="button" onclick="applyNow(this, 'Academic Excellence Award')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+                <button class="btn-save" type="button" onclick="toggleSave(this)">
+                    <i class="fas fa-bookmark"></i> Save
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="scholarship-card new-item"
+             data-eligibility="need"
+             data-deadline="month"
+             data-amount="8000">
+            <div class="card-top">
+                <div>
+                    <div class="scholarship-title">Financial Hardship Support Grant</div>
+                    <div class="scholarship-org">
+                        <i class="fas fa-building"></i> Student Welfare Foundation
+                    </div>
+                </div>
+                <div class="amount-badge">$8,000</div>
+            </div>
+            <p class="scholarship-desc">
+                Supports students from financially disadvantaged backgrounds to continue higher education.
+                Covers tuition fees and provides a monthly stipend. Renewable for 3 years upon maintaining good standing.
+            </p>
+            <div class="scholarship-meta">
+                <span class="meta-item"><i class="fas fa-calendar-alt"></i> Deadline: April 30, 2025</span>
+                <span class="meta-item"><i class="fas fa-users"></i> 5 awards available</span>
+                <span class="meta-item"><i class="fas fa-redo"></i> Renewable annually</span>
+            </div>
+            <div class="tag-row">
+                <span class="tag tag-dept">All Departments</span>
+                <span class="tag tag-type">Need-based</span>
+                <span class="tag tag-new">New</span>
+            </div>
+            <div class="card-actions">
+                <button class="btn-apply" type="button" onclick="applyNow(this, 'Financial Hardship Support Grant')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+                <button class="btn-save" type="button" onclick="toggleSave(this)">
+                    <i class="fas fa-bookmark"></i> Save
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="scholarship-card"
+             data-eligibility="research"
+             data-deadline="month"
+             data-amount="3000">
+            <div class="card-top">
+                <div>
+                    <div class="scholarship-title">STEM Research Excellence Grant</div>
+                    <div class="scholarship-org">
+                        <i class="fas fa-flask"></i> Science &amp; Technology Council
+                    </div>
+                </div>
+                <div class="amount-badge">$3,000</div>
+            </div>
+            <p class="scholarship-desc">
+                Supports undergraduate and graduate students conducting research in STEM fields.
+                Applicants must submit a research proposal approved by a faculty supervisor.
+                Grant covers research expenses and conference travel costs.
+            </p>
+            <div class="scholarship-meta">
+                <span class="meta-item"><i class="fas fa-calendar-alt"></i> Deadline: May 15, 2025</span>
+                <span class="meta-item"><i class="fas fa-users"></i> 10 grants available</span>
+                <span class="meta-item"><i class="fas fa-file-alt"></i> Proposal required</span>
+            </div>
+            <div class="tag-row">
+                <span class="tag tag-dept">STEM Departments</span>
+                <span class="tag tag-type">Research Grant</span>
+            </div>
+            <div class="card-actions">
+                <button class="btn-apply" type="button" onclick="applyNow(this, 'STEM Research Excellence Grant')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+                <button class="btn-save" type="button" onclick="toggleSave(this)">
+                    <i class="fas fa-bookmark"></i> Save
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="scholarship-card"
+             data-eligibility="merit"
+             data-deadline="later"
+             data-amount="2500">
+            <div class="card-top">
+                <div>
+                    <div class="scholarship-title">Women in Technology Scholarship</div>
+                    <div class="scholarship-org">
+                        <i class="fas fa-laptop-code"></i> Tech Diversity Initiative
+                    </div>
+                </div>
+                <div class="amount-badge">$2,500</div>
+            </div>
+            <p class="scholarship-desc">
+                Empowering female students pursuing degrees in Computer Science, Engineering, and related technology fields.
+                Includes mentorship from industry professionals and internship placement assistance.
+            </p>
+            <div class="scholarship-meta">
+                <span class="meta-item"><i class="fas fa-calendar-alt"></i> Deadline: June 1, 2025</span>
+                <span class="meta-item"><i class="fas fa-users"></i> 20 awards available</span>
+                <span class="meta-item"><i class="fas fa-venus"></i> Female students only</span>
+            </div>
+            <div class="tag-row">
+                <span class="tag tag-dept">CSE / EEE / CE / ME</span>
+                <span class="tag tag-type">Merit-based</span>
+            </div>
+            <div class="card-actions">
+                <button class="btn-apply" type="button" onclick="applyNow(this, 'Women in Technology Scholarship')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+                <button class="btn-save" type="button" onclick="toggleSave(this)">
+                    <i class="fas fa-bookmark"></i> Save
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="scholarship-card urgent"
+             data-eligibility="leadership"
+             data-deadline="urgent"
+             data-amount="1500">
+            <div class="deadline-corner">⚠️ 8 days left</div>
+            <div class="card-top">
+                <div>
+                    <div class="scholarship-title">Community Leadership Award</div>
+                    <div class="scholarship-org">
+                        <i class="fas fa-hand-holding-heart"></i> Student Affairs Department
+                    </div>
+                </div>
+                <div class="amount-badge">$1,500</div>
+            </div>
+            <p class="scholarship-desc">
+                Recognizes students who have demonstrated exceptional leadership in community service
+                and extracurricular activities. Minimum 50 hours of documented community service required.
+            </p>
+            <div class="scholarship-meta">
+                <span class="meta-item urgent-date">
+                    <i class="fas fa-calendar-times"></i> Deadline: March 8, 2025
+                </span>
+                <span class="meta-item"><i class="fas fa-users"></i> 8 awards available</span>
+                <span class="meta-item"><i class="fas fa-certificate"></i> Service proof needed</span>
+            </div>
+            <div class="tag-row">
+                <span class="tag tag-dept">All Departments</span>
+                <span class="tag tag-type">Leadership</span>
+                <span class="tag tag-urgent">Urgent</span>
+            </div>
+            <div class="card-actions">
+                <button class="btn-apply" type="button" onclick="applyNow(this, 'Community Leadership Award')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+                <button class="btn-save" type="button" onclick="toggleSave(this)">
+                    <i class="fas fa-bookmark"></i> Save
+                </button>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="scholarship-card new-item"
+             data-eligibility="merit"
+             data-deadline="later"
+             data-amount="12000">
+            <div class="card-top">
+                <div>
+                    <div class="scholarship-title">International Student Excellence Scholarship</div>
+                    <div class="scholarship-org">
+                        <i class="fas fa-globe"></i> Global Education Foundation
+                    </div>
+                </div>
+                <div class="amount-badge">$12,000</div>
+            </div>
+            <p class="scholarship-desc">
+                Full scholarship for outstanding international students covering tuition, accommodation,
+                and living expenses for one full academic year. Includes cultural exchange program and
+                career development workshops.
+            </p>
+            <div class="scholarship-meta">
+                <span class="meta-item"><i class="fas fa-calendar-alt"></i> Deadline: July 31, 2025</span>
+                <span class="meta-item"><i class="fas fa-users"></i> 3 awards available</span>
+                <span class="meta-item"><i class="fas fa-passport"></i> International students only</span>
+            </div>
+            <div class="tag-row">
+                <span class="tag tag-dept">All Departments</span>
+                <span class="tag tag-type">Full Scholarship</span>
+                <span class="tag tag-new">New</span>
+            </div>
+            <div class="card-actions">
+                <button class="btn-apply" type="button" onclick="applyNow(this, 'International Excellence Scholarship')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </button>
+                <button class="btn-save" type="button" onclick="toggleSave(this)">
+                    <i class="fas fa-bookmark"></i> Save
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state">
+        <i class="fas fa-search"></i>
+        <p>No scholarships found matching your filters.</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button class="page-btn" type="button" aria-label="Previous page">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="page-btn active" type="button">1</button>
+        <button class="page-btn" type="button">2</button>
+        <button class="page-btn" type="button">3</button>
+        <button class="page-btn" type="button" aria-label="Next page">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+</main>
+
+<script>
+    /* ── Dark Mode ── */
+    const dmToggle = document.getElementById('dark-mode-toggle');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        dmToggle.textContent = '☀️';
+    }
+    dmToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        dmToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    });
+
+    /* ── Sidebar Toggle ── */
+    const sidebar     = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+    });
+
+    /* ── Filter Logic ── */
+    const cards           = Array.from(document.querySelectorAll('.scholarship-card'));
+    const emptyState      = document.getElementById('empty-state');
+    const searchInput     = document.getElementById('search-input');
+    const eligibilitySel  = document.getElementById('eligibility-filter');
+    const deadlineSel     = document.getElementById('deadline-filter');
+    const amountSel       = document.getElementById('amount-filter');
+
+    function applyFilters() {
+        const q          = searchInput.value.toLowerCase().trim();
+        const eligibility = eligibilitySel.value;
+        const deadline    = deadlineSel.value;
+        const amountRange = amountSel.value;
+
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const title       = card.querySelector('.scholarship-title').textContent.toLowerCase();
+            const cardElig    = card.dataset.eligibility;
+            const cardDeadline = card.dataset.deadline;
+            const cardAmount  = parseInt(card.dataset.amount, 10);
+
+            const matchSearch   = !q || title.includes(q);
+            const matchElig     = !eligibility || cardElig === eligibility;
+            const matchDeadline = !deadline || cardDeadline === deadline;
+
+            let matchAmount = true;
+            if (amountRange === 'low')  matchAmount = cardAmount < 2000;
+            if (amountRange === 'mid')  matchAmount = cardAmount >= 2000 && cardAmount <= 6000;
+            if (amountRange === 'high') matchAmount = cardAmount > 6000;
+
+            const visible = matchSearch && matchElig && matchDeadline && matchAmount;
+            card.style.display = visible ? '' : 'none';
+            if (visible) visibleCount++;
+        });
+
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    eligibilitySel.addEventListener('change', applyFilters);
+    deadlineSel.addEventListener('change', applyFilters);
+    amountSel.addEventListener('change', applyFilters);
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+        searchInput.value      = '';
+        eligibilitySel.value   = '';
+        deadlineSel.value      = '';
+        amountSel.value        = '';
+        applyFilters();
+    });
+
+    /* ── Apply Button ── */
+    function applyNow(btn, name) {
+        if (confirm('Apply for "' + name + '"?\n\nYou will be redirected to the application portal.')) {
+            btn.innerHTML  = '<i class="fas fa-check"></i> Applied!';
+            btn.style.background = 'linear-gradient(135deg,#4CAF50,#66BB6A)';
+            btn.disabled   = true;
+        }
+    }
+
+    /* ── Save Button ── */
+    function toggleSave(btn) {
+        btn.classList.toggle('saved');
+        btn.innerHTML = btn.classList.contains('saved')
+            ? '<i class="fas fa-bookmark"></i> Saved'
+            : '<i class="fas fa-bookmark"></i> Save';
+    }
+
+    /* ── Pagination (UI only) ── */
+    document.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (this.querySelector('i')) return;
+            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
+
+</body>
+</html>

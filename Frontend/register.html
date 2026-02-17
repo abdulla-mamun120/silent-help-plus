@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --error: #F44336;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #B3E5FC 50%, #81D4FA 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #2A2A2A;
+            --light-blue: #1A2332;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+            background: linear-gradient(135deg, #1A2332 0%, #1E3A5F 50%, #2C5F8D 100%);
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            padding: 0 30px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-login:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .register-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 1000px;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Left Side Info */
+        .register-info {
+            color: var(--primary-blue);
+        }
+
+        body.dark-mode .register-info {
+            color: #64B5F6;
+        }
+
+        .register-info h1 {
+            font-size: 38px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .register-info p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .info-badges {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-badge {
+            background-color: rgba(255,255,255,0.85);
+            padding: 14px 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            color: var(--text-primary);
+        }
+
+        body.dark-mode .info-badge {
+            background-color: rgba(30,30,30,0.85);
+        }
+
+        .info-badge i {
+            font-size: 20px;
+            color: var(--secondary-green);
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Register Form */
+        .register-form-container {
+            background-color: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        .form-header h2 {
+            font-size: 26px;
+            color: var(--primary-blue);
+            margin-bottom: 6px;
+        }
+
+        .form-header p {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 7px;
+        }
+
+        .required { color: var(--error); }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 15px 11px 40px;
+            border: 1.5px solid #DDDDDD;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--white);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(21,101,192,0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--error);
+        }
+
+        select.form-control { cursor: pointer; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            font-size: 15px;
+        }
+
+        .error-msg {
+            font-size: 12px;
+            color: var(--error);
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-msg.show { display: block; }
+
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background-color: #E0E0E0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .strength-text {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 3px;
+            cursor: pointer;
+            accent-color: var(--primary-blue);
+        }
+
+        .checkbox-group label {
+            font-size: 13px;
+            font-weight: 400;
+            margin: 0;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-group label a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--primary-blue), #1976D2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 5px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(21,101,192,0.35);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .form-footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .success-message.show { display: block; }
+
+        .success-icon {
+            font-size: 60px;
+            color: var(--secondary-green);
+            margin-bottom: 20px;
+        }
+
+        .success-message h3 {
+            font-size: 22px;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer-simple {
+            background: linear-gradient(135deg, #1A237E, #283593);
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        .footer-simple a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .register-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .register-info {
+                text-align: center;
+            }
+
+            .register-info h1 {
+                font-size: 28px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .register-form-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">Silent Help Plus</a>
+        <div class="nav-right">
+            <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
+            <a href="login.html" class="btn-login">Login</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="register-wrapper">
+
+            <!-- Left Info -->
+            <div class="register-info">
+                <h1>Join Silent Help Plus</h1>
+                <p>Create your free account and get access to anonymous Q&A, study resources, scholarships, jobs, mentorship and more.</p>
+
+                <div class="info-badges">
+                    <div class="info-badge">
+                        <i class="fas fa-user-secret"></i>
+                        <span>100% Anonymous Q&A — identity protected</span>
+                    </div>
+                    <div class="info-badge">
+                        <i class="fas fa-book-open"></i>
+                        <span>Free study resources for your department</span>
+                    </div>
+                    <div class="info-badge">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Discover scholarships & job opportunities</span>
+                    </div>
+                    <div class="info-badge">
+                        <i class="fas fa-users"></i>
+                        <span>Connect with mentors & peers</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="register-form-container">
+                <div id="form-section">
+                    <div class="form-header">
+                        <h2>Create Account</h2>
+                        <p>Fill in your details to get started</p>
+                    </div>
+
+                    <form id="register-form" novalidate>
+
+                        <!-- Full Name -->
+                        <div class="form-group">
+                            <label>Full Name <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" class="form-control" id="fullname" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="error-msg" id="fullname-error">Please enter your full name.</div>
+                        </div>
+
+                        <!-- Student ID & Department -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Student ID <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-id-card input-icon"></i>
+                                    <input type="text" class="form-control" id="student-id" placeholder="e.g. 2021-1-60-001" required>
+                                </div>
+                                <div class="error-msg" id="studentid-error">Enter a valid Student ID.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Department <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-building input-icon"></i>
+                                    <select class="form-control" id="department" required>
+                                        <option value="">Select department</option>
+                                        <option value="CSE">CSE</option>
+                                        <option value="EEE">EEE</option>
+                                        <option value="BBA">BBA</option>
+                                        <option value="CE">Civil Engineering</option>
+                                        <option value="ME">Mechanical Engineering</option>
+                                        <option value="ENG">English</option>
+                                        <option value="LAW">Law</option>
+                                        <option value="PHARM">Pharmacy</option>
+                                    </select>
+                                </div>
+                                <div class="error-msg" id="dept-error">Please select your department.</div>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label>University Email <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input type="email" class="form-control" id="email" placeholder="your.email@university.edu" required>
+                            </div>
+                            <div class="error-msg" id="email-error">Please enter a valid email address.</div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label>Password <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" class="form-control" id="password" placeholder="Create a strong password" required>
+                                <button type="button" class="password-toggle" id="toggle-pass">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength">
+                                <div class="strength-bar">
+                                    <div class="strength-fill" id="strength-fill"></div>
+                                </div>
+                                <div class="strength-text" id="strength-text">Enter a password</div>
+                            </div>
+                            <div class="error-msg" id="pass-error">Password must be at least 8 characters.</div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group">
+                            <label>Confirm Password <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" class="form-control" id="confirm-password" placeholder="Re-enter your password" required>
+                                <button type="button" class="password-toggle" id="toggle-confirm">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="error-msg" id="confirm-error">Passwords do not match.</div>
+                        </div>
+
+                        <!-- Terms -->
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="terms" required>
+                                <label for="terms">
+                                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                </label>
+                            </div>
+                            <div class="error-msg" id="terms-error">You must agree to the terms.</div>
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="submit-btn">
+                            <span>Create Account</span>
+                            <i class="fas fa-user-plus"></i>
+                        </button>
+
+                        <div class="form-footer">
+                            Already have an account? <a href="login.html">Login here</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Success Message -->
+                <div class="success-message" id="success-message">
+                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Registration Successful!</h3>
+                    <p>A verification link has been sent to your email.<br>Please check your inbox to activate your account.</p>
+                    <br>
+                    <a href="login.html" style="color: var(--primary-blue); font-weight: 600; text-decoration: none;">
+                        Go to Login <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-simple">
+        &copy; 2025 Silent Help Plus &nbsp;|&nbsp;
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+    </div>
+
+    <script>
+        // Dark Mode
+        const toggle = document.getElementById('dark-mode-toggle');
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            toggle.textContent = '☀️';
+        }
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark ? 'enabled' : null);
+        });
+
+        // Password Toggle
+        function setupToggle(btnId, inputId) {
+            document.getElementById(btnId).addEventListener('click', () => {
+                const input = document.getElementById(inputId);
+                const icon = document.querySelector(`#${btnId} i`);
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        }
+        setupToggle('toggle-pass', 'password');
+        setupToggle('toggle-confirm', 'confirm-password');
+
+        // Password Strength
+        document.getElementById('password').addEventListener('input', function () {
+            const val = this.value;
+            const fill = document.getElementById('strength-fill');
+            const text = document.getElementById('strength-text');
+            let strength = 0;
+            if (val.length >= 8) strength++;
+            if (/[A-Z]/.test(val)) strength++;
+            if (/[0-9]/.test(val)) strength++;
+            if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+            const levels = [
+                { width: '0%', color: '#E0E0E0', label: 'Enter a password' },
+                { width: '25%', color: '#F44336', label: 'Weak' },
+                { width: '50%', color: '#FF9800', label: 'Fair' },
+                { width: '75%', color: '#2196F3', label: 'Good' },
+                { width: '100%', color: '#4CAF50', label: 'Strong' },
+            ];
+
+            fill.style.width = levels[strength].width;
+            fill.style.backgroundColor = levels[strength].color;
+            text.textContent = levels[strength].label;
+            text.style.color = levels[strength].color;
+        });
+
+        // Form Validation & Submit
+        document.getElementById('register-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let valid = true;
+
+            const showError = (id, show) => {
+                const el = document.getElementById(id);
+                el.classList.toggle('show', show);
+                const input = el.previousElementSibling?.querySelector('.form-control') ||
+                              el.previousElementSibling;
+                if (input?.classList) input.classList.toggle('error', show);
+            };
+
+            const fullname = document.getElementById('fullname').value.trim();
+            const studentId = document.getElementById('student-id').value.trim();
+            const dept = document.getElementById('department').value;
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm-password').value;
+            const terms = document.getElementById('terms').checked;
+
+            if (!fullname) { showError('fullname-error', true); valid = false; }
+            else showError('fullname-error', false);
+
+            if (!studentId) { showError('studentid-error', true); valid = false; }
+            else showError('studentid-error', false);
+
+            if (!dept) { showError('dept-error', true); valid = false; }
+            else showError('dept-error', false);
+
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if (!emailValid) { showError('email-error', true); valid = false; }
+            else showError('email-error', false);
+
+            if (password.length < 8) { showError('pass-error', true); valid = false; }
+            else showError('pass-error', false);
+
+            if (password !== confirm) { showError('confirm-error', true); valid = false; }
+            else showError('confirm-error', false);
+
+            if (!terms) { showError('terms-error', true); valid = false; }
+            else showError('terms-error', false);
+
+            if (valid) {
+                const btn = document.getElementById('submit-btn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+
+                setTimeout(() => {
+                    document.getElementById('form-section').style.display = 'none';
+                    document.getElementById('success-message').classList.add('show');
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>

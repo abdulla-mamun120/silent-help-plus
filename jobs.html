@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Board - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --accent-purple: #9C27B0;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --light-purple: #F3E5F5;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 260px;
+            --navbar-height: 65px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #121212;
+            --light-blue: #1A2332;
+            --light-purple: #2A1A2E;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; z-index: 1000;
+        }
+
+        .navbar-left { display: flex; align-items: center; gap: 18px; }
+
+        .sidebar-toggle {
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text; text-decoration: none;
+        }
+
+        .navbar-right { display: flex; align-items: center; gap: 18px; }
+
+        .nav-icon-btn {
+            background: none; border: none;
+            font-size: 18px; cursor: pointer;
+            color: var(--text-tertiary); position: relative;
+        }
+
+        .notif-badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 16px; height: 16px;
+            background-color: #F44336; border-radius: 50%;
+            font-size: 9px; color: white;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 16px; cursor: pointer;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto; transition: transform 0.3s;
+            z-index: 900; padding: 20px 0;
+        }
+
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .sidebar-user {
+            padding: 15px 20px 20px;
+            border-bottom: 1px solid #E0E0E0; margin-bottom: 15px;
+        }
+
+        .sidebar-user-avatar {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 22px; margin-bottom: 10px;
+        }
+
+        .sidebar-user-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .sidebar-user-dept { font-size: 12px; color: var(--text-tertiary); }
+        .sidebar-user-id   { font-size: 11px; color: var(--secondary-green); margin-top: 4px; font-weight: 500; }
+
+        .nav-section-title {
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px 6px;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px;
+            font-weight: 500; transition: all 0.2s;
+            border: none; background: none; width: 100%;
+            text-align: left; cursor: pointer;
+        }
+
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+        .nav-item.active {
+            background-color: var(--light-purple); color: var(--accent-purple);
+            border-right: 3px solid var(--accent-purple);
+        }
+
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+
+        .nav-badge {
+            margin-left: auto; background-color: var(--primary-blue);
+            color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+        }
+
+        .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
+
+        /* Main */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px; transition: margin-left 0.3s;
+        }
+
+        .main-content.expanded { margin-left: 0; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #9C27B0, #AB47BC);
+            border-radius: 16px; padding: 30px;
+            margin-bottom: 25px; color: white;
+        }
+
+        .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 5px; }
+        .page-header p  { opacity: 0.9; font-size: 14px; }
+
+        /* Stats */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 18px; margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px; padding: 18px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 14px;
+        }
+
+        .stat-icon {
+            width: 46px; height: 46px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white; flex-shrink: 0;
+        }
+
+        .stat-icon.purple { background: linear-gradient(135deg, #9C27B0, #AB47BC); }
+        .stat-icon.green  { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+        .stat-icon.blue   { background: linear-gradient(135deg, #1565C0, #1976D2); }
+        .stat-icon.orange { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+
+        .stat-info h3 { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+        .stat-info p  { font-size: 12px; color: var(--text-tertiary); }
+
+        /* Filters */
+        .filters-bar {
+            background-color: var(--white); border-radius: 12px;
+            padding: 18px 22px; margin-bottom: 18px;
+            display: flex; gap: 12px; align-items: center;
+            flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .search-box { flex: 1; min-width: 200px; position: relative; }
+
+        .search-box i {
+            position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%); color: var(--text-tertiary); font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%; padding: 10px 15px 10px 38px;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus { outline: none; border-color: var(--accent-purple); background-color: var(--white); }
+
+        .filter-select {
+            padding: 10px 15px; border: 1.5px solid #E0E0E0;
+            border-radius: 8px; font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary); cursor: pointer;
+        }
+
+        .filter-select:focus { outline: none; border-color: var(--accent-purple); }
+
+        .btn-clear-filter {
+            padding: 10px 18px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 13px; font-family: 'Poppins', sans-serif;
+            color: var(--text-tertiary); cursor: pointer; transition: all 0.2s;
+        }
+
+        .btn-clear-filter:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
+
+        /* Type Chips */
+        .type-chips {
+            display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap;
+        }
+
+        .type-chip {
+            padding: 8px 18px; border-radius: 20px;
+            border: 1.5px solid #E0E0E0; background: none;
+            font-size: 13px; font-weight: 500; cursor: pointer;
+            color: var(--text-secondary); font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .type-chip:hover,
+        .type-chip.active { background-color: var(--accent-purple); color: white; border-color: var(--accent-purple); }
+
+        /* Job Cards */
+        .jobs-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .job-card {
+            background-color: var(--white);
+            border-radius: 14px; padding: 22px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 5px solid var(--accent-purple);
+            transition: all 0.3s;
+            display: grid;
+            grid-template-columns: 70px 1fr auto;
+            gap: 20px; align-items: start;
+        }
+
+        .job-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.11); }
+        .job-card.featured { border-left-color: #FF9800; background: linear-gradient(to right, #FFFDE7, var(--white)); }
+
+        .company-logo {
+            width: 70px; height: 70px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px;
+            background: linear-gradient(135deg, var(--light-purple), #E1BEE7);
+            flex-shrink: 0;
+        }
+
+        .job-info { flex: 1; }
+
+        .job-title { font-size: 17px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+
+        .company-name {
+            font-size: 13px; color: var(--text-tertiary);
+            margin-bottom: 12px;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .job-meta { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; }
+
+        .job-meta-item {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 13px; color: var(--text-tertiary);
+        }
+
+        .job-meta-item i { color: var(--accent-purple); width: 14px; }
+
+        .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+
+        .tag {
+            padding: 3px 11px; border-radius: 12px;
+            font-size: 11px; font-weight: 600;
+        }
+
+        .tag-full     { background-color: #E3F2FD; color: var(--primary-blue); }
+        .tag-part     { background-color: #E8F5E9; color: #2E7D32; }
+        .tag-intern   { background-color: #FFF3E0; color: #E65100; }
+        .tag-remote   { background-color: var(--light-purple); color: #7B1FA2; }
+        .tag-featured { background-color: #FFF9C4; color: #F57F17; }
+
+        .salary-badge {
+            display: inline-block;
+            background-color: #E8F5E9; color: #2E7D32;
+            padding: 4px 12px; border-radius: 8px;
+            font-size: 12px; font-weight: 700;
+        }
+
+        /* Card Actions */
+        .job-actions {
+            display: flex; flex-direction: column;
+            gap: 8px; min-width: 130px; align-items: stretch;
+        }
+
+        .btn-apply-job {
+            padding: 10px 18px; background: linear-gradient(135deg, var(--accent-purple), #AB47BC);
+            color: white; border: none; border-radius: 8px;
+            font-weight: 600; font-size: 13px; cursor: pointer;
+            font-family: 'Poppins', sans-serif; transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-apply-job:hover  { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(156,39,176,0.3); }
+        .btn-apply-job:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-save-job {
+            padding: 9px 18px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 13px; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-tertiary); transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-save-job:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
+        .btn-save-job.saved { border-color: var(--accent-purple); color: var(--accent-purple); background-color: var(--light-purple); }
+
+        .posted-date { font-size: 11px; color: var(--text-tertiary); text-align: center; }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center; padding: 70px 20px;
+            color: var(--text-tertiary); display: none;
+        }
+
+        .empty-state i { font-size: 60px; margin-bottom: 15px; opacity: 0.3; display: block; }
+        .empty-state p { font-size: 16px; }
+
+        /* Pagination */
+        .pagination {
+            display: flex; justify-content: center;
+            gap: 8px; margin-top: 30px;
+        }
+
+        .page-btn {
+            width: 38px; height: 38px;
+            border: 1.5px solid #E0E0E0; background: var(--white);
+            border-radius: 8px; cursor: pointer;
+            font-family: 'Poppins', sans-serif; font-size: 14px;
+            transition: all 0.2s; display: flex;
+            align-items: center; justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .page-btn.active { background-color: var(--accent-purple); color: white; border-color: var(--accent-purple); font-weight: 600; }
+        .page-btn:hover:not(.active) { border-color: var(--accent-purple); color: var(--accent-purple); }
+
+        /* Responsive */
+        @media (max-width: 1024px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px 15px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .job-card { grid-template-columns: 1fr; }
+            .job-actions { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a href="index.html" class="logo">Silent Help Plus</a>
+    </div>
+    <div class="navbar-right">
+        <button class="nav-icon-btn" id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+        <button class="nav-icon-btn" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notif-badge">3</span>
+        </button>
+        <div class="user-avatar" role="img" aria-label="User avatar">
+            <i class="fas fa-user"></i>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+        <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
+        <div class="sidebar-user-name">John Student</div>
+        <div class="sidebar-user-dept">CSE Department</div>
+        <div class="sidebar-user-id">Anon_CS_2431</div>
+    </div>
+
+    <div class="nav-section-title">Main Menu</div>
+    <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&amp;A Forum <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+    <div class="nav-section-title">Opportunities</div>
+    <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">6</span></a>
+    <a class="nav-item active" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+    <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+    <div class="nav-section-title">Connect</div>
+    <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+    <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content" id="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1><i class="fas fa-briefcase"></i> Job Board</h1>
+        <p>Part-time jobs, internships, and full-time positions for students</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon purple"><i class="fas fa-briefcase"></i></div>
+            <div class="stat-info"><h3>47</h3><p>Active Jobs</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-user-tie"></i></div>
+            <div class="stat-info"><h3>18</h3><p>Internships</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-laptop-house"></i></div>
+            <div class="stat-info"><h3>12</h3><p>Remote Jobs</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-plus-circle"></i></div>
+            <div class="stat-info"><h3>9</h3><p>New Today</p></div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+                type="text"
+                class="search-input"
+                id="search-input"
+                placeholder="Search jobs or companies..."
+                aria-label="Search jobs"
+            >
+        </div>
+        <select class="filter-select" id="type-filter" aria-label="Filter by job type">
+            <option value="">All Types</option>
+            <option value="full-time">Full-time</option>
+            <option value="part-time">Part-time</option>
+            <option value="internship">Internship</option>
+        </select>
+        <select class="filter-select" id="location-filter" aria-label="Filter by location">
+            <option value="">All Locations</option>
+            <option value="onsite">On-site</option>
+            <option value="remote">Remote</option>
+            <option value="hybrid">Hybrid</option>
+        </select>
+        <select class="filter-select" id="field-filter" aria-label="Filter by field">
+            <option value="">All Fields</option>
+            <option value="tech">Technology</option>
+            <option value="business">Business</option>
+            <option value="design">Design</option>
+            <option value="education">Education</option>
+            <option value="engineering">Engineering</option>
+            <option value="health">Health</option>
+        </select>
+        <button class="btn-clear-filter" id="btn-clear" type="button">
+            <i class="fas fa-times"></i> Clear
+        </button>
+    </div>
+
+    <!-- Type Chips -->
+    <div class="type-chips">
+        <button class="type-chip active" type="button" data-filter="all">All Jobs</button>
+        <button class="type-chip" type="button" data-filter="full-time">Full-time</button>
+        <button class="type-chip" type="button" data-filter="part-time">Part-time</button>
+        <button class="type-chip" type="button" data-filter="internship">Internship</button>
+        <button class="type-chip" type="button" data-filter="remote">Remote</button>
+    </div>
+
+    <!-- Jobs List -->
+    <div class="jobs-list" id="jobs-list">
+
+        <!-- Job 1 -->
+        <div class="job-card featured"
+             data-type="part-time"
+             data-location="hybrid"
+             data-field="tech">
+            <div class="company-logo" aria-label="TechSoft BD company logo">💻</div>
+            <div class="job-info">
+                <div class="job-title">Junior Web Developer</div>
+                <div class="company-name"><i class="fas fa-building"></i> TechSoft BD Ltd.</div>
+                <div class="job-meta">
+                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Dhaka (Hybrid)</span>
+                    <span class="job-meta-item"><i class="fas fa-clock"></i> 20 hrs/week</span>
+                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> CSE / EEE preferred</span>
+                </div>
+                <div class="tag-row">
+                    <span class="tag tag-part">Part-time</span>
+                    <span class="tag tag-featured">⭐ Featured</span>
+                </div>
+                <span class="salary-badge">💰 $600 – $900 / month</span>
+            </div>
+            <div class="job-actions">
+                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Junior Web Developer')">
+                    Apply Now
+                </button>
+                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
+                    <i class="fas fa-heart"></i> Save
+                </button>
+                <div class="posted-date">Posted 2 days ago</div>
+            </div>
+        </div>
+
+        <!-- Job 2 -->
+        <div class="job-card"
+             data-type="internship"
+             data-location="onsite"
+             data-field="business">
+            <div class="company-logo" aria-label="BRAC Bank company logo">📊</div>
+            <div class="job-info">
+                <div class="job-title">Business Analyst Intern</div>
+                <div class="company-name"><i class="fas fa-building"></i> BRAC Bank Limited</div>
+                <div class="job-meta">
+                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Dhaka (On-site)</span>
+                    <span class="job-meta-item"><i class="fas fa-clock"></i> 3-month internship</span>
+                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> BBA / Finance</span>
+                </div>
+                <div class="tag-row">
+                    <span class="tag tag-intern">Internship</span>
+                </div>
+                <span class="salary-badge">💰 $300 – $400 / month</span>
+            </div>
+            <div class="job-actions">
+                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Business Analyst Intern')">
+                    Apply Now
+                </button>
+                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
+                    <i class="fas fa-heart"></i> Save
+                </button>
+                <div class="posted-date">Posted 3 days ago</div>
+            </div>
+        </div>
+
+        <!-- Job 3 -->
+        <div class="job-card"
+             data-type="internship"
+             data-location="remote"
+             data-field="design">
+            <div class="company-logo" aria-label="Creative Studio X company logo">🎨</div>
+            <div class="job-info">
+                <div class="job-title">UI/UX Design Intern</div>
+                <div class="company-name"><i class="fas fa-building"></i> Creative Studio X</div>
+                <div class="job-meta">
+                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Remote</span>
+                    <span class="job-meta-item"><i class="fas fa-clock"></i> 6-month internship</span>
+                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> All departments</span>
+                </div>
+                <div class="tag-row">
+                    <span class="tag tag-intern">Internship</span>
+                    <span class="tag tag-remote">Remote</span>
+                </div>
+                <span class="salary-badge">💰 $250 – $350 / month</span>
+            </div>
+            <div class="job-actions">
+                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'UI/UX Design Intern')">
+                    Apply Now
+                </button>
+                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
+                    <i class="fas fa-heart"></i> Save
+                </button>
+                <div class="posted-date">Posted 1 week ago</div>
+            </div>
+        </div>
+
+        <!-- Job 4 -->
+        <div class="job-card"
+             data-type="part-time"
+             data-location="remote"
+             data-field="education">
+            <div class="company-logo" aria-label="EduConnect company logo">📚</div>
+            <div class="job-info">
+                <div class="job-title">Online Tutor (Math &amp; Science)</div>
+                <div class="company-name"><i class="fas fa-building"></i> EduConnect Platform</div>
+                <div class="job-meta">
+                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Remote (Flexible)</span>
+                    <span class="job-meta-item"><i class="fas fa-clock"></i> 10–15 hrs/week</span>
+                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> CSE / EEE / Math</span>
+                </div>
+                <div class="tag-row">
+                    <span class="tag tag-part">Part-time</span>
+                    <span class="tag tag-remote">Remote</span>
+                </div>
+                <span class="salary-badge">💰 $15 – $25 / hour</span>
+            </div>
+            <div class="job-actions">
+                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Online Tutor')">
+                    Apply Now
+                </button>
+                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
+                    <i class="fas fa-heart"></i> Save
+                </button>
+                <div class="posted-date">Posted 5 days ago</div>
+            </div>
+        </div>
+
+        <!-- Job 5 -->
+        <div class="job-card"
+             data-type="full-time"
+             data-location="onsite"
+             data-field="engineering">
+            <div class="company-logo" aria-label="Bashundhara Group company logo">🏗️</div>
+            <div class="job-info">
+                <div class="job-title">Civil Engineering Graduate Trainee</div>
+                <div class="company-name"><i class="fas fa-building"></i> Bashundhara Group</div>
+                <div class="job-meta">
+                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Dhaka (On-site)</span>
+                    <span class="job-meta-item"><i class="fas fa-clock"></i> Full-time</span>
+                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> Civil Engineering</span>
+                </div>
+                <div class="tag-row">
+                    <span class="tag tag-full">Full-time</span>
+                </div>
+                <span class="salary-badge">💰 $800 – $1,200 / month</span>
+            </div>
+            <div class="job-actions">
+                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Civil Engineering Graduate Trainee')">
+                    Apply Now
+                </button>
+                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
+                    <i class="fas fa-heart"></i> Save
+                </button>
+                <div class="posted-date">Posted today</div>
+            </div>
+        </div>
+
+        <!-- Job 6 -->
+        <div class="job-card"
+             data-type="part-time"
+             data-location="onsite"
+             data-field="health">
+            <div class="company-logo" aria-label="Square Pharmaceuticals company logo">💊</div>
+            <div class="job-info">
+                <div class="job-title">Pharmacy Research Assistant</div>
+                <div class="company-name"><i class="fas fa-building"></i> Square Pharmaceuticals</div>
+                <div class="job-meta">
+                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Dhaka (On-site)</span>
+                    <span class="job-meta-item"><i class="fas fa-clock"></i> 25 hrs/week</span>
+                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> Pharmacy students</span>
+                </div>
+                <div class="tag-row">
+                    <span class="tag tag-part">Part-time</span>
+                </div>
+                <span class="salary-badge">💰 $500 – $700 / month</span>
+            </div>
+            <div class="job-actions">
+                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Pharmacy Research Assistant')">
+                    Apply Now
+                </button>
+                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
+                    <i class="fas fa-heart"></i> Save
+                </button>
+                <div class="posted-date">Posted 4 days ago</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state">
+        <i class="fas fa-briefcase"></i>
+        <p>No jobs found matching your filters.</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button class="page-btn" type="button" aria-label="Previous page">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="page-btn active" type="button">1</button>
+        <button class="page-btn" type="button">2</button>
+        <button class="page-btn" type="button">3</button>
+        <button class="page-btn" type="button" aria-label="Next page">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+</main>
+
+<script>
+    /* ── Dark Mode ── */
+    const dmToggle = document.getElementById('dark-mode-toggle');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        dmToggle.textContent = '☀️';
+    }
+    dmToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        dmToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    });
+
+    /* ── Sidebar Toggle ── */
+    const sidebar     = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+    });
+
+    /* ── Filter Logic ── */
+    const cards      = Array.from(document.querySelectorAll('.job-card'));
+    const emptyState = document.getElementById('empty-state');
+    const searchInput   = document.getElementById('search-input');
+    const typeSelect    = document.getElementById('type-filter');
+    const locationSelect = document.getElementById('location-filter');
+    const fieldSelect   = document.getElementById('field-filter');
+
+    function applyFilters() {
+        const q        = searchInput.value.toLowerCase().trim();
+        const type     = typeSelect.value;
+        const location = locationSelect.value;
+        const field    = fieldSelect.value;
+
+        let visible = 0;
+
+        cards.forEach(card => {
+            const titleEl = card.querySelector('.job-title');
+            const compEl  = card.querySelector('.company-name');
+            const text    = (titleEl ? titleEl.textContent : '') + ' ' + (compEl ? compEl.textContent : '');
+
+            const matchSearch   = !q        || text.toLowerCase().includes(q);
+            const matchType     = !type     || card.dataset.type === type;
+            const matchLocation = !location || card.dataset.location === location;
+            const matchField    = !field    || card.dataset.field === field;
+
+            const show = matchSearch && matchType && matchLocation && matchField;
+            card.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+
+        emptyState.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    typeSelect.addEventListener('change', applyFilters);
+    locationSelect.addEventListener('change', applyFilters);
+    fieldSelect.addEventListener('change', applyFilters);
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+        searchInput.value      = '';
+        typeSelect.value       = '';
+        locationSelect.value   = '';
+        fieldSelect.value      = '';
+        document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+        document.querySelector('.type-chip[data-filter="all"]').classList.add('active');
+        applyFilters();
+    });
+
+    /* ── Type Chips ── */
+    document.querySelectorAll('.type-chip').forEach(chip => {
+        chip.addEventListener('click', function () {
+            document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+
+            const filter = this.dataset.filter;
+
+            cards.forEach(card => {
+                if (filter === 'all') {
+                    card.style.display = '';
+                } else if (filter === 'remote') {
+                    card.style.display = card.dataset.location === 'remote' ? '' : 'none';
+                } else {
+                    card.style.display = card.dataset.type === filter ? '' : 'none';
+                }
+            });
+
+            const visible = cards.filter(c => c.style.display !== 'none').length;
+            emptyState.style.display = visible === 0 ? 'block' : 'none';
+
+            /* reset dropdowns when using chips */
+            typeSelect.value     = '';
+            locationSelect.value = '';
+            fieldSelect.value    = '';
+            searchInput.value    = '';
+        });
+    });
+
+    /* ── Apply Button ── */
+    function applyJob(btn, title) {
+        if (confirm('Apply for "' + title + '"?\n\nYou will be redirected to the company\'s application portal.')) {
+            btn.textContent = '✓ Applied!';
+            btn.style.background = 'linear-gradient(135deg,#4CAF50,#66BB6A)';
+            btn.disabled = true;
+        }
+    }
+
+    /* ── Save Button ── */
+    function toggleSaveJob(btn) {
+        btn.classList.toggle('saved');
+        btn.innerHTML = btn.classList.contains('saved')
+            ? '<i class="fas fa-heart"></i> Saved'
+            : '<i class="fas fa-heart"></i> Save';
+    }
+
+    /* ── Pagination (UI only) ── */
+    document.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (this.querySelector('i')) return;
+            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
+
+</body>
+</html>
