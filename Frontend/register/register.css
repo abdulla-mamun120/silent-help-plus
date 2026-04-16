@@ -1,0 +1,140 @@
+/* ROOT */
+:root {
+    --primary-blue: #1565C0;
+    --secondary-green: #4CAF50;
+    --white: #fff;
+    --text-primary: #222;
+    --text-secondary: #555;
+    --error: #F44336;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Poppins;
+    background: linear-gradient(135deg, #E3F2FD, #81D4FA);
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background: white;
+}
+
+.logo {
+    font-weight: bold;
+    color: var(--primary-blue);
+    text-decoration: none;
+}
+
+.btn-login {
+    border: 2px solid var(--primary-blue);
+    padding: 6px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+/* MAIN */
+.main-content {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.register-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+/* FORM */
+.register-form-container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* BUTTON */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ERROR */
+.error-msg {
+    color: var(--error);
+    font-size: 12px;
+    display: none;
+}
+
+.error-msg.show {
+    display: block;
+}
+
+/* SUCCESS */
+.success-message {
+    display: none;
+    text-align: center;
+}
+
+.success-message.show {
+    display: block;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .register-wrapper{
+        grid-template-columns: 1fr;
+    }
+}
+body.dark-mode {
+    background: #121212;
+    color: #e0e0e0;
+}
+
+/* navbar */
+body.dark-mode .navbar {
+    background: #1e1e1e;
+}
+
+/* form box */
+body.dark-mode .register-form-container {
+    background: #1e1e1e;
+}
+
+/* logo */
+body.dark-mode .logo {
+    color: #64B5F6;
+}
+
+/* login button */
+body.dark-mode .btn-login {
+    border-color: #64B5F6;
+    color: #64B5F6;
+}
+
+/* inputs */
+body.dark-mode .form-control {
+    background: #2a2a2a;
+    color: white;
+    border-color: #444;
+}

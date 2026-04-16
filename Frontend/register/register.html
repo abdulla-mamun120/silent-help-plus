@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Silent Help Plus</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="../index/index.html" class="logo">Silent Help Plus</a>
+    <div class="nav-right">
+        <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
+        <a href="../login/login.html" class="btn-login">Login</a>
+    </div>
+</nav>
+
+<!-- Main -->
+<div class="main-content">
+    <div class="register-wrapper">
+
+        <!-- Info -->
+        <div class="register-info">
+            <h1>Join Silent Help Plus</h1>
+            <p>Create your free account...</p>
+
+            <div class="info-badges">
+                <div class="info-badge"><i class="fas fa-user-secret"></i> Anonymous Q&A</div>
+                <div class="info-badge"><i class="fas fa-book-open"></i> Study Resources</div>
+                <div class="info-badge"><i class="fas fa-graduation-cap"></i> Scholarships</div>
+                <div class="info-badge"><i class="fas fa-users"></i> Community</div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="register-form-container">
+
+            <div id="form-section">
+
+                <div class="form-header">
+                    <h2>Create Account</h2>
+                </div>
+
+                <form id="register-form">
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="fullname" class="form-control">
+                        <div class="error-msg" id="fullname-error">Required</div>
+                    </div>
+
+                    <div class="form-row">
+                        <input type="text" id="student-id" class="form-control" placeholder="Student ID">
+
+                        <select id="department" class="form-control">
+                            <option value="">Department</option>
+                            <option>CSE</option>
+                            <option>EEE</option>
+                        </select>
+                    </div>
+
+                    <input type="email" id="email" class="form-control" placeholder="Email">
+
+                    <input type="password" id="password" class="form-control" placeholder="Password">
+
+                    <input type="password" id="confirm-password" class="form-control" placeholder="Confirm Password">
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms">
+                        <label>I agree to terms</label>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submit-btn">
+                        Create Account
+                    </button>
+
+                </form>
+            </div>
+
+            <!-- Success -->
+            <div class="success-message" id="success-message">
+                <h3>Success!</h3>
+                <p>Check your email</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="register.js"></script>
+</body>
+</html>
