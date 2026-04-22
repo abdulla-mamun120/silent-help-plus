@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <button class="sidebar-toggle" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="index.html" class="logo">Silent Help Plus</a>
+        </div>
+        <div class="navbar-right">
+            <button class="nav-icon-btn" id="dark-mode-toggle">🌙</button>
+            <button class="nav-icon-btn">
+                <i class="fas fa-bell"></i>
+                <span class="notif-badge">3</span>
+            </button>
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-user">
+            <div class="sidebar-user-avatar">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="sidebar-user-name">John Student</div>
+            <div class="sidebar-user-dept">CSE Department</div>
+            <div class="sidebar-user-id">Anon_CS_2431</div>
+        </div>
+
+        <div class="nav-section-title">Main Menu</div>
+        <a class="nav-item active" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&A Forum <span class="nav-badge">12</span></a>
+        <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+        <div class="nav-section-title">Opportunities</div>
+        <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">5</span></a>
+        <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+        <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+        <div class="nav-section-title">Connect</div>
+        <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+        <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+        <div class="sidebar-divider"></div>
+        <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+
+        <div class="page-header">
+            <h1>Welcome back, John! 👋</h1>
+            <p>Here's what's happening in your department today.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-question-circle"></i></div>
+                <div class="stat-info"><h3>8</h3><p>Questions Asked</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-info"><h3>3</h3><p>Resources Uploaded</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-graduation-cap"></i></div>
+                <div class="stat-info"><h3>5</h3><p>New Scholarships</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple"><i class="fas fa-handshake"></i></div>
+                <div class="stat-info"><h3>2</h3><p>Mentor Connections</p></div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Recent Q&A in Your Department</h2>
+                    <a href="qa.html" class="card-link">View All →</a>
+                </div>
+                <div class="question-item">
+                    <div class="question-top">
+                        <div class="question-title">How to implement Binary Search Tree delete in C++?</div>
+                        <span class="question-dept dept-cs">CSE</span>
+                    </div>
+                    <div class="question-meta">
+                        <span><i class="fas fa-user"></i> Anon_CS_2431</span>
+                        <span><i class="fas fa-comment"></i> 8 answers</span>
+                        <span><i class="fas fa-arrow-up"></i> 15 votes</span>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-top">
+                        <div class="question-title">Best resources for learning Machine Learning?</div>
+                        <span class="question-dept dept-cs">CSE</span>
+                    </div>
+                    <div class="question-meta">
+                        <span><i class="fas fa-user"></i> Anon_CS_1102</span>
+                        <span><i class="fas fa-comment"></i> 5 answers</span>
+                        <span><i class="fas fa-arrow-up"></i> 21 votes</span>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-top">
+                        <div class="question-title">Explain database normalization with examples</div>
+                        <span class="question-dept dept-cs">CSE</span>
+                    </div>
+                    <div class="question-meta">
+                        <span><i class="fas fa-user"></i> Anon_CS_3344</span>
+                        <span><i class="fas fa-comment"></i> 3 answers</span>
+                        <span><i class="fas fa-arrow-up"></i> 9 votes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h2>Quick Actions</h2></div>
+                <div class="quick-actions">
+                    <a href="qa.html" class="action-btn qa"><i class="fas fa-question-circle"></i> Ask Question</a>
+                    <a href="resources.html" class="action-btn resource"><i class="fas fa-upload"></i> Upload Resource</a>
+                    <a href="scholarships.html" class="action-btn scholarship"><i class="fas fa-graduation-cap"></i> Scholarships</a>
+                    <a href="jobs.html" class="action-btn job"><i class="fas fa-briefcase"></i> Find Jobs</a>
+                    <a href="books.html" class="action-btn book"><i class="fas fa-book-open"></i> Book Exchange</a>
+                    <a href="mentorship.html" class="action-btn mentor"><i class="fas fa-users"></i> Find Mentor</a>
+                    <a href="report.html" class="action-btn report" style="grid-column: span 2;">
+                        <i class="fas fa-shield-alt"></i> Report an Issue
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Grid -->
+        <div class="bottom-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Latest Opportunities</h2>
+                    <a href="scholarships.html" class="card-link">View All →</a>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opp-icon scholarship"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="opp-info">
+                        <div class="opp-title">Merit Scholarship 2025</div>
+                        <div class="opp-meta">Deadline: March 15 • $5,000</div>
+                    </div>
+                    <span class="opp-tag tag-green">Open</span>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opp-icon job"><i class="fas fa-briefcase"></i></div>
+                    <div class="opp-info">
+                        <div class="opp-title">Junior Developer Intern</div>
+                        <div class="opp-meta">TechCorp BD • Part-time</div>
+                    </div>
+                    <span class="opp-tag tag-purple">New</span>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opp-icon scholarship"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="opp-info">
+                        <div class="opp-title">Need-Based Financial Aid</div>
+                        <div class="opp-meta">Deadline: Feb 28 • $2,000</div>
+                    </div>
+                    <span class="opp-tag tag-green">Open</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Available Mentors</h2>
+                    <a href="mentorship.html" class="card-link">View All →</a>
+                </div>
+                <div class="mentor-item">
+                    <div class="mentor-avatar"><i class="fas fa-user"></i></div>
+                    <div><div class="mentor-name">Senior_CS_001</div><div class="mentor-skill">Python, ML, DSA</div></div>
+                    <button class="btn-connect">Connect</button>
+                </div>
+                <div class="mentor-item">
+                    <div class="mentor-avatar"><i class="fas fa-user"></i></div>
+                    <div><div class="mentor-name">Senior_CS_047</div><div class="mentor-skill">Web Dev, React</div></div>
+                    <button class="btn-connect">Connect</button>
+                </div>
+                <div class="mentor-item">
+                    <div class="mentor-avatar"><i class="fas fa-user"></i></div>
+                    <div><div class="mentor-name">Senior_CS_089</div><div class="mentor-skill">Database, Java</div></div>
+                    <button class="btn-connect">Connect</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h2>Your Recent Activity</h2></div>
+                <div class="activity-item">
+                    <div class="activity-dot dot-blue"></div>
+                    <div><div class="activity-text">You asked a question about BST in C++</div><div class="activity-time">2 hours ago</div></div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot dot-green"></div>
+                    <div><div class="activity-text">Uploaded "Data Structures Notes Sem 4"</div><div class="activity-time">1 day ago</div></div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot dot-orange"></div>
+                    <div><div class="activity-text">Applied for Merit Scholarship 2025</div><div class="activity-time">3 days ago</div></div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-dot dot-purple"></div>
+                    <div><div class="activity-text">Connected with mentor Senior_CS_001</div><div class="activity-time">5 days ago</div></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

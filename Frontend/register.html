@@ -701,16 +701,41 @@
             if (!terms) { showError('terms-error', true); valid = false; }
             else showError('terms-error', false);
 
-            if (valid) {
-                const btn = document.getElementById('submit-btn');
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+if (valid) {
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
 
-                setTimeout(() => {
-                    document.getElementById('form-section').style.display = 'none';
-                    document.getElementById('success-message').classList.add('show');
-                }, 1500);
-            }
+    const data = {
+        name: fullname,
+        email: email,
+        password: password,
+        department: dept,
+        student_id: studentId
+    };
+
+    fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(result => {
+        if (result.message === 'Registration successful!') {
+            document.getElementById('form-section').style.display = 'none';
+            document.getElementById('success-message').classList.add('show');
+        } else {
+            alert(result.message);
+            btn.disabled = false;
+            btn.innerHTML = '<span>Create Account</span><i class="fas fa-user-plus"></i>';
+        }
+    })
+    .catch(err => {
+        alert('Something went wrong! Try again.');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Create Account</span><i class="fas fa-user-plus"></i>';
+    });
+}
         });
     </script>
 </body>

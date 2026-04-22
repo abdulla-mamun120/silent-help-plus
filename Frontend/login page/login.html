@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">Silent Help Plus</a>
+        <div class="nav-right">
+            <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
+            <a href="register.html" class="btn-register">Register</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="login-wrapper">
+
+            <!-- Left Info -->
+            <div class="login-info">
+                <h1>Welcome Back!</h1>
+                <p>Login to access your anonymous Q&A, study resources, scholarships, job board, mentorship and more.</p>
+
+                <div class="info-badges">
+                    <div class="info-badge">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Ask questions anonymously</span>
+                    </div>
+                    <div class="info-badge">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Access department study materials</span>
+                    </div>
+                    <div class="info-badge">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Browse jobs & scholarships</span>
+                    </div>
+                    <div class="info-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Report issues anonymously</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="login-form-container">
+
+                <div class="form-header">
+                    <div class="form-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <h2>Sign In</h2>
+                    <p>Enter your credentials to continue</p>
+                </div>
+
+                <!-- Error Alert -->
+                <div class="alert alert-error" id="login-alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="alert-text">Invalid email or password. Please try again.</span>
+                </div>
+
+                <form id="login-form" novalidate>
+
+                    <!-- Email / Student ID -->
+                    <div class="form-group">
+                        <label>Email or Student ID <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" class="form-control" id="login-id"
+                                placeholder="your.email@university.edu" required>
+                        </div>
+                        <div class="error-msg" id="loginid-error">Please enter your email or Student ID.</div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" class="form-control" id="login-password"
+                                placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" id="toggle-pass">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="error-msg" id="pass-error">Please enter your password.</div>
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="form-options">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submit-btn">
+                        <span>Sign In</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+
+                    <div class="divider">or</div>
+
+                    <div class="form-footer">
+                        Don't have an account? <a href="register.html">Register now</a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-simple">
+        &copy; 2025 Silent Help Plus &nbsp;|&nbsp;
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
