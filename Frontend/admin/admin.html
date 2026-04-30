@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --error-red: #F44336;
+            --warning-orange: #FF9800;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 240px;
+            --navbar-height: 65px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        .navbar {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; z-index: 1000;
+        }
+
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .admin-badge {
+            background-color: var(--error-red);
+            color: white; font-size: 11px;
+            padding: 3px 10px; border-radius: 10px;
+            font-weight: 600; margin-left: 10px;
+        }
+
+        .sidebar {
+            position: fixed; top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            padding: 20px 0; z-index: 900;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 20px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px;
+            font-weight: 500; cursor: pointer;
+            border: none; background: none; width: 100%;
+            text-align: left; transition: all 0.2s;
+        }
+
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+        .nav-item.active { background-color: var(--light-blue); color: var(--primary-blue); border-right: 3px solid var(--primary-blue); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .nav-badge {
+            margin-left: auto; background-color: var(--error-red);
+            color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 { font-size: 24px; font-weight: 700; color: var(--text-primary); }
+        .page-header p { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
+
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 18px; margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: var(--white); border-radius: 12px;
+            padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 14px;
+        }
+
+        .stat-icon {
+            width: 46px; height: 46px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white;
+        }
+
+        .stat-icon.blue { background: linear-gradient(135deg, #1565C0, #1976D2); }
+        .stat-icon.orange { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+        .stat-icon.red { background: linear-gradient(135deg, #F44336, #EF9A9A); }
+        .stat-icon.green { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+
+        .stat-info h3 { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+        .stat-info p { font-size: 12px; color: var(--text-tertiary); }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .card {
+            background-color: var(--white); border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 22px; border-bottom: 1px solid #F0F0F0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .card-header h2 { font-size: 17px; color: var(--text-primary); }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th {
+            padding: 12px 18px; text-align: left;
+            font-size: 12px; font-weight: 600;
+            color: var(--text-tertiary); text-transform: uppercase;
+            background-color: var(--light-gray); border-bottom: 1px solid #E0E0E0;
+        }
+
+        td {
+            padding: 14px 18px; font-size: 13px;
+            color: var(--text-secondary); border-bottom: 1px solid #F5F5F5;
+        }
+
+        tr:hover td { background-color: #FAFAFA; }
+
+        .status-badge {
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 11px; font-weight: 600;
+        }
+
+        .status-pending { background-color: #FFF8E1; color: #F57F17; }
+        .status-approved { background-color: #E8F5E9; color: #2E7D32; }
+        .status-rejected { background-color: #FFEBEE; color: #C62828; }
+        .status-investigating { background-color: #E3F2FD; color: #1565C0; }
+        .status-resolved { background-color: #E8F5E9; color: #2E7D32; }
+
+        .btn {
+            padding: 6px 14px; border-radius: 7px;
+            font-size: 12px; font-weight: 600; cursor: pointer;
+            border: none; font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-approve { background-color: #E8F5E9; color: #2E7D32; }
+        .btn-approve:hover { background-color: #4CAF50; color: white; }
+        .btn-reject { background-color: #FFEBEE; color: #C62828; }
+        .btn-reject:hover { background-color: #F44336; color: white; }
+        .btn-investigate { background-color: #E3F2FD; color: #1565C0; }
+        .btn-investigate:hover { background-color: #1565C0; color: white; }
+        .btn-resolve { background-color: #E8F5E9; color: #2E7D32; }
+        .btn-resolve:hover { background-color: #4CAF50; color: white; }
+
+        .action-btns { display: flex; gap: 8px; }
+
+        .loading {
+            text-align: center; padding: 40px;
+            color: var(--text-tertiary); font-size: 14px;
+        }
+
+        .empty {
+            text-align: center; padding: 40px;
+            color: var(--text-tertiary); font-size: 14px;
+        }
+
+        .empty i { font-size: 40px; margin-bottom: 10px; display: block; opacity: 0.3; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div style="display:flex; align-items:center;">
+        <span class="logo">Silent Help Plus</span>
+        <span class="admin-badge">ADMIN</span>
+    </div>
+    <div style="font-size:13px; color:var(--text-tertiary);">
+        <i class="fas fa-user-shield"></i> Admin Panel
+    </div>
+</nav>
+
+<aside class="sidebar">
+    <button class="nav-item active" onclick="showSection('resources')">
+        <i class="fas fa-file-alt"></i> Pending Resources
+        <span class="nav-badge" id="resource-count">0</span>
+    </button>
+    <button class="nav-item" onclick="showSection('reports')">
+        <i class="fas fa-shield-alt"></i> Reports
+        <span class="nav-badge" id="report-count">0</span>
+    </button>
+    <div style="height:1px; background:#E0E0E0; margin:12px 20px;"></div>
+    <a class="nav-item" href="dashboard.html">
+        <i class="fas fa-arrow-left"></i> Back to Site
+    </a>
+</aside>
+
+<main class="main-content">
+
+    <div class="page-header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage resources and reports</p>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+            <div class="stat-info"><h3 id="stat-pending-resources">0</h3><p>Pending Resources</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-check"></i></div>
+            <div class="stat-info"><h3 id="stat-approved-resources">0</h3><p>Approved Resources</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-shield-alt"></i></div>
+            <div class="stat-info"><h3 id="stat-pending-reports">0</h3><p>Pending Reports</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-check-double"></i></div>
+            <div class="stat-info"><h3 id="stat-resolved-reports">0</h3><p>Resolved Reports</p></div>
+        </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="section active" id="section-resources">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-file-alt"></i> Resource Requests</h2>
+            </div>
+            <div id="resources-table-container">
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports Section -->
+    <div class="section" id="section-reports">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-shield-alt"></i> Submitted Reports</h2>
+            </div>
+            <div id="reports-table-container">
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    // Show Section
+    function showSection(name) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('section-' + name).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // Load Resources
+    async function loadResources() {
+        try {
+            const res = await fetch('http://localhost:5000/api/admin/resources');
+            const data = await res.json();
+
+            if (!data.success) return;
+
+            const resources = data.resources;
+            const pending = resources.filter(r => r.status === 'pending').length;
+            const approved = resources.filter(r => r.status === 'approved').length;
+
+            document.getElementById('stat-pending-resources').textContent = pending;
+            document.getElementById('stat-approved-resources').textContent = approved;
+            document.getElementById('resource-count').textContent = pending;
+
+            if (resources.length === 0) {
+                document.getElementById('resources-table-container').innerHTML = `
+                    <div class="empty"><i class="fas fa-folder-open"></i> No resources found</div>`;
+                return;
+            }
+
+            let html = `<table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Department</th>
+                        <th>Type</th>
+                        <th>Uploaded By</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            resources.forEach(r => {
+                const date = new Date(r.created_at).toLocaleDateString();
+                html += `<tr>
+                    <td><strong>${r.title}</strong><br><small style="color:var(--text-tertiary)">${r.subject || ''} • ${r.file_size || ''}</small></td>
+                    <td>${r.department} • Sem ${r.semester}</td>
+                    <td>${r.resource_type}</td>
+                    <td>${r.anonymous_id}</td>
+                    <td>${date}</td>
+                    <td><span class="status-badge status-${r.status}">${r.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            ${r.status !== 'approved' ? `<button class="btn btn-approve" onclick="updateResource(${r.id}, 'approved')">Approve</button>` : ''}
+                            ${r.status !== 'rejected' ? `<button class="btn btn-reject" onclick="updateResource(${r.id}, 'rejected')">Reject</button>` : ''}
+                        </div>
+                    </td>
+                </tr>`;
+            });
+
+            html += `</tbody></table>`;
+            document.getElementById('resources-table-container').innerHTML = html;
+
+        } catch (err) {
+            document.getElementById('resources-table-container').innerHTML = `
+                <div class="empty"><i class="fas fa-exclamation-circle"></i> Could not load resources</div>`;
+        }
+    }
+
+    // Load Reports
+    async function loadReports() {
+        try {
+            const res = await fetch('http://localhost:5000/api/admin/reports');
+            const data = await res.json();
+
+            if (!data.success) return;
+
+            const reports = data.reports;
+            const pending = reports.filter(r => r.status === 'pending').length;
+            const resolved = reports.filter(r => r.status === 'resolved').length;
+
+            document.getElementById('stat-pending-reports').textContent = pending;
+            document.getElementById('stat-resolved-reports').textContent = resolved;
+            document.getElementById('report-count').textContent = reports.length;
+
+            if (reports.length === 0) {
+                document.getElementById('reports-table-container').innerHTML = `
+                    <div class="empty"><i class="fas fa-shield-alt"></i> No reports found</div>`;
+                return;
+            }
+
+            let html = `<table>
+                <thead>
+                    <tr>
+                        <th>Report ID</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Reporter</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            reports.forEach(r => {
+                const date = new Date(r.created_at).toLocaleDateString();
+                const desc = r.description.length > 60 ? r.description.substring(0, 60) + '...' : r.description;
+                html += `<tr>
+                    <td><strong>${r.anonymous_id}</strong></td>
+                    <td>${r.report_type}</td>
+                    <td>${desc}</td>
+                    <td>User #${r.reporter_id}</td>
+                    <td>${date}</td>
+                    <td><span class="status-badge status-${r.status}">${r.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            ${r.status === 'pending' ? `<button class="btn btn-investigate" onclick="updateReport(${r.id}, 'investigating')">Investigate</button>` : ''}
+                            ${r.status !== 'resolved' ? `<button class="btn btn-resolve" onclick="updateReport(${r.id}, 'resolved')">Resolve</button>` : ''}
+                        </div>
+                    </td>
+                </tr>`;
+            });
+
+            html += `</tbody></table>`;
+            document.getElementById('reports-table-container').innerHTML = html;
+
+        } catch (err) {
+            document.getElementById('reports-table-container').innerHTML = `
+                <div class="empty"><i class="fas fa-exclamation-circle"></i> Could not load reports</div>`;
+        }
+    }
+
+    // Update Resource Status
+    async function updateResource(id, status) {
+        try {
+            const res = await fetch(`http://localhost:5000/api/admin/resources/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert(`✅ Resource ${status}!`);
+                loadResources();
+            }
+        } catch (err) {
+            alert('Could not connect to server.');
+        }
+    }
+
+    // Update Report Status
+    async function updateReport(id, status) {
+        try {
+            const res = await fetch(`http://localhost:5000/api/admin/reports/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert(`✅ Report updated!`);
+                loadReports();
+            }
+        } catch (err) {
+            alert('Could not connect to server.');
+        }
+    }
+
+    // Init
+    loadResources();
+    loadReports();
+</script>
+
+</body>
+</html>

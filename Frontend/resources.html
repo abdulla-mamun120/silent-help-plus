@@ -37,7 +37,6 @@
             --text-tertiary: #999999;
         }
 
-        /* Navbar */
         .navbar {
             position: fixed; top: 0; left: 0;
             width: 100%; height: var(--navbar-height);
@@ -88,7 +87,6 @@
             color: white; font-size: 16px; cursor: pointer;
         }
 
-        /* Sidebar */
         .sidebar {
             position: fixed; top: var(--navbar-height); left: 0;
             width: var(--sidebar-width);
@@ -147,7 +145,6 @@
 
         .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
 
-        /* Main */
         .main-content {
             margin-left: var(--sidebar-width);
             margin-top: var(--navbar-height);
@@ -156,7 +153,6 @@
 
         .main-content.expanded { margin-left: 0; }
 
-        /* Page Header */
         .page-header {
             display: flex; justify-content: space-between;
             align-items: flex-start; margin-bottom: 25px;
@@ -178,7 +174,6 @@
 
         .btn-upload:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76,175,80,0.3); }
 
-        /* Stats */
         .stats-row {
             display: grid; grid-template-columns: repeat(4, 1fr);
             gap: 18px; margin-bottom: 25px;
@@ -205,7 +200,6 @@
         .stat-info h3 { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
         .stat-info p { font-size: 12px; color: var(--text-tertiary); }
 
-        /* Filters */
         .filters-bar {
             background-color: var(--white); border-radius: 12px;
             padding: 18px 22px; margin-bottom: 22px;
@@ -253,7 +247,6 @@
             background-color: var(--primary-blue); color: white; border-color: var(--primary-blue);
         }
 
-        /* Category Tabs */
         .category-tabs {
             display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap;
         }
@@ -271,7 +264,6 @@
             color: white; border-color: var(--secondary-green);
         }
 
-        /* Resources Grid */
         .resources-grid {
             display: grid; grid-template-columns: repeat(3, 1fr);
             gap: 20px;
@@ -363,7 +355,6 @@
 
         .btn-download:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(76,175,80,0.3); }
 
-        /* List View */
         .resources-grid.list-view .resource-card {
             display: flex; flex-direction: row; align-items: center;
         }
@@ -372,7 +363,6 @@
         .resources-grid.list-view .resource-tags { padding: 0 10px; }
         .resources-grid.list-view .resource-footer { border-top: none; border-left: 1px solid #F0F0F0; padding: 15px 20px; flex-direction: column; gap: 8px; }
 
-        /* Upload Modal */
         .modal-overlay {
             position: fixed; inset: 0;
             background-color: rgba(0,0,0,0.5);
@@ -425,7 +415,7 @@
             transition: all 0.2s; background-color: #F9FBE7;
         }
 
-        .file-upload-area:hover { border-color: var(--secondary-green); background-color: var(--light-green); }
+        .file-upload-area:hover { border-color: var(--secondary-green); }
 
         body.dark-mode .file-upload-area { background-color: #1A2E1F; border-color: #2E7D32; }
 
@@ -453,7 +443,6 @@
 
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76,175,80,0.3); }
 
-        /* Responsive */
         @media (max-width: 1100px) { .resources-grid { grid-template-columns: repeat(2, 1fr); } }
 
         @media (max-width: 768px) {
@@ -469,11 +458,10 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-left">
             <button class="sidebar-toggle" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
-            <a href="index.html" class="logo">Silent Help Plus</a>
+            <a href="/index.html" class="logo">Silent Help Plus</a>
         </div>
         <div class="navbar-right">
             <button class="nav-icon-btn" id="dark-mode-toggle">🌙</button>
@@ -485,7 +473,6 @@
         </div>
     </nav>
 
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-user">
             <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
@@ -495,24 +482,23 @@
         </div>
 
         <div class="nav-section-title">Main Menu</div>
-        <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-        <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&A Forum <span class="nav-badge">12</span></a>
-        <a class="nav-item active" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+        <a class="nav-item" href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a class="nav-item" href="/qa.html"><i class="fas fa-question-circle"></i> Q&A Forum <span class="nav-badge">12</span></a>
+        <a class="nav-item active" href="/resources.html"><i class="fas fa-book"></i> Study Resources</a>
 
         <div class="nav-section-title">Opportunities</div>
-        <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">5</span></a>
-        <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
-        <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+        <a class="nav-item" href="/scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">5</span></a>
+        <a class="nav-item" href="/jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+        <a class="nav-item" href="/books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
 
         <div class="nav-section-title">Connect</div>
-        <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
-        <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+        <a class="nav-item" href="/mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+        <a class="nav-item" href="/report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
 
         <div class="sidebar-divider"></div>
-        <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a class="nav-item" href="/index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content" id="main-content">
 
         <div class="page-header">
@@ -525,27 +511,24 @@
             </button>
         </div>
 
-        <!-- Stats -->
         <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-icon blue"><i class="fas fa-file-alt"></i></div>
-                <div class="stat-info"><h3>524</h3><p>Total Resources</p></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon green"><i class="fas fa-download"></i></div>
-                <div class="stat-info"><h3>12K+</h3><p>Total Downloads</p></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon orange"><i class="fas fa-upload"></i></div>
-                <div class="stat-info"><h3>3</h3><p>My Uploads</p></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon teal"><i class="fas fa-star"></i></div>
-                <div class="stat-info"><h3>4.8</h3><p>Avg Rating</p></div>
-            </div>
-        </div>
-
-        <!-- Filters -->
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-file-alt"></i></div>
+        <div class="stat-info"><h3 id="total-resources">0</h3><p>Total Resources</p></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fas fa-download"></i></div>
+        <div class="stat-info"><h3 id="total-downloads">0</h3><p>Total Downloads</p></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon orange"><i class="fas fa-upload"></i></div>
+        <div class="stat-info"><h3 id="my-uploads">0</h3><p>My Uploads</p></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon teal"><i class="fas fa-star"></i></div>
+        <div class="stat-info"><h3>N/A</h3><p>Avg Rating</p></div>
+    </div>
+</div>
         <div class="filters-bar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
@@ -553,7 +536,7 @@
             </div>
             <select class="filter-select" id="dept-filter">
                 <option value="">All Departments</option>
-                <option value="CSE" selected>CSE</option>
+                <option value="CSE">CSE</option>
                 <option value="EEE">EEE</option>
                 <option value="BBA">BBA</option>
             </select>
@@ -579,7 +562,6 @@
             </div>
         </div>
 
-        <!-- Category Tabs -->
         <div class="category-tabs">
             <button class="cat-tab active" data-type="all"><i class="fas fa-layer-group"></i> All</button>
             <button class="cat-tab" data-type="notes"><i class="fas fa-file-alt"></i> Lecture Notes</button>
@@ -588,187 +570,9 @@
             <button class="cat-tab" data-type="slides"><i class="fas fa-desktop"></i> Slides</button>
         </div>
 
-        <!-- Resources Grid -->
-        <div class="resources-grid" id="resources-grid">
-
-            <div class="resource-card" data-dept="CSE" data-type="notes">
-                <div class="resource-card-header">
-                    <div class="file-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                    <div class="resource-info">
-                        <div class="resource-title">Data Structures Complete Notes - Semester 4</div>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-user"></i> Uploaded by Anon_CS_099</span>
-                            <span><i class="fas fa-calendar"></i> Jan 15, 2025</span>
-                            <span><i class="fas fa-file"></i> 4.2 MB</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="resource-tags">
-                    <span class="tag tag-cs">CSE</span>
-                    <span class="tag tag-subject">Sem 4</span>
-                    <span class="tag tag-subject">Data Structures</span>
-                    <span class="tag tag-approved">✓ Approved</span>
-                </div>
-                <div class="resource-footer">
-                    <div class="resource-stats">
-                        <span><i class="fas fa-download"></i> 234</span>
-                        <span><i class="fas fa-star"></i> 4.8</span>
-                    </div>
-                    <button class="btn-download" onclick="downloadResource(this)">
-                        <i class="fas fa-download"></i> Download
-                    </button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-dept="CSE" data-type="past">
-                <div class="resource-card-header">
-                    <div class="file-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                    <div class="resource-info">
-                        <div class="resource-title">Database Management System Past Papers 2022-2024</div>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-user"></i> Uploaded by Anon_CS_201</span>
-                            <span><i class="fas fa-calendar"></i> Feb 2, 2025</span>
-                            <span><i class="fas fa-file"></i> 2.8 MB</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="resource-tags">
-                    <span class="tag tag-cs">CSE</span>
-                    <span class="tag tag-subject">Sem 5</span>
-                    <span class="tag tag-subject">DBMS</span>
-                    <span class="tag tag-approved">✓ Approved</span>
-                </div>
-                <div class="resource-footer">
-                    <div class="resource-stats">
-                        <span><i class="fas fa-download"></i> 189</span>
-                        <span><i class="fas fa-star"></i> 4.9</span>
-                    </div>
-                    <button class="btn-download" onclick="downloadResource(this)">
-                        <i class="fas fa-download"></i> Download
-                    </button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-dept="CSE" data-type="slides">
-                <div class="resource-card-header">
-                    <div class="file-icon ppt"><i class="fas fa-file-powerpoint"></i></div>
-                    <div class="resource-info">
-                        <div class="resource-title">Object Oriented Programming - Full Lecture Slides</div>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-user"></i> Uploaded by Anon_CS_445</span>
-                            <span><i class="fas fa-calendar"></i> Jan 28, 2025</span>
-                            <span><i class="fas fa-file"></i> 8.1 MB</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="resource-tags">
-                    <span class="tag tag-cs">CSE</span>
-                    <span class="tag tag-subject">Sem 3</span>
-                    <span class="tag tag-subject">OOP</span>
-                    <span class="tag tag-approved">✓ Approved</span>
-                </div>
-                <div class="resource-footer">
-                    <div class="resource-stats">
-                        <span><i class="fas fa-download"></i> 312</span>
-                        <span><i class="fas fa-star"></i> 4.7</span>
-                    </div>
-                    <button class="btn-download" onclick="downloadResource(this)">
-                        <i class="fas fa-download"></i> Download
-                    </button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-dept="EEE" data-type="notes">
-                <div class="resource-card-header">
-                    <div class="file-icon doc"><i class="fas fa-file-word"></i></div>
-                    <div class="resource-info">
-                        <div class="resource-title">Circuit Theory Complete Notes with Examples</div>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-user"></i> Uploaded by Anon_EEE_112</span>
-                            <span><i class="fas fa-calendar"></i> Feb 5, 2025</span>
-                            <span><i class="fas fa-file"></i> 3.5 MB</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="resource-tags">
-                    <span class="tag tag-eee">EEE</span>
-                    <span class="tag tag-subject">Sem 2</span>
-                    <span class="tag tag-subject">Circuit Theory</span>
-                    <span class="tag tag-approved">✓ Approved</span>
-                </div>
-                <div class="resource-footer">
-                    <div class="resource-stats">
-                        <span><i class="fas fa-download"></i> 145</span>
-                        <span><i class="fas fa-star"></i> 4.6</span>
-                    </div>
-                    <button class="btn-download" onclick="downloadResource(this)">
-                        <i class="fas fa-download"></i> Download
-                    </button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-dept="BBA" data-type="assignment">
-                <div class="resource-card-header">
-                    <div class="file-icon doc"><i class="fas fa-file-word"></i></div>
-                    <div class="resource-info">
-                        <div class="resource-title">Marketing Management Assignment Samples</div>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-user"></i> Uploaded by Anon_BBA_334</span>
-                            <span><i class="fas fa-calendar"></i> Jan 20, 2025</span>
-                            <span><i class="fas fa-file"></i> 1.2 MB</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="resource-tags">
-                    <span class="tag tag-bba">BBA</span>
-                    <span class="tag tag-subject">Sem 3</span>
-                    <span class="tag tag-subject">Marketing</span>
-                    <span class="tag tag-pending">⏳ Pending</span>
-                </div>
-                <div class="resource-footer">
-                    <div class="resource-stats">
-                        <span><i class="fas fa-download"></i> 0</span>
-                        <span><i class="fas fa-star"></i> —</span>
-                    </div>
-                    <button class="btn-download" disabled style="opacity:0.5; cursor:not-allowed;">
-                        <i class="fas fa-clock"></i> Pending
-                    </button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-dept="CSE" data-type="past">
-                <div class="resource-card-header">
-                    <div class="file-icon zip"><i class="fas fa-file-archive"></i></div>
-                    <div class="resource-info">
-                        <div class="resource-title">Algorithm Design Past Papers + Solutions Bundle</div>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-user"></i> Uploaded by Anon_CS_567</span>
-                            <span><i class="fas fa-calendar"></i> Feb 10, 2025</span>
-                            <span><i class="fas fa-file"></i> 11.4 MB</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="resource-tags">
-                    <span class="tag tag-cs">CSE</span>
-                    <span class="tag tag-subject">Sem 5</span>
-                    <span class="tag tag-subject">Algorithms</span>
-                    <span class="tag tag-approved">✓ Approved</span>
-                </div>
-                <div class="resource-footer">
-                    <div class="resource-stats">
-                        <span><i class="fas fa-download"></i> 278</span>
-                        <span><i class="fas fa-star"></i> 5.0</span>
-                    </div>
-                    <button class="btn-download" onclick="downloadResource(this)">
-                        <i class="fas fa-download"></i> Download
-                    </button>
-                </div>
-            </div>
-
-        </div>
+        <div class="resources-grid" id="resources-grid"></div>
     </main>
 
-    <!-- Upload Modal -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
             <div class="modal-header">
@@ -833,8 +637,8 @@
                         <i class="fas fa-cloud-upload-alt"></i>
                         <p>Click to browse or drag & drop</p>
                         <small>PDF, DOC, PPT, ZIP — Max 20MB</small>
-                        <input type="file" id="file-input" style="display:none" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip">
                     </div>
+                    <input type="file" id="file-input" style="display:none" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip">
                 </div>
 
                 <div class="form-group">
@@ -850,110 +654,246 @@
     </div>
 
     <script>
-        // Dark Mode
-        const dmToggle = document.getElementById('dark-mode-toggle');
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            dmToggle.textContent = '☀️';
-        }
-        dmToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            dmToggle.textContent = isDark ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDark ? 'enabled' : null);
-        });
+    const API = 'http://localhost:5000';
 
-        // Sidebar Toggle
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-        document.getElementById('sidebar-toggle').addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('mobile-open');
+    // Dark Mode
+    const dmToggle = document.getElementById('dark-mode-toggle');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        dmToggle.textContent = '☀️';
+    }
+    dmToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        dmToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : null);
+    });
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+    });
+
+    // Upload Modal
+    const modal = document.getElementById('modal-overlay');
+    document.getElementById('upload-btn').addEventListener('click', () => modal.classList.add('show'));
+    document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+    // File Upload Area
+    const fileArea = document.getElementById('file-upload-area');
+    const fileInput = document.getElementById('file-input');
+
+    fileArea.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', function() {
+        if (this.files[0]) {
+            fileArea.innerHTML = `
+                <i class="fas fa-check-circle" style="color:var(--secondary-green)"></i>
+                <p style="color:var(--secondary-green); font-weight:600">${this.files[0].name}</p>
+                <small>${(this.files[0].size / 1024 / 1024).toFixed(2)} MB</small>
+            `;
+        }
+    });
+
+    // Upload Form
+    document.getElementById('upload-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const title = document.getElementById('res-title').value.trim();
+
+        if (!title) { alert('Please enter a title'); return; }
+        if (!fileInput.files[0]) { alert('Please select a file'); return; }
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        formData.append('title', title);
+        formData.append('department', document.getElementById('res-dept').value);
+        formData.append('semester', document.getElementById('res-sem').value);
+        formData.append('resource_type', document.getElementById('res-type').value);
+        formData.append('subject', document.getElementById('res-subject').value);
+        formData.append('description', document.getElementById('res-desc').value);
+        formData.append('userId', 1);
+
+        const submitBtn = document.querySelector('.btn-submit');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+        try {
+            const response = await fetch(`${API}/api/resources/upload`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                modal.classList.remove('show');
+                alert('✅ Resource submitted for admin review!');
+                this.reset();
+                fileArea.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Click to browse or drag & drop</p>
+                    <small>PDF, DOC, PPT, ZIP — Max 20MB</small>
+                `;
             } else {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
+                alert('Error: ' + data.message);
             }
-        });
-
-        // Upload Modal
-        const modal = document.getElementById('modal-overlay');
-        document.getElementById('upload-btn').addEventListener('click', () => modal.classList.add('show'));
-        document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
-
-        // File Upload Area
-        const fileArea = document.getElementById('file-upload-area');
-        const fileInput = document.getElementById('file-input');
-        fileArea.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', function() {
-            if (this.files[0]) {
-                fileArea.innerHTML = `<i class="fas fa-check-circle" style="color:var(--secondary-green)"></i>
-                    <p style="color:var(--secondary-green); font-weight:600">${this.files[0].name}</p>
-                    <small>${(this.files[0].size / 1024 / 1024).toFixed(2)} MB</small>`;
-            }
-        });
-
-        // Upload Form
-        document.getElementById('upload-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const title = document.getElementById('res-title').value.trim();
-            if (!title) return;
-            modal.classList.remove('show');
-            alert('✅ Resource submitted for admin review!');
-            this.reset();
-        });
-
-        // View Toggle
-        const grid = document.getElementById('resources-grid');
-        document.getElementById('grid-view-btn').addEventListener('click', function() {
-            grid.classList.remove('list-view');
-            this.classList.add('active');
-            document.getElementById('list-view-btn').classList.remove('active');
-        });
-        document.getElementById('list-view-btn').addEventListener('click', function() {
-            grid.classList.add('list-view');
-            this.classList.add('active');
-            document.getElementById('grid-view-btn').classList.remove('active');
-        });
-
-        // Category Tabs
-        document.querySelectorAll('.cat-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                const type = this.dataset.type;
-                document.querySelectorAll('.resource-card').forEach(card => {
-                    card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
-                });
-            });
-        });
-
-        // Search
-        document.getElementById('search-input').addEventListener('input', function() {
-            const q = this.value.toLowerCase();
-            document.querySelectorAll('.resource-card').forEach(card => {
-                const title = card.querySelector('.resource-title').textContent.toLowerCase();
-                card.style.display = title.includes(q) ? 'block' : 'none';
-            });
-        });
-
-        // Dept Filter
-        document.getElementById('dept-filter').addEventListener('change', function() {
-            const dept = this.value;
-            document.querySelectorAll('.resource-card').forEach(card => {
-                card.style.display = (!dept || card.dataset.dept === dept) ? 'block' : 'none';
-            });
-        });
-
-        // Download
-        function downloadResource(btn) {
-            btn.innerHTML = '<i class="fas fa-check"></i> Downloaded';
-            btn.style.background = 'linear-gradient(135deg, #1565C0, #1976D2)';
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-download"></i> Download';
-                btn.style.background = '';
-            }, 2000);
+        } catch (error) {
+            alert('Could not connect to server. Make sure backend is running.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-upload"></i> Submit for Review';
         }
+    });
+
+    // View Toggle
+    const grid = document.getElementById('resources-grid');
+    document.getElementById('grid-view-btn').addEventListener('click', function() {
+        grid.classList.remove('list-view');
+        this.classList.add('active');
+        document.getElementById('list-view-btn').classList.remove('active');
+    });
+    document.getElementById('list-view-btn').addEventListener('click', function() {
+        grid.classList.add('list-view');
+        this.classList.add('active');
+        document.getElementById('grid-view-btn').classList.remove('active');
+    });
+
+    // Category Tabs
+    document.querySelectorAll('.cat-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const type = this.dataset.type;
+            document.querySelectorAll('.resource-card').forEach(card => {
+                card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+            });
+        });
+    });
+
+    // Search
+    document.getElementById('search-input').addEventListener('input', function() {
+        const q = this.value.toLowerCase();
+        document.querySelectorAll('.resource-card').forEach(card => {
+            const title = card.querySelector('.resource-title').textContent.toLowerCase();
+            card.style.display = title.includes(q) ? 'block' : 'none';
+        });
+    });
+
+    // Load Resources from Database
+    async function loadResourcesFromDB() {
+        try {
+            const dept = document.getElementById('dept-filter').value;
+            const sem = document.getElementById('sem-filter').value;
+            const type = document.getElementById('type-filter').value;
+
+            let url = `${API}/api/resources?`;
+            if (dept) url += `department=${dept}&`;
+            if (sem) url += `semester=${sem}&`;
+            if (type) url += `resource_type=${type}&`;
+
+            const res = await fetch(url);
+            const data = await res.json();
+
+            if (!data.success) return;
+
+            const grid = document.getElementById('resources-grid');
+            grid.innerHTML = '';
+
+            // Update stats
+            document.getElementById('total-resources').textContent = data.resources.length;
+            const totalDownloads = data.resources.reduce((sum, r) => sum + r.download_count, 0);
+            document.getElementById('total-downloads').textContent = totalDownloads;
+            const userInfo = JSON.parse(localStorage.getItem('user'));
+            const myUploads = data.resources.filter(r => r.uploader_id === userInfo.id).length;
+            document.getElementById('my-uploads').textContent = myUploads;
+
+            if (data.resources.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-tertiary);">
+                    <i class="fas fa-folder-open" style="font-size:40px; opacity:0.3; display:block; margin-bottom:10px;"></i>
+                    No resources found
+                </div>`;
+                return;
+            }
+
+            data.resources.forEach(r => {
+                const ext = r.file_name.split('.').pop().toLowerCase();
+                let iconClass = 'pdf';
+                let iconTag = 'fa-file-pdf';
+                if (['doc','docx'].includes(ext)) { iconClass = 'doc'; iconTag = 'fa-file-word'; }
+                else if (['ppt','pptx'].includes(ext)) { iconClass = 'ppt'; iconTag = 'fa-file-powerpoint'; }
+                else if (ext === 'zip') { iconClass = 'zip'; iconTag = 'fa-file-archive'; }
+
+                const date = new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                grid.innerHTML += `
+                    <div class="resource-card" data-dept="${r.department}" data-type="${r.resource_type}">
+                        <div class="resource-card-header">
+                            <div class="file-icon ${iconClass}"><i class="fas ${iconTag}"></i></div>
+                            <div class="resource-info">
+                                <div class="resource-title">${r.title}</div>
+                                <div class="resource-meta">
+                                    <span><i class="fas fa-user"></i> ${r.anonymous_id}</span>
+                                    <span><i class="fas fa-calendar"></i> ${date}</span>
+                                    <span><i class="fas fa-file"></i> ${r.file_size || 'N/A'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="tag tag-cs">${r.department}</span>
+                            <span class="tag tag-subject">Sem ${r.semester}</span>
+                            ${r.subject ? `<span class="tag tag-subject">${r.subject}</span>` : ''}
+                            <span class="tag tag-approved">✓ Approved</span>
+                        </div>
+                        <div class="resource-footer">
+                            <div class="resource-stats">
+                                <span><i class="fas fa-download"></i> ${r.download_count}</span>
+                            </div>
+                            <button class="btn-download" onclick="downloadFile(${r.id}, this)">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>`;
+            });
+
+        } catch (err) {
+            console.error('Could not load resources:', err);
+        }
+    }
+
+    // Download File
+    async function downloadFile(id, btn) {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        window.open(`${API}/api/resources/download/${id}`, '_blank');
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-download"></i> Download';
+        }, 2000);
+    }
+
+    // Filters
+    document.getElementById('dept-filter').addEventListener('change', loadResourcesFromDB);
+    document.getElementById('sem-filter').addEventListener('change', loadResourcesFromDB);
+    document.getElementById('type-filter').addEventListener('change', loadResourcesFromDB);
+
+    // Load User Info
+const userData = localStorage.getItem('user');
+if (!userData) {
+    window.location.href = '/login';
+} else {
+    const user = JSON.parse(userData);
+    document.querySelector('.sidebar-user-name').textContent = user.name;
+    document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+}
+    // Init
+    loadResourcesFromDB();
     </script>
 </body>
 </html>

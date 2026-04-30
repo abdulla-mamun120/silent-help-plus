@@ -26,3 +26,21 @@ sidebarToggle.addEventListener('click', () => {
         mainContent.classList.toggle('expanded');
     }
 });
+// ── Load User Info ──
+const userData = localStorage.getItem('user');
+if (!userData) {
+    window.location.href = '/Frontend/login page/login.html';
+} else {
+    const user = JSON.parse(userData);
+    document.querySelector('.sidebar-user-name').textContent = user.name;
+    document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+    document.querySelector('.page-header h1').textContent = 'Welcome back, ' + user.name.split(' ')[0] + '! 👋';
+}
+
+// ── Logout ──
+document.querySelector('.nav-item:last-of-type').addEventListener('click', function(e) {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/Frontend/login page/login.html';
+});

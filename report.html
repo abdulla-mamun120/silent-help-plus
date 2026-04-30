@@ -970,51 +970,57 @@
     }
 
     /* ── Form Submission ── */
-    const reportForm = document.getElementById('report-form');
-    const successModal = document.getElementById('success-modal');
+const reportForm = document.getElementById('report-form');
+const successModal = document.getElementById('success-modal');
 
-    reportForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+reportForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-        const reportType = document.querySelector('input[name="reportType"]:checked');
-        const description = document.getElementById('description').value.trim();
-        const truthful = document.getElementById('truthful').checked;
+    const reportType = document.querySelector('input[name="reportType"]:checked');
+    const description = document.getElementById('description').value.trim();
+    const truthful = document.getElementById('truthful').checked;
 
-        if (!reportType) {
-            alert('Please select a report type');
-            return;
+    if (!reportType) { alert('Please select a report type'); return; }
+    if (!description) { alert('Please provide a description'); return; }
+    if (description.length < 50) { alert('At least 50 characters required'); return; }
+    if (!truthful) { alert('Please acknowledge the truthfulness'); return; }
+
+    const submitBtn = document.querySelector('.btn-submit');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+    try {
+        const response = await fetch('http://localhost:5000/api/reports', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId:      1,  
+                reportType:  reportType.value,
+                description: description
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('report-tracking-id').textContent = data.reportId;
+            successModal.classList.add('show');
+            reportForm.reset();
+            charCount.textContent = '0';
+            filesArray = [];
+            uploadedFiles.innerHTML = '';
+            uploadedFiles.style.display = 'none';
+            document.querySelectorAll('.report-type-option').forEach(o => o.classList.remove('selected'));
+        } else {
+            alert('Error: ' + data.message);
         }
-
-        if (!description) {
-            alert('Please provide a detailed description');
-            return;
-        }
-
-        if (description.length < 50) {
-            alert('Please provide more details (at least 50 characters)');
-            return;
-        }
-
-        if (!truthful) {
-            alert('Please acknowledge that your report is truthful');
-            return;
-        }
-
-        // Generate random report ID
-        const reportId = 'REP_2025_' + Math.random().toString(36).substr(2, 8).toUpperCase();
-        document.getElementById('report-tracking-id').textContent = reportId;
-
-        // Show success modal
-        successModal.classList.add('show');
-
-        // Reset form
-        this.reset();
-        charCount.textContent = '0';
-        filesArray = [];
-        uploadedFiles.innerHTML = '';
-        uploadedFiles.style.display = 'none';
-        document.querySelectorAll('.report-type-option').forEach(o => o.classList.remove('selected'));
-    });
+    } catch (error) {
+        alert('Could not connect to server. Make sure backend is running.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Report Anonymously';
+    }
+});
 
     /* ── Close Modal ── */
     document.getElementById('close-modal-btn').addEventListener('click', () => {

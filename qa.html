@@ -552,21 +552,21 @@
         </div>
 
         <div class="nav-section-title">Main Menu</div>
-        <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-        <a class="nav-item active" href="qa.html"><i class="fas fa-question-circle"></i> Q&A Forum <span class="nav-badge">12</span></a>
-        <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+        <a class="nav-item" href="/dashboard"><i class="fas fa-home"></i> Dashboard</a>
+        <a class="nav-item active" href="/qa"><i class="fas fa-question-circle"></i> Q&A Forum <span class="nav-badge">12</span></a>
+        <a class="nav-item" href="/resources"><i class="fas fa-book"></i> Study Resources</a>
 
         <div class="nav-section-title">Opportunities</div>
-        <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">5</span></a>
-        <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
-        <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+        <a class="nav-item" href="/scholarships"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">5</span></a>
+        <a class="nav-item" href="/jobs"><i class="fas fa-briefcase"></i> Job Board</a>
+        <a class="nav-item" href="/books"><i class="fas fa-book-open"></i> Book Exchange</a>
 
         <div class="nav-section-title">Connect</div>
-        <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
-        <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+        <a class="nav-item" href="/mentorship"><i class="fas fa-users"></i> Mentorship</a>
+        <a class="nav-item" href="/report"><i class="fas fa-shield-alt"></i> Report Issue</a>
 
         <div class="sidebar-divider"></div>
-        <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a class="nav-item" href="/login"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </aside>
 
     <!-- Main Content -->
@@ -892,14 +892,82 @@
         document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
         modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
 
+// Load user info
+        const userData = localStorage.getItem('user');
+        if (!userData) {
+            window.location.href = 'Frontend/login page/login.html';
+        } else {
+            const user = JSON.parse(userData);
+            document.querySelector('.sidebar-user-name').textContent = user.name;
+            document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+        }
+
+        // Load Questions from Backend
+        function loadQuestions() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            fetch('http://localhost:5000/api/questions?department=' + user.department)
+            .then(res => res.json())
+            .then(questions => {
+                const list = document.getElementById('questions-list');
+                if (questions.length === 0) {
+                    list.innerHTML = '<p style="text-align:center; color:var(--text-tertiary); padding:30px;">No questions yet. Be the first to ask!</p>';
+                    return;
+                }
+                list.innerHTML = questions.map(q => `
+                    <div class="question-card" data-dept="${q.department}">
+                        <div class="question-card-top">
+                            <div class="question-title">${q.question_text}</div>
+                            <span class="answer-count zero">0 ans</span>
+                        </div>
+                        <div class="question-tags">
+                            <span class="tag tag-cs">${q.department}</span>
+                            ${q.category ? `<span class="tag tag-topic">${q.category}</span>` : ''}
+                        </div>
+                        <div class="question-footer">
+                            <div class="question-meta">
+                                <span><i class="fas fa-user-secret"></i> ${q.anonymous_id}</span>
+                                <span><i class="fas fa-clock"></i> ${new Date(q.created_at).toLocaleDateString()}</span>
+                            </div>
+                            <button class="vote-btn" onclick="vote(this)">
+                                <i class="fas fa-arrow-up"></i> <span>0</span>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            })
+            .catch(err => console.error(err));
+        }
+
+        loadQuestions();
+
         // Ask Form Submit
         document.getElementById('ask-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const title = document.getElementById('q-title').value.trim();
+            const dept = document.getElementById('q-dept').value;
+            const category = document.getElementById('q-category').value;
             if (!title) return;
-            modal.classList.remove('show');
-            alert('✅ Question posted anonymously!');
-            this.reset();
+
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            fetch('http://localhost:5000/api/questions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: user.id,
+                    department: dept,
+                    category: category,
+                    question_text: title
+                })
+            })
+            .then(res => res.json())
+            .then(result => {
+                modal.classList.remove('show');
+                alert('✅ Question posted anonymously as ' + result.anonymous_id);
+                this.reset();
+                loadQuestions();
+            })
+            .catch(err => alert('Something went wrong!'));
         });
 
         // Vote Button
