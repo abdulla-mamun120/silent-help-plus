@@ -22,7 +22,7 @@ app.get('/api/test', (req, res) => {
 
 // Page Routes
 app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Frontend/dashboard/dashboard.html'));
+    res.sendFile(path.join(__dirname, '../Frontend/dashboard.html'));
 });
 
 app.get('/qa', (req, res) => {
@@ -30,7 +30,7 @@ app.get('/qa', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Frontend/login page/login.html'));
+    res.sendFile(path.join(__dirname, '../Frontend/login.html'));
 });
 
 app.get('/register', (req, res) => {
@@ -48,6 +48,9 @@ app.get('/jobs', (req, res) => {
     res.sendFile(path.join(__dirname, '../Frontend/jobs.html'));
 });
 
+app.get('/post-job', (req, res) => {
+    res.sendFile(path.join(__dirname, '../post-job.html'));
+});
 app.get('/books', (req, res) => {
     res.sendFile(path.join(__dirname, '../Frontend/books.html'));
 });
@@ -66,6 +69,11 @@ app.use('/api/questions', require('./routes/helpRequest'));
 app.use('/api/reports', require('./routes/report'));
 app.use('/api/resources', require('./routes/resource'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/books', require('./routes/books'));
+app.use('/api/jobs', require('./routes/jobs'));
+app.use('/api/mentors', require('./routes/mentorship'));
+app.use('/api/scholarships', require('./routes/scholarships'));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -505,243 +505,9 @@
     </div>
 
     <!-- Scholarship List -->
-    <div class="scholarships-list" id="scholarships-list">
-
-        <!-- Card 1 -->
-        <div class="scholarship-card urgent"
-             data-eligibility="merit"
-             data-deadline="urgent"
-             data-amount="5000">
-            <div class="deadline-corner">⚠️ 5 days left</div>
-            <div class="card-top">
-                <div>
-                    <div class="scholarship-title">Academic Excellence Award 2025</div>
-                    <div class="scholarship-org">
-                        <i class="fas fa-university"></i> University Academic Affairs Office
-                    </div>
-                </div>
-                <div class="amount-badge">$5,000</div>
-            </div>
-            <p class="scholarship-desc">
-                Awarded to students maintaining a CGPA of 3.7 or above for two consecutive semesters.
-                Applications reviewed by the academic committee. Winners announced at annual convocation.
-            </p>
-            <div class="scholarship-meta">
-                <span class="meta-item urgent-date">
-                    <i class="fas fa-calendar-times"></i> Deadline: March 5, 2025
-                </span>
-                <span class="meta-item"><i class="fas fa-users"></i> 15 awards available</span>
-                <span class="meta-item"><i class="fas fa-star"></i> Min CGPA: 3.7</span>
-            </div>
-            <div class="tag-row">
-                <span class="tag tag-dept">All Departments</span>
-                <span class="tag tag-type">Merit-based</span>
-                <span class="tag tag-urgent">Urgent</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-apply" type="button" onclick="applyNow(this, 'Academic Excellence Award')">
-                    <i class="fas fa-paper-plane"></i> Apply Now
-                </button>
-                <button class="btn-save" type="button" onclick="toggleSave(this)">
-                    <i class="fas fa-bookmark"></i> Save
-                </button>
-            </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="scholarship-card new-item"
-             data-eligibility="need"
-             data-deadline="month"
-             data-amount="8000">
-            <div class="card-top">
-                <div>
-                    <div class="scholarship-title">Financial Hardship Support Grant</div>
-                    <div class="scholarship-org">
-                        <i class="fas fa-building"></i> Student Welfare Foundation
-                    </div>
-                </div>
-                <div class="amount-badge">$8,000</div>
-            </div>
-            <p class="scholarship-desc">
-                Supports students from financially disadvantaged backgrounds to continue higher education.
-                Covers tuition fees and provides a monthly stipend. Renewable for 3 years upon maintaining good standing.
-            </p>
-            <div class="scholarship-meta">
-                <span class="meta-item"><i class="fas fa-calendar-alt"></i> Deadline: April 30, 2025</span>
-                <span class="meta-item"><i class="fas fa-users"></i> 5 awards available</span>
-                <span class="meta-item"><i class="fas fa-redo"></i> Renewable annually</span>
-            </div>
-            <div class="tag-row">
-                <span class="tag tag-dept">All Departments</span>
-                <span class="tag tag-type">Need-based</span>
-                <span class="tag tag-new">New</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-apply" type="button" onclick="applyNow(this, 'Financial Hardship Support Grant')">
-                    <i class="fas fa-paper-plane"></i> Apply Now
-                </button>
-                <button class="btn-save" type="button" onclick="toggleSave(this)">
-                    <i class="fas fa-bookmark"></i> Save
-                </button>
-            </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="scholarship-card"
-             data-eligibility="research"
-             data-deadline="month"
-             data-amount="3000">
-            <div class="card-top">
-                <div>
-                    <div class="scholarship-title">STEM Research Excellence Grant</div>
-                    <div class="scholarship-org">
-                        <i class="fas fa-flask"></i> Science &amp; Technology Council
-                    </div>
-                </div>
-                <div class="amount-badge">$3,000</div>
-            </div>
-            <p class="scholarship-desc">
-                Supports undergraduate and graduate students conducting research in STEM fields.
-                Applicants must submit a research proposal approved by a faculty supervisor.
-                Grant covers research expenses and conference travel costs.
-            </p>
-            <div class="scholarship-meta">
-                <span class="meta-item"><i class="fas fa-calendar-alt"></i> Deadline: May 15, 2025</span>
-                <span class="meta-item"><i class="fas fa-users"></i> 10 grants available</span>
-                <span class="meta-item"><i class="fas fa-file-alt"></i> Proposal required</span>
-            </div>
-            <div class="tag-row">
-                <span class="tag tag-dept">STEM Departments</span>
-                <span class="tag tag-type">Research Grant</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-apply" type="button" onclick="applyNow(this, 'STEM Research Excellence Grant')">
-                    <i class="fas fa-paper-plane"></i> Apply Now
-                </button>
-                <button class="btn-save" type="button" onclick="toggleSave(this)">
-                    <i class="fas fa-bookmark"></i> Save
-                </button>
-            </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="scholarship-card"
-             data-eligibility="merit"
-             data-deadline="later"
-             data-amount="2500">
-            <div class="card-top">
-                <div>
-                    <div class="scholarship-title">Women in Technology Scholarship</div>
-                    <div class="scholarship-org">
-                        <i class="fas fa-laptop-code"></i> Tech Diversity Initiative
-                    </div>
-                </div>
-                <div class="amount-badge">$2,500</div>
-            </div>
-            <p class="scholarship-desc">
-                Empowering female students pursuing degrees in Computer Science, Engineering, and related technology fields.
-                Includes mentorship from industry professionals and internship placement assistance.
-            </p>
-            <div class="scholarship-meta">
-                <span class="meta-item"><i class="fas fa-calendar-alt"></i> Deadline: June 1, 2025</span>
-                <span class="meta-item"><i class="fas fa-users"></i> 20 awards available</span>
-                <span class="meta-item"><i class="fas fa-venus"></i> Female students only</span>
-            </div>
-            <div class="tag-row">
-                <span class="tag tag-dept">CSE / EEE / CE / ME</span>
-                <span class="tag tag-type">Merit-based</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-apply" type="button" onclick="applyNow(this, 'Women in Technology Scholarship')">
-                    <i class="fas fa-paper-plane"></i> Apply Now
-                </button>
-                <button class="btn-save" type="button" onclick="toggleSave(this)">
-                    <i class="fas fa-bookmark"></i> Save
-                </button>
-            </div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="scholarship-card urgent"
-             data-eligibility="leadership"
-             data-deadline="urgent"
-             data-amount="1500">
-            <div class="deadline-corner">⚠️ 8 days left</div>
-            <div class="card-top">
-                <div>
-                    <div class="scholarship-title">Community Leadership Award</div>
-                    <div class="scholarship-org">
-                        <i class="fas fa-hand-holding-heart"></i> Student Affairs Department
-                    </div>
-                </div>
-                <div class="amount-badge">$1,500</div>
-            </div>
-            <p class="scholarship-desc">
-                Recognizes students who have demonstrated exceptional leadership in community service
-                and extracurricular activities. Minimum 50 hours of documented community service required.
-            </p>
-            <div class="scholarship-meta">
-                <span class="meta-item urgent-date">
-                    <i class="fas fa-calendar-times"></i> Deadline: March 8, 2025
-                </span>
-                <span class="meta-item"><i class="fas fa-users"></i> 8 awards available</span>
-                <span class="meta-item"><i class="fas fa-certificate"></i> Service proof needed</span>
-            </div>
-            <div class="tag-row">
-                <span class="tag tag-dept">All Departments</span>
-                <span class="tag tag-type">Leadership</span>
-                <span class="tag tag-urgent">Urgent</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-apply" type="button" onclick="applyNow(this, 'Community Leadership Award')">
-                    <i class="fas fa-paper-plane"></i> Apply Now
-                </button>
-                <button class="btn-save" type="button" onclick="toggleSave(this)">
-                    <i class="fas fa-bookmark"></i> Save
-                </button>
-            </div>
-        </div>
-
-        <!-- Card 6 -->
-        <div class="scholarship-card new-item"
-             data-eligibility="merit"
-             data-deadline="later"
-             data-amount="12000">
-            <div class="card-top">
-                <div>
-                    <div class="scholarship-title">International Student Excellence Scholarship</div>
-                    <div class="scholarship-org">
-                        <i class="fas fa-globe"></i> Global Education Foundation
-                    </div>
-                </div>
-                <div class="amount-badge">$12,000</div>
-            </div>
-            <p class="scholarship-desc">
-                Full scholarship for outstanding international students covering tuition, accommodation,
-                and living expenses for one full academic year. Includes cultural exchange program and
-                career development workshops.
-            </p>
-            <div class="scholarship-meta">
-                <span class="meta-item"><i class="fas fa-calendar-alt"></i> Deadline: July 31, 2025</span>
-                <span class="meta-item"><i class="fas fa-users"></i> 3 awards available</span>
-                <span class="meta-item"><i class="fas fa-passport"></i> International students only</span>
-            </div>
-            <div class="tag-row">
-                <span class="tag tag-dept">All Departments</span>
-                <span class="tag tag-type">Full Scholarship</span>
-                <span class="tag tag-new">New</span>
-            </div>
-            <div class="card-actions">
-                <button class="btn-apply" type="button" onclick="applyNow(this, 'International Excellence Scholarship')">
-                    <i class="fas fa-paper-plane"></i> Apply Now
-                </button>
-                <button class="btn-save" type="button" onclick="toggleSave(this)">
-                    <i class="fas fa-bookmark"></i> Save
-                </button>
-            </div>
-        </div>
-
-    </div>
+<div class="scholarships-list" id="scholarships-list">
+    
+</div>
 
     <!-- Empty State -->
     <div class="empty-state" id="empty-state">
@@ -779,7 +545,7 @@
     });
 
     /* ── Sidebar Toggle ── */
-    const sidebar     = document.getElementById('sidebar');
+    const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('main-content');
     document.getElementById('sidebar-toggle').addEventListener('click', () => {
         if (window.innerWidth <= 768) {
@@ -790,73 +556,164 @@
         }
     });
 
-    /* ── Filter Logic ── */
-    const cards           = Array.from(document.querySelectorAll('.scholarship-card'));
-    const emptyState      = document.getElementById('empty-state');
-    const searchInput     = document.getElementById('search-input');
-    const eligibilitySel  = document.getElementById('eligibility-filter');
-    const deadlineSel     = document.getElementById('deadline-filter');
-    const amountSel       = document.getElementById('amount-filter');
+    /* ── Load Scholarships from API ── */
+    async function loadScholarships(filters = {}) {
+        const params = new URLSearchParams(filters);
+        
+        try {
+            const res = await fetch(`/api/scholarships?${params}`);
+            const json = await res.json();
 
-    function applyFilters() {
-        const q          = searchInput.value.toLowerCase().trim();
-        const eligibility = eligibilitySel.value;
-        const deadline    = deadlineSel.value;
-        const amountRange = amountSel.value;
+            const list = document.getElementById('scholarships-list');
+            const emptyState = document.getElementById('empty-state');
+            list.innerHTML = '';
 
-        let visibleCount = 0;
+            if (!json.success || json.data.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
 
-        cards.forEach(card => {
-            const title       = card.querySelector('.scholarship-title').textContent.toLowerCase();
-            const cardElig    = card.dataset.eligibility;
-            const cardDeadline = card.dataset.deadline;
-            const cardAmount  = parseInt(card.dataset.amount, 10);
+            emptyState.style.display = 'none';
 
-            const matchSearch   = !q || title.includes(q);
-            const matchElig     = !eligibility || cardElig === eligibility;
-            const matchDeadline = !deadline || cardDeadline === deadline;
+            json.data.forEach(s => {
+                const daysLeft = Math.ceil((new Date(s.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+                const isUrgent = s.deadline_urgency === 'urgent';
+                const isNew = s.is_new == 1;
 
-            let matchAmount = true;
-            if (amountRange === 'low')  matchAmount = cardAmount < 2000;
-            if (amountRange === 'mid')  matchAmount = cardAmount >= 2000 && cardAmount <= 6000;
-            if (amountRange === 'high') matchAmount = cardAmount > 6000;
+                const deadlineFormatted = new Date(s.deadline).toLocaleDateString('en-US', {
+                    month: 'long', day: 'numeric', year: 'numeric'
+                });
 
-            const visible = matchSearch && matchElig && matchDeadline && matchAmount;
-            card.style.display = visible ? '' : 'none';
-            if (visible) visibleCount++;
-        });
+                list.innerHTML += `
+                    <div class="scholarship-card ${isUrgent ? 'urgent' : ''} ${isNew ? 'new-item' : ''}">
+                        ${isUrgent ? `<div class="deadline-corner">⚠️ ${daysLeft} days left</div>` : ''}
+                        <div class="card-top">
+                            <div>
+                                <div class="scholarship-title">${s.title}</div>
+                                <div class="scholarship-org">
+                                    <i class="fas fa-university"></i> ${s.organization}
+                                </div>
+                            </div>
+                            <div class="amount-badge">$${Number(s.amount).toLocaleString()}</div>
+                        </div>
+                        <p class="scholarship-desc">${s.description}</p>
+                        <div class="scholarship-meta">
+                            <span class="meta-item ${isUrgent ? 'urgent-date' : ''}">
+                                <i class="fas fa-calendar-${isUrgent ? 'times' : 'alt'}"></i> Deadline: ${deadlineFormatted}
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-users"></i> ${s.total_awards} awards available
+                            </span>
+                            ${s.min_cgpa ? `
+                            <span class="meta-item">
+                                <i class="fas fa-star"></i> Min CGPA: ${s.min_cgpa}
+                            </span>` : ''}
+                            ${s.is_renewable ? `
+                            <span class="meta-item">
+                                <i class="fas fa-redo"></i> Renewable annually
+                            </span>` : ''}
+                        </div>
+                        <div class="tag-row">
+                            <span class="tag tag-dept">All Departments</span>
+                            <span class="tag tag-type">${s.eligibility.charAt(0).toUpperCase() + s.eligibility.slice(1)}</span>
+                            ${isNew ? '<span class="tag tag-new">New</span>' : ''}
+                            ${isUrgent ? '<span class="tag tag-urgent">Urgent</span>' : ''}
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-apply" type="button" onclick="applyNow(this, ${s.id}, '${s.title.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-paper-plane"></i> Apply Now
+                            </button>
+                            <button class="btn-save" type="button" onclick="toggleSave(this, ${s.id})">
+                                <i class="fas fa-bookmark"></i> Save
+                            </button>
+                        </div>
+                    </div>`;
+            });
 
-        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        } catch (err) {
+            console.error('Failed to load scholarships:', err);
+            document.getElementById('empty-state').style.display = 'block';
+        }
     }
 
-    searchInput.addEventListener('input', applyFilters);
-    eligibilitySel.addEventListener('change', applyFilters);
-    deadlineSel.addEventListener('change', applyFilters);
-    amountSel.addEventListener('change', applyFilters);
+    /* ── Filter Logic ── */
+    function applyFilters() {
+        const filters = {};
+        const q          = document.getElementById('search-input').value.trim();
+        const eligibility = document.getElementById('eligibility-filter').value;
+        const deadline    = document.getElementById('deadline-filter').value;
+        const amount      = document.getElementById('amount-filter').value;
+
+        if (q)          filters.search      = q;
+        if (eligibility) filters.eligibility = eligibility;
+        if (deadline)    filters.deadline    = deadline;
+        if (amount)      filters.amount      = amount;
+
+        loadScholarships(filters);
+    }
+
+    /* ── Event Listeners ── */
+    document.getElementById('search-input').addEventListener('input', applyFilters);
+    document.getElementById('eligibility-filter').addEventListener('change', applyFilters);
+    document.getElementById('deadline-filter').addEventListener('change', applyFilters);
+    document.getElementById('amount-filter').addEventListener('change', applyFilters);
 
     document.getElementById('btn-clear').addEventListener('click', () => {
-        searchInput.value      = '';
-        eligibilitySel.value   = '';
-        deadlineSel.value      = '';
-        amountSel.value        = '';
-        applyFilters();
+        document.getElementById('search-input').value      = '';
+        document.getElementById('eligibility-filter').value = '';
+        document.getElementById('deadline-filter').value    = '';
+        document.getElementById('amount-filter').value      = '';
+        loadScholarships();
     });
 
     /* ── Apply Button ── */
-    function applyNow(btn, name) {
-        if (confirm('Apply for "' + name + '"?\n\nYou will be redirected to the application portal.')) {
-            btn.innerHTML  = '<i class="fas fa-check"></i> Applied!';
-            btn.style.background = 'linear-gradient(135deg,#4CAF50,#66BB6A)';
-            btn.disabled   = true;
+    async function applyNow(btn, id, name) {
+        if (!confirm(`Apply for "${name}"?\n\nYou will be redirected to the application portal.`)) return;
+
+        try {
+            const res = await fetch(`/api/scholarships/${id}/apply`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Applied!';
+                btn.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
+                btn.disabled = true;
+            } else {
+                alert(data.message || 'Something went wrong!');
+            }
+        } catch (err) {
+            alert('Network error. Please try again.');
         }
     }
 
     /* ── Save Button ── */
-    function toggleSave(btn) {
-        btn.classList.toggle('saved');
-        btn.innerHTML = btn.classList.contains('saved')
-            ? '<i class="fas fa-bookmark"></i> Saved'
-            : '<i class="fas fa-bookmark"></i> Save';
+    async function toggleSave(btn, id) {
+        try {
+            const res = await fetch(`/api/scholarships/${id}/save`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await res.json();
+
+            btn.classList.toggle('saved', data.saved);
+            btn.innerHTML = data.saved
+                ? '<i class="fas fa-bookmark"></i> Saved'
+                : '<i class="fas fa-bookmark"></i> Save';
+
+        } catch (err) {
+            alert('Network error. Please try again.');
+        }
     }
 
     /* ── Pagination (UI only) ── */
@@ -867,6 +724,9 @@
             this.classList.add('active');
         });
     });
+
+    /* ── Initial Load ── */
+    loadScholarships();
 </script>
 
 </body>

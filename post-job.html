@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --accent-purple: #9C27B0;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --light-purple: #F3E5F5;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 260px;
+            --navbar-height: 65px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #121212;
+            --light-blue: #1A2332;
+            --light-purple: #2A1A2E;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+        }
+
+        .navbar {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; z-index: 1000;
+        }
+
+        .navbar-left { display: flex; align-items: center; gap: 18px; }
+
+        .sidebar-toggle {
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text; text-decoration: none;
+        }
+
+        .navbar-right { display: flex; align-items: center; gap: 18px; }
+
+        .nav-icon-btn {
+            background: none; border: none;
+            font-size: 18px; cursor: pointer;
+            color: var(--text-tertiary); position: relative;
+        }
+
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 16px; cursor: pointer;
+        }
+
+        .sidebar {
+            position: fixed; top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto; transition: transform 0.3s;
+            z-index: 900; padding: 20px 0;
+        }
+
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .sidebar-user {
+            padding: 15px 20px 20px;
+            border-bottom: 1px solid #E0E0E0; margin-bottom: 15px;
+        }
+
+        .sidebar-user-avatar {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 22px; margin-bottom: 10px;
+        }
+
+        .sidebar-user-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .sidebar-user-dept { font-size: 12px; color: var(--text-tertiary); }
+        .sidebar-user-id   { font-size: 11px; color: var(--secondary-green); margin-top: 4px; font-weight: 500; }
+
+        .nav-section-title {
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px 6px;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px;
+            font-weight: 500; transition: all 0.2s;
+            border: none; background: none; width: 100%;
+            text-align: left; cursor: pointer;
+        }
+
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+        .nav-item.active {
+            background-color: var(--light-purple); color: var(--accent-purple);
+            border-right: 3px solid var(--accent-purple);
+        }
+
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+
+        .nav-badge {
+            margin-left: auto; background-color: var(--primary-blue);
+            color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+        }
+
+        .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px; transition: margin-left 0.3s;
+        }
+
+        .main-content.expanded { margin-left: 0; }
+
+        .page-header {
+            background: linear-gradient(135deg, #9C27B0, #AB47BC);
+            border-radius: 16px; padding: 30px;
+            margin-bottom: 25px; color: white;
+        }
+
+        .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 5px; }
+        .page-header p  { opacity: 0.9; font-size: 14px; }
+
+        .form-card {
+            background-color: var(--white);
+            border-radius: 16px; padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            max-width: 750px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        .form-label {
+            font-size: 13px; font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-label span { color: #F44336; }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 11px 14px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 8px; font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-primary); transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            background-color: var(--white);
+        }
+
+        .form-textarea { resize: vertical; min-height: 100px; }
+
+        .checkbox-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 14px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 8px;
+            background-color: var(--light-gray);
+            cursor: pointer;
+        }
+
+        .checkbox-row input { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent-purple); }
+        .checkbox-row label { font-size: 14px; cursor: pointer; color: var(--text-primary); }
+
+        .notice-box {
+            background-color: #FFF3E0;
+            border: 1.5px solid #FFB74D;
+            border-radius: 10px; padding: 14px 16px;
+            font-size: 13px; color: #E65100;
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .notice-box i { margin-top: 2px; flex-shrink: 0; }
+
+        .btn-submit {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, var(--accent-purple), #AB47BC);
+            color: white; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer; transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(156,39,176,0.3); }
+        .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .success-box {
+            display: none;
+            background-color: #E8F5E9;
+            border: 1.5px solid #A5D6A7;
+            border-radius: 10px; padding: 20px;
+            text-align: center; color: #2E7D32;
+            margin-top: 20px;
+        }
+
+        .success-box i { font-size: 36px; margin-bottom: 10px; display: block; }
+        .success-box h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+        .success-box p { font-size: 13px; opacity: 0.85; }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px 15px; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        <a href="index.html" class="logo">Silent Help Plus</a>
+    </div>
+    <div class="navbar-right">
+        <button class="nav-icon-btn" id="dark-mode-toggle">🌙</button>
+        <div class="user-avatar"><i class="fas fa-user"></i></div>
+    </div>
+</nav>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+        <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
+        <div class="sidebar-user-name">John Student</div>
+        <div class="sidebar-user-dept">CSE Department</div>
+        <div class="sidebar-user-id">Anon_CS_2431</div>
+    </div>
+
+    <div class="nav-section-title">Main Menu</div>
+    <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&A Forum <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+    <div class="nav-section-title">Opportunities</div>
+    <a class="nav-item" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge">6</span></a>
+    <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+    <a class="nav-item active" href="post-job.html"><i class="fas fa-plus-circle"></i> Post a Job</a>
+    <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+    <div class="nav-section-title">Connect</div>
+    <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+    <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</aside>
+
+<main class="main-content" id="main-content">
+
+    <div class="page-header">
+        <h1><i class="fas fa-plus-circle"></i> Post a Job</h1>
+        <p>Submit a job listing — it will be reviewed by admin before publishing</p>
+    </div>
+
+    <div class="form-card">
+
+        <div class="notice-box">
+            <i class="fas fa-info-circle"></i>
+            <span>তোমার job post টি admin review করার পর approve হলে Job Board এ দেখা যাবে।</span>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group full">
+                <label class="form-label">Job Title <span>*</span></label>
+                <input type="text" class="form-input" id="title" placeholder="e.g. Junior Web Developer">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Company Name <span>*</span></label>
+                <input type="text" class="form-input" id="company" placeholder="e.g. TechSoft BD Ltd.">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Job Type <span>*</span></label>
+                <select class="form-select" id="job_type">
+                    <option value="">Select type</option>
+                    <option value="full-time">Full-time</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="internship">Internship</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Location <span>*</span></label>
+                <select class="form-select" id="location">
+                    <option value="">Select location</option>
+                    <option value="onsite">On-site</option>
+                    <option value="remote">Remote</option>
+                    <option value="hybrid">Hybrid</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Field</label>
+                <select class="form-select" id="field">
+                    <option value="">Select field</option>
+                    <option value="tech">Technology</option>
+                    <option value="business">Business</option>
+                    <option value="design">Design</option>
+                    <option value="education">Education</option>
+                    <option value="engineering">Engineering</option>
+                    <option value="health">Health</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Salary</label>
+                <input type="text" class="form-input" id="salary" placeholder="e.g. $500 – $800 / month">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Hours per Week</label>
+                <input type="text" class="form-input" id="hours_per_week" placeholder="e.g. 20 hrs/week">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Preferred Department</label>
+                <input type="text" class="form-input" id="department" placeholder="e.g. CSE / EEE preferred">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Application Deadline</label>
+                <input type="date" class="form-input" id="deadline">
+            </div>
+
+            <div class="form-group full">
+                <label class="form-label">Job Description</label>
+                <textarea class="form-textarea" id="description" placeholder="Describe the role, responsibilities, requirements..."></textarea>
+            </div>
+
+            <div class="form-group full">
+                <div class="checkbox-row">
+                    <input type="checkbox" id="is_featured">
+                    <label for="is_featured">⭐ Request Featured listing (admin এর approval লাগবে)</label>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="btn-submit" id="btn-submit" type="button" onclick="submitJob()">
+            <i class="fas fa-paper-plane"></i> Submit for Review
+        </button>
+
+        <div class="success-box" id="success-box">
+            <i class="fas fa-check-circle"></i>
+            <h3>Job Submitted Successfully!</h3>
+            <p>তোমার job post টি admin review করছে। Approve হলে Job Board এ দেখা যাবে।</p>
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+    // Dark Mode
+    const dmToggle = document.getElementById('dark-mode-toggle');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        dmToggle.textContent = '☀️';
+    }
+    dmToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        dmToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    });
+
+    // Sidebar
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+    });
+
+    // Submit
+    async function submitJob() {
+        const title      = document.getElementById('title').value.trim();
+        const company    = document.getElementById('company').value.trim();
+        const job_type   = document.getElementById('job_type').value;
+        const location   = document.getElementById('location').value;
+        const field      = document.getElementById('field').value;
+        const salary     = document.getElementById('salary').value.trim();
+        const hours_per_week = document.getElementById('hours_per_week').value.trim();
+        const department = document.getElementById('department').value.trim();
+        const deadline   = document.getElementById('deadline').value;
+        const description = document.getElementById('description').value.trim();
+        const is_featured = document.getElementById('is_featured').checked;
+
+        if (!title || !company || !job_type || !location) {
+            alert('Job Title, Company, Job Type এবং Location অবশ্যই দিতে হবে।');
+            return;
+        }
+
+        const btn = document.getElementById('btn-submit');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+        try {
+            const res = await fetch('http://localhost:5000/api/jobs/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, company, job_type, location, field, salary, hours_per_week, department, deadline, description, is_featured })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                document.getElementById('success-box').style.display = 'block';
+                btn.style.display = 'none';
+            } else {
+                alert('Error: ' + data.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Review';
+            }
+        } catch (err) {
+            alert('Server error! Please try again.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Review';
+        }
+    }
+</script>
+
+</body>
+</html>

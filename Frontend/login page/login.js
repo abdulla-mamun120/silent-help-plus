@@ -74,7 +74,7 @@ fetch('http://localhost:5000/api/auth/login', {
             if (result.token) {
                 localStorage.setItem('token', result.token);
                 localStorage.setItem('user', JSON.stringify(result.user));
-                window.location.href = '/dashboard';
+                window.location.href = 'http://localhost:5000/dashboard';
             } else {
                 document.getElementById('alert-text').textContent = result.message;
                 alertBox.style.display = 'flex';

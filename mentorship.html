@@ -571,19 +571,20 @@
     <div class="stats-row">
         <div class="stat-card">
             <div class="stat-icon indigo"><i class="fas fa-chalkboard-teacher"></i></div>
-            <div class="stat-info"><h3>34</h3><p>Active Mentors</p></div>
+            <div class="stat-info"><h3 id="stat-active-mentors">0</h3><p>Active Mentors</p></div>
         </div>
         <div class="stat-card">
             <div class="stat-icon green"><i class="fas fa-handshake"></i></div>
-            <div class="stat-info"><h3>127</h3><p>Connections Made</p></div>
+          <div class="stat-info"><h3 id="stat-connections">0</h3><p>Connections Made</p></div>
         </div>
         <div class="stat-card">
             <div class="stat-icon orange"><i class="fas fa-star"></i></div>
-            <div class="stat-info"><h3>4.7</h3><p>Avg Rating</p></div>
+           <div class="stat-info"><h3 id="stat-avg-rating">0.0</h3><p>Avg Rating</p></div>
+
         </div>
         <div class="stat-card">
             <div class="stat-icon teal"><i class="fas fa-smile"></i></div>
-            <div class="stat-info"><h3>96%</h3><p>Satisfaction</p></div>
+            <div class="stat-info"><h3 id="stat-satisfaction">0%</h3><p>Satisfaction</p></div>
         </div>
     </div>
 
@@ -634,277 +635,9 @@
         <button class="skill-chip" type="button" data-skill="research">Research</button>
     </div>
 
-    <!-- Mentors Grid -->
     <div class="mentors-grid" id="mentors-grid">
-
-        <!-- Mentor 1 -->
-        <div class="mentor-card"
-             data-dept="cse"
-             data-avail="available"
-             data-year="4th"
-             data-skills="python dsa ml competitive">
-            <div class="mentor-top">
-                <div class="mentor-avatar avatar-blue" aria-hidden="true">🧑‍💻</div>
-                <div class="mentor-basic">
-                    <div class="mentor-name-row">
-                        <div class="mentor-name">Anon_Senior_CS_7821</div>
-                        <span class="avail-badge badge-available">
-                            <i class="fas fa-circle"></i> Available
-                        </span>
-                    </div>
-                    <div class="mentor-title">4th Year &middot; Computer Science</div>
-                    <div class="mentor-rating">
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                        <span class="rating-num">4.9</span>
-                        <span class="rating-count">(23 reviews)</span>
-                    </div>
-                </div>
-            </div>
-            <p class="mentor-bio">
-                Passionate about algorithms and competitive programming. Interned at 2 tech companies.
-                Happy to guide juniors on DSA, internship prep, and career paths in software engineering.
-            </p>
-            <div class="skill-tag-row">
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">Data Structures</span>
-                <span class="skill-tag">C++</span>
-                <span class="skill-tag">Machine Learning</span>
-                <span class="skill-tag">Competitive Programming</span>
-            </div>
-            <div class="mentor-stats">
-                <div class="m-stat">
-                    <div class="m-stat-val">18</div>
-                    <div class="m-stat-lbl">Mentees</div>
-                </div>
-                <div class="m-stat">
-                    <div class="m-stat-val">8 hrs</div>
-                    <div class="m-stat-lbl">Per week</div>
-                </div>
-                <div class="m-stat">
-                    <div class="m-stat-val">6 mo</div>
-                    <div class="m-stat-lbl">Experience</div>
-                </div>
-            </div>
-            <div class="mentor-actions">
-                <button
-                    class="btn-connect"
-                    type="button"
-                    onclick="sendRequest(this, 'Anon_Senior_CS_7821')"
-                >
-                    <i class="fas fa-user-plus"></i> Request Mentorship
-                </button>
-                <button
-                    class="btn-view-profile"
-                    type="button"
-                    onclick="viewProfile('CS_7821')"
-                >
-                    <i class="fas fa-eye"></i> Profile
-                </button>
-            </div>
-        </div>
-
-        <!-- Mentor 2 -->
-        <div class="mentor-card"
-             data-dept="eee"
-             data-avail="available"
-             data-year="4th"
-             data-skills="circuit matlab power research">
-            <div class="mentor-top">
-                <div class="mentor-avatar avatar-orange" aria-hidden="true">👩‍🔬</div>
-                <div class="mentor-basic">
-                    <div class="mentor-name-row">
-                        <div class="mentor-name">Anon_Senior_EEE_4521</div>
-                        <span class="avail-badge badge-available">
-                            <i class="fas fa-circle"></i> Available
-                        </span>
-                    </div>
-                    <div class="mentor-title">4th Year &middot; Electrical Engineering</div>
-                    <div class="mentor-rating">
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                        <span class="rating-num">4.8</span>
-                        <span class="rating-count">(17 reviews)</span>
-                    </div>
-                </div>
-            </div>
-            <p class="mentor-bio">
-                Research assistant in Power Systems Lab. Strong background in circuit analysis,
-                digital electronics, and signal processing. Can also guide on scholarship applications
-                and research paper writing.
-            </p>
-            <div class="skill-tag-row">
-                <span class="skill-tag">Circuit Design</span>
-                <span class="skill-tag">MATLAB</span>
-                <span class="skill-tag">Power Systems</span>
-                <span class="skill-tag">Research Writing</span>
-                <span class="skill-tag">Signal Processing</span>
-            </div>
-            <div class="mentor-stats">
-                <div class="m-stat">
-                    <div class="m-stat-val">12</div>
-                    <div class="m-stat-lbl">Mentees</div>
-                </div>
-                <div class="m-stat">
-                    <div class="m-stat-val">5 hrs</div>
-                    <div class="m-stat-lbl">Per week</div>
-                </div>
-                <div class="m-stat">
-                    <div class="m-stat-val">8 mo</div>
-                    <div class="m-stat-lbl">Experience</div>
-                </div>
-            </div>
-            <div class="mentor-actions">
-                <button
-                    class="btn-connect"
-                    type="button"
-                    onclick="sendRequest(this, 'Anon_Senior_EEE_4521')"
-                >
-                    <i class="fas fa-user-plus"></i> Request Mentorship
-                </button>
-                <button
-                    class="btn-view-profile"
-                    type="button"
-                    onclick="viewProfile('EEE_4521')"
-                >
-                    <i class="fas fa-eye"></i> Profile
-                </button>
-            </div>
-        </div>
-
-        <!-- Mentor 3 -->
-        <div class="mentor-card"
-             data-dept="bba"
-             data-avail="limited"
-             data-year="alumni"
-             data-skills="marketing brand cv interview business">
-            <div class="mentor-top">
-                <div class="mentor-avatar avatar-green" aria-hidden="true">🧑‍💼</div>
-                <div class="mentor-basic">
-                    <div class="mentor-name-row">
-                        <div class="mentor-name">Anon_Senior_BBA_2934</div>
-                        <span class="avail-badge badge-limited">
-                            <i class="fas fa-circle"></i> Limited
-                        </span>
-                    </div>
-                    <div class="mentor-title">Alumni (2024) &middot; Business Administration</div>
-                    <div class="mentor-rating">
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                        <span class="rating-num">4.7</span>
-                        <span class="rating-count">(31 reviews)</span>
-                    </div>
-                </div>
-            </div>
-            <p class="mentor-bio">
-                Currently working at a leading multinational. Specialized in digital marketing
-                and brand strategy. Happy to share corporate insights, review CVs,
-                and help with interview preparation.
-            </p>
-            <div class="skill-tag-row">
-                <span class="skill-tag">Marketing Strategy</span>
-                <span class="skill-tag">Brand Management</span>
-                <span class="skill-tag">CV Writing</span>
-                <span class="skill-tag">Interview Prep</span>
-                <span class="skill-tag">Business Analytics</span>
-            </div>
-            <div class="mentor-stats">
-                <div class="m-stat">
-                    <div class="m-stat-val">24</div>
-                    <div class="m-stat-lbl">Mentees</div>
-                </div>
-                <div class="m-stat">
-                    <div class="m-stat-val">3 hrs</div>
-                    <div class="m-stat-lbl">Per week</div>
-                </div>
-                <div class="m-stat">
-                    <div class="m-stat-val">1 yr</div>
-                    <div class="m-stat-lbl">Experience</div>
-                </div>
-            </div>
-            <div class="mentor-actions">
-                <button
-                    class="btn-connect"
-                    type="button"
-                    onclick="sendRequest(this, 'Anon_Senior_BBA_2934')"
-                >
-                    <i class="fas fa-user-plus"></i> Request Mentorship
-                </button>
-                <button
-                    class="btn-view-profile"
-                    type="button"
-                    onclick="viewProfile('BBA_2934')"
-                >
-                    <i class="fas fa-eye"></i> Profile
-                </button>
-            </div>
-        </div>
-
-        <!-- Mentor 4 -->
-        <div class="mentor-card"
-             data-dept="cse"
-             data-avail="available"
-             data-year="3rd"
-             data-skills="web react node github freelancing">
-            <div class="mentor-top">
-                <div class="mentor-avatar avatar-purple" aria-hidden="true">👩‍🎓</div>
-                <div class="mentor-basic">
-                    <div class="mentor-name-row">
-                        <div class="mentor-name">Anon_Senior_CS_6103</div>
-                        <span class="avail-badge badge-available">
-                            <i class="fas fa-circle"></i> Available
-                        </span>
-                    </div>
-                    <div class="mentor-title">3rd Year &middot; Computer Science</div>
-                    <div class="mentor-rating">
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;</span>
-                        <span class="rating-num">4.5</span>
-                        <span class="rating-count">(9 reviews)</span>
-                    </div>
-                </div>
-            </div>
-            <p class="mentor-bio">
-                Passionate about web development and open source. Active member of the university
-                coding club. Can guide on web dev stack (React / Node), project ideas,
-                and freelancing as a student.
-            </p>
-            <div class="skill-tag-row">
-                <span class="skill-tag">React.js</span>
-                <span class="skill-tag">Node.js</span>
-                <span class="skill-tag">Web Development</span>
-                <span class="skill-tag">GitHub</span>
-                <span class="skill-tag">Freelancing</span>
-            </div>
-            <div class="mentor-stats">
-                <div class="m-stat">
-                    <div class="m-stat-val">7</div>
-                    <div class="m-stat-lbl">Mentees</div>
-                </div>
-                <div class="m-stat">
-                    <div class="m-stat-val">6 hrs</div>
-                    <div class="m-stat-lbl">Per week</div>
-                </div>
-                <div class="m-stat">
-                    <div class="m-stat-val">4 mo</div>
-                    <div class="m-stat-lbl">Experience</div>
-                </div>
-            </div>
-            <div class="mentor-actions">
-                <button
-                    class="btn-connect"
-                    type="button"
-                    onclick="sendRequest(this, 'Anon_Senior_CS_6103')"
-                >
-                    <i class="fas fa-user-plus"></i> Request Mentorship
-                </button>
-                <button
-                    class="btn-view-profile"
-                    type="button"
-                    onclick="viewProfile('CS_6103')"
-                >
-                    <i class="fas fa-eye"></i> Profile
-                </button>
-            </div>
-        </div>
-
-    </div>
+    
+</div>
 
     <!-- Empty State -->
     <div class="empty-state" id="empty-state">
@@ -1035,174 +768,412 @@
 </div>
 
 <script>
-    /* ── Dark Mode ── */
-    const dmToggle = document.getElementById('dark-mode-toggle');
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        dmToggle.textContent = '☀️';
+   /* ── Config ── */
+const API_BASE = 'http://localhost:5000/api';
+
+/* ── Dark Mode ── */
+const dmToggle = document.getElementById('dark-mode-toggle');
+if (localStorage.getItem('darkMode') === 'enabled') {
+    document.body.classList.add('dark-mode');
+    dmToggle.textContent = '☀️';
+}
+dmToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    dmToggle.textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+});
+
+/* ── Sidebar Toggle ── */
+const sidebar     = document.getElementById('sidebar');
+const mainContent = document.getElementById('main-content');
+document.getElementById('sidebar-toggle').addEventListener('click', () => {
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('mobile-open');
+    } else {
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded');
     }
-    dmToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        dmToggle.textContent = isDark ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-    });
+});
 
-    /* ── Sidebar Toggle ── */
-    const sidebar     = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    document.getElementById('sidebar-toggle').addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle('mobile-open');
-        } else {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-        }
-    });
+/* ── Avatar Styles ── */
+const avatarStyles = [
+    { cls: 'avatar-blue',   emoji: '🧑‍💻' },
+    { cls: 'avatar-green',  emoji: '👩‍🔬' },
+    { cls: 'avatar-purple', emoji: '👩‍🎓' },
+    { cls: 'avatar-orange', emoji: '🧑‍💼' },
+];
 
-    /* ── Filter Logic ── */
-    const cards      = Array.from(document.querySelectorAll('.mentor-card'));
+/* ── Render Mentor Cards ── */
+function renderMentors(mentors) {
+    const grid       = document.getElementById('mentors-grid');
     const emptyState = document.getElementById('empty-state');
-    const searchInput  = document.getElementById('search-input');
-    const deptSel      = document.getElementById('dept-filter');
-    const availSel     = document.getElementById('avail-filter');
-    const yearSel      = document.getElementById('year-filter');
 
-    function applyFilters() {
-        const q     = searchInput.value.toLowerCase().trim();
-        const dept  = deptSel.value;
-        const avail = availSel.value;
-        const year  = yearSel.value;
+    grid.innerHTML = '';
 
-        let visible = 0;
-
-        cards.forEach(card => {
-            const nameEl = card.querySelector('.mentor-name');
-            const bioEl  = card.querySelector('.mentor-bio');
-            const text   = (nameEl ? nameEl.textContent : '') + ' ' + (bioEl ? bioEl.textContent : '');
-
-            const matchSearch = !q     || text.toLowerCase().includes(q);
-            const matchDept   = !dept  || card.dataset.dept === dept;
-            const matchAvail  = !avail || card.dataset.avail === avail;
-            const matchYear   = !year  || card.dataset.year === year;
-
-            const show = matchSearch && matchDept && matchAvail && matchYear;
-            card.style.display = show ? '' : 'none';
-            if (show) visible++;
-        });
-
-        emptyState.style.display = visible === 0 ? 'block' : 'none';
+    if (!mentors || mentors.length === 0) {
+        emptyState.style.display = 'block';
+        return;
     }
 
-    searchInput.addEventListener('input', applyFilters);
-    deptSel.addEventListener('change', applyFilters);
-    availSel.addEventListener('change', applyFilters);
-    yearSel.addEventListener('change', applyFilters);
+    emptyState.style.display = 'none';
 
-    document.getElementById('btn-clear').addEventListener('click', () => {
+    mentors.forEach((mentor, index) => {
+        const style    = avatarStyles[index % avatarStyles.length];
+        const isAvail  = mentor.availability === 'available';
+        const stars    = generateStars(mentor.rating);
+        const skillTags = mentor.expertise
+            .split(',')
+            .map(s => `<span class="skill-tag">${s.trim()}</span>`)
+            .join('');
+
+        const card = document.createElement('div');
+        card.className = 'mentor-card';
+        card.dataset.dept  = mentor.department;
+        card.dataset.avail = mentor.availability;
+        card.dataset.year  = mentor.year;
+        card.dataset.skills = mentor.expertise.toLowerCase();
+
+        card.innerHTML = `
+            <div class="mentor-top">
+                <div class="mentor-avatar ${style.cls}" aria-hidden="true">
+                    ${style.emoji}
+                </div>
+                <div class="mentor-basic">
+                    <div class="mentor-name-row">
+                        <div class="mentor-name">${mentor.anonymous_id}</div>
+                        <span class="avail-badge ${isAvail ? 'badge-available' : 'badge-limited'}">
+                            <i class="fas fa-circle"></i>
+                            ${isAvail ? 'Available' : 'Limited'}
+                        </span>
+                    </div>
+                    <div class="mentor-title">
+                        ${formatYear(mentor.year)} &middot; ${mentor.department.toUpperCase()}
+                    </div>
+                    <div class="mentor-rating">
+                        <span class="stars">${stars}</span>
+                        <span class="rating-num">${Number(mentor.rating).toFixed(1)}</span>
+                        <span class="rating-count">(${mentor.total_reviews} reviews)</span>
+                    </div>
+                </div>
+            </div>
+            <p class="mentor-bio">${mentor.bio}</p>
+            <div class="skill-tag-row">${skillTags}</div>
+            <div class="mentor-stats">
+                <div class="m-stat">
+                    <div class="m-stat-val">${mentor.total_mentees}</div>
+                    <div class="m-stat-lbl">Mentees</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">${mentor.hours_per_week || 'N/A'}</div>
+                    <div class="m-stat-lbl">Per week</div>
+                </div>
+                <div class="m-stat">
+                    <div class="m-stat-val">${mentor.total_reviews}</div>
+                    <div class="m-stat-lbl">Reviews</div>
+                </div>
+            </div>
+            <div class="mentor-actions">
+                <button
+                    class="btn-connect"
+                    type="button"
+                    onclick="sendRequest(this, '${mentor.anonymous_id}', ${mentor.id})"
+                >
+                    <i class="fas fa-user-plus"></i> Request Mentorship
+                </button>
+                <button
+                    class="btn-view-profile"
+                    type="button"
+                    onclick="viewProfile(${mentor.id})"
+                >
+                    <i class="fas fa-eye"></i> Profile
+                </button>
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+
+/* ── Helpers ── */
+function generateStars(rating) {
+    const full  = Math.round(rating);
+    let stars = '';
+    for (let i = 0; i < 5; i++) {
+        stars += i < full ? '★' : '☆';
+    }
+    return stars;
+}
+
+function formatYear(year) {
+    if (year === 'alumni') return 'Alumni';
+    return year.charAt(0).toUpperCase() + year.slice(1) + ' Year';
+}
+
+/* ── Fetch Mentors from API ── */
+async function fetchMentors(params = {}) {
+    try {
+        const grid = document.getElementById('mentors-grid');
+        grid.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-tertiary);">
+                <i class="fas fa-spinner fa-spin" style="font-size:30px;"></i>
+                <p style="margin-top:10px;">Loading mentors...</p>
+            </div>
+        `;
+
+        const query = new URLSearchParams(params).toString();
+        const url   = `${API_BASE}/mentors${query ? '?' + query : ''}`;
+
+        const res  = await fetch(url);
+        const data = await res.json();
+
+        if (data.success) {
+            renderMentors(data.data);
+        } else {
+            showError('Failed to load mentors.');
+        }
+
+    } catch (err) {
+        console.error('fetchMentors error:', err);
+        showError('Could not connect to server.');
+    }
+}
+
+function showError(msg) {
+    const grid = document.getElementById('mentors-grid');
+    grid.innerHTML = `
+        <div style="grid-column:1/-1; text-align:center; padding:40px; color:#F44336;">
+            <i class="fas fa-exclamation-circle" style="font-size:30px;"></i>
+            <p style="margin-top:10px;">${msg}</p>
+        </div>
+    `;
+}
+
+/* ── Filters ── */
+const searchInput = document.getElementById('search-input');
+const deptSel     = document.getElementById('dept-filter');
+const availSel    = document.getElementById('avail-filter');
+const yearSel     = document.getElementById('year-filter');
+
+let filterTimeout = null;
+
+function applyFilters() {
+    clearTimeout(filterTimeout);
+    filterTimeout = setTimeout(() => {
+        const params = {};
+        if (deptSel.value)         params.dept         = deptSel.value;
+        if (availSel.value)        params.availability  = availSel.value;
+        if (yearSel.value)         params.year          = yearSel.value;
+        if (searchInput.value.trim()) params.skill      = searchInput.value.trim();
+        fetchMentors(params);
+    }, 400);
+}
+
+searchInput.addEventListener('input',  applyFilters);
+deptSel.addEventListener('change',     applyFilters);
+availSel.addEventListener('change',    applyFilters);
+yearSel.addEventListener('change',     applyFilters);
+
+document.getElementById('btn-clear').addEventListener('click', () => {
+    searchInput.value = '';
+    deptSel.value     = '';
+    availSel.value    = '';
+    yearSel.value     = '';
+    document.querySelectorAll('.skill-chip').forEach(c => c.classList.remove('active'));
+    document.querySelector('.skill-chip[data-skill="all"]').classList.add('active');
+    fetchMentors();
+});
+async function fetchStats() {
+    try {
+        const res  = await fetch(`${API_BASE}/mentors/stats`);
+        const data = await res.json();
+
+        if (data.success) {
+            const s = data.data;
+            document.getElementById('stat-active-mentors').textContent = s.active_mentors;
+            document.getElementById('stat-connections').textContent    = s.connections_made;
+            document.getElementById('stat-avg-rating').textContent     = s.avg_rating;
+            document.getElementById('stat-satisfaction').textContent   = s.satisfaction;
+        }
+    } catch (err) {
+        console.error('fetchStats error:', err);
+    }
+}
+/* ── Skill Chips ── */
+document.querySelectorAll('.skill-chip').forEach(chip => {
+    chip.addEventListener('click', function () {
+        document.querySelectorAll('.skill-chip').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+
+        const skill = this.dataset.skill;
         searchInput.value = '';
         deptSel.value     = '';
         availSel.value    = '';
         yearSel.value     = '';
-        document.querySelectorAll('.skill-chip').forEach(c => c.classList.remove('active'));
-        document.querySelector('.skill-chip[data-skill="all"]').classList.add('active');
-        applyFilters();
+
+        if (skill === 'all') {
+            fetchMentors();
+        } else {
+            fetchMentors({ skill });
+        }
     });
+});
 
-    /* ── Skill Chips ── */
-    document.querySelectorAll('.skill-chip').forEach(chip => {
-        chip.addEventListener('click', function () {
-            document.querySelectorAll('.skill-chip').forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
+/* ── Become Mentor Modal ── */
+const mentorModal = document.getElementById('mentor-modal');
 
-            const skill = this.dataset.skill;
-            cards.forEach(card => {
-                if (skill === 'all') {
-                    card.style.display = '';
-                } else {
-                    const cardSkills = card.dataset.skills || '';
-                    card.style.display = cardSkills.includes(skill) ? '' : 'none';
-                }
-            });
+function openMentorModal()  { mentorModal.classList.add('show'); }
+function closeMentorModal() { mentorModal.classList.remove('show'); }
 
-            const visible = cards.filter(c => c.style.display !== 'none').length;
-            emptyState.style.display = visible === 0 ? 'block' : 'none';
+document.getElementById('btn-become-mentor').addEventListener('click', openMentorModal);
+document.getElementById('mentor-modal-close').addEventListener('click', closeMentorModal);
+document.getElementById('mentor-modal-cancel').addEventListener('click', closeMentorModal);
+mentorModal.addEventListener('click', e => { if (e.target === mentorModal) closeMentorModal(); });
 
-            searchInput.value = '';
-            deptSel.value     = '';
-            availSel.value    = '';
-            yearSel.value     = '';
+document.getElementById('mentor-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const expertise          = document.getElementById('mentor-expertise').value.trim();
+    const year               = document.getElementById('mentor-year').value;
+    const hours_per_week     = document.getElementById('mentor-hours').value;
+    const department         = document.getElementById('mentor-dept').value;
+    const bio                = document.getElementById('mentor-bio').value.trim();
+    const contact_preference = document.getElementById('mentor-contact').value;
+
+    if (!expertise || !year || !hours_per_week || !department || !bio) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem('token');
+        const res   = await fetch(`${API_BASE}/mentors/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                expertise, year, hours_per_week,
+                department, bio, contact_preference
+            })
         });
-    });
 
-    /* ── Become Mentor Modal ── */
-    const mentorModal = document.getElementById('mentor-modal');
+        const data = await res.json();
 
-    function openMentorModal() { mentorModal.classList.add('show'); }
-    function closeMentorModal() { mentorModal.classList.remove('show'); }
-
-    document.getElementById('btn-become-mentor').addEventListener('click', openMentorModal);
-    document.getElementById('mentor-modal-close').addEventListener('click', closeMentorModal);
-    document.getElementById('mentor-modal-cancel').addEventListener('click', closeMentorModal);
-    mentorModal.addEventListener('click', e => { if (e.target === mentorModal) closeMentorModal(); });
-
-    document.getElementById('mentor-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const expertise = document.getElementById('mentor-expertise').value.trim();
-        const year      = document.getElementById('mentor-year').value;
-        const hours     = document.getElementById('mentor-hours').value;
-        const dept      = document.getElementById('mentor-dept').value;
-        const bio       = document.getElementById('mentor-bio').value.trim();
-
-        if (!expertise || !year || !hours || !dept || !bio) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-        closeMentorModal();
-        this.reset();
-        alert('Mentor registration submitted! Your profile will be reviewed and published within 24 hours.');
-    });
-
-    /* ── Request Modal ── */
-    const requestModal = document.getElementById('request-modal');
-    let pendingRequestBtn = null;
-
-    function sendRequest(btn, mentorName) {
-        pendingRequestBtn = btn;
-        document.getElementById('request-modal-subtitle').textContent =
-            'Send a request to ' + mentorName;
-        document.getElementById('request-message').value = '';
-        document.getElementById('request-topics').value  = '';
-        requestModal.classList.add('show');
-    }
-
-    function closeRequestModal() { requestModal.classList.remove('show'); }
-
-    document.getElementById('request-modal-close').addEventListener('click', closeRequestModal);
-    document.getElementById('request-modal-cancel').addEventListener('click', closeRequestModal);
-    requestModal.addEventListener('click', e => { if (e.target === requestModal) closeRequestModal(); });
-
-    document.getElementById('request-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const msg = document.getElementById('request-message').value.trim();
-        if (!msg) { alert('Please write a message first.'); return; }
-
-        if (pendingRequestBtn) {
-            pendingRequestBtn.innerHTML  = '<i class="fas fa-check"></i> Request Sent!';
-            pendingRequestBtn.classList.add('sent');
-            pendingRequestBtn.disabled   = true;
-            pendingRequestBtn = null;
+        if (data.success) {
+            closeMentorModal();
+            this.reset();
+            alert('✅ ' + data.message);
+        } else {
+            alert('❌ ' + data.message);
         }
 
-        closeRequestModal();
-        this.reset();
-        alert('Mentorship request sent! The mentor will respond within 48 hours.');
-    });
-
-    /* ── View Profile ── */
-    function viewProfile(id) {
-        alert('Viewing profile of Mentor ' + id + '\n\n(Full profile page — backend integration pending)');
+    } catch (err) {
+        console.error('registerMentor error:', err);
+        alert('Server error. Please try again.');
     }
+});
+
+/* ── Request Modal ── */
+const requestModal = document.getElementById('request-modal');
+let pendingRequestBtn  = null;
+let pendingMentorId    = null;
+
+function sendRequest(btn, mentorName, mentorId) {
+    pendingRequestBtn = btn;
+    pendingMentorId   = mentorId;
+    document.getElementById('request-modal-subtitle').textContent =
+        'Send a request to ' + mentorName;
+    document.getElementById('request-message').value = '';
+    document.getElementById('request-topics').value  = '';
+    requestModal.classList.add('show');
+}
+
+function closeRequestModal() { requestModal.classList.remove('show'); }
+
+document.getElementById('request-modal-close').addEventListener('click', closeRequestModal);
+document.getElementById('request-modal-cancel').addEventListener('click', closeRequestModal);
+requestModal.addEventListener('click', e => { if (e.target === requestModal) closeRequestModal(); });
+
+document.getElementById('request-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const message = document.getElementById('request-message').value.trim();
+    const topics  = document.getElementById('request-topics').value.trim();
+
+    if (!message) {
+        alert('Please write a message first.');
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem('token');
+        const res   = await fetch(`${API_BASE}/mentors/request/send`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                to_mentor_id: pendingMentorId,
+                message,
+                topics
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            if (pendingRequestBtn) {
+                pendingRequestBtn.innerHTML = '<i class="fas fa-check"></i> Request Sent!';
+                pendingRequestBtn.classList.add('sent');
+                pendingRequestBtn.disabled  = true;
+                pendingRequestBtn = null;
+            }
+            closeRequestModal();
+            this.reset();
+            alert('✅ ' + data.message);
+        } else {
+            alert('❌ ' + data.message);
+        }
+
+    } catch (err) {
+        console.error('sendRequest error:', err);
+        alert('Server error. Please try again.');
+    }
+});
+
+/* ── View Profile ── */
+async function viewProfile(mentorId) {
+    try {
+        const res  = await fetch(`${API_BASE}/mentors/${mentorId}/profile`);
+        const data = await res.json();
+
+        if (data.success) {
+            const m = data.data;
+            alert(
+                `👤 ${m.anonymous_id}\n` +
+                `🏫 ${m.department.toUpperCase()} — ${formatYear(m.year)}\n` +
+                `⭐ Rating: ${m.rating} (${m.total_reviews} reviews)\n` +
+                `👥 Mentees: ${m.total_mentees}\n` +
+                `🕐 Hours/week: ${m.hours_per_week}\n` +
+                `📩 Contact: ${m.contact_preference}\n\n` +
+                `📝 Bio: ${m.bio}`
+            );
+        } else {
+            alert('Profile not found.');
+        }
+
+    } catch (err) {
+        console.error('viewProfile error:', err);
+        alert('Could not load profile.');
+    }
+}
+
+// ── Initial Load ──
+fetchMentors();
+fetchStats(); //
 </script>
 
 </body>

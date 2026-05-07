@@ -214,6 +214,14 @@
         <i class="fas fa-shield-alt"></i> Reports
         <span class="nav-badge" id="report-count">0</span>
     </button>
+    <button class="nav-item" onclick="showSection('mentors')">
+        <i class="fas fa-chalkboard-teacher"></i> Mentor Approvals
+        <span class="nav-badge" id="mentor-count">0</span>
+    </button>
+    <button class="nav-item" onclick="showSection('jobs')">
+    <i class="fas fa-briefcase"></i> Job Approvals
+    <span class="nav-badge" id="job-count">0</span>
+</button>
     <div style="height:1px; background:#E0E0E0; margin:12px 20px;"></div>
     <a class="nav-item" href="dashboard.html">
         <i class="fas fa-arrow-left"></i> Back to Site
@@ -245,7 +253,25 @@
             <div class="stat-info"><h3 id="stat-resolved-reports">0</h3><p>Resolved Reports</p></div>
         </div>
     </div>
-
+<!-- Mentor Stats Row -->
+    <div class="stats-row" style="margin-bottom:25px;">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-user-clock"></i></div>
+            <div class="stat-info"><h3 id="stat-pending-mentors">0</h3><p>Pending Mentors</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-chalkboard-teacher"></i></div>
+            <div class="stat-info"><h3 id="stat-approved-mentors">0</h3><p>Approved Mentors</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-handshake"></i></div>
+            <div class="stat-info"><h3 id="stat-total-requests">0</h3><p>Total Requests</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-user-times"></i></div>
+            <div class="stat-info"><h3 id="stat-rejected-mentors">0</h3><p>Rejected Mentors</p></div>
+        </div>
+    </div>
     <!-- Resources Section -->
     <div class="section active" id="section-resources">
         <div class="card">
@@ -270,6 +296,39 @@
         </div>
     </div>
 
+    <!-- Mentors Section -->
+    <div class="section" id="section-mentors">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-chalkboard-teacher"></i> Pending Mentor Applications</h2>
+            </div>
+            <div id="mentors-table-container">
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-handshake"></i> Mentorship Requests</h2>
+            </div>
+            <div id="requests-table-container">
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+        </div>
+    </div>
+    <!-- Jobs Section -->
+<div class="section" id="section-jobs">
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-briefcase"></i> Pending Job Posts</h2>
+        </div>
+        <div id="jobs-table-container">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+        </div>
+    </div>
+</div>
 </main>
 
 <script>
@@ -443,10 +502,271 @@
             alert('Could not connect to server.');
         }
     }
+// ── Load Pending Mentors ──────────────────────────────────────
+    async function loadPendingMentors() {
+        try {
+            const res  = await fetch('http://localhost:5000/api/admin/mentors/pending');
+            const data = await res.json();
 
+            if (!data.success) return;
+
+            const mentors = data.data;
+
+            document.getElementById('stat-pending-mentors').textContent = mentors.length;
+            document.getElementById('mentor-count').textContent = mentors.length;
+
+            if (mentors.length === 0) {
+                document.getElementById('mentors-table-container').innerHTML = `
+                    <div class="empty">
+                        <i class="fas fa-check-circle"></i>
+                        No pending mentor applications
+                    </div>`;
+                return;
+            }
+
+            let html = `<table>
+                <thead>
+                    <tr>
+                        <th>Anonymous ID</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Expertise</th>
+                        <th>Hours/Week</th>
+                        <th>Applied</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            mentors.forEach(m => {
+                const date = new Date(m.created_at).toLocaleDateString();
+                const bio  = m.bio.length > 60 ? m.bio.substring(0, 60) + '...' : m.bio;
+                html += `<tr>
+                    <td>
+                        <strong>${m.anonymous_id}</strong>
+                        <br>
+                        <small style="color:var(--text-tertiary)">${bio}</small>
+                    </td>
+                    <td>${m.department.toUpperCase()}</td>
+                    <td>${m.year}</td>
+                    <td>${m.expertise}</td>
+                    <td>${m.hours_per_week}</td>
+                    <td>${date}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn btn-approve" onclick="approveMentor(${m.id})">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-reject" onclick="rejectMentor(${m.id})">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+
+            html += `</tbody></table>`;
+            document.getElementById('mentors-table-container').innerHTML = html;
+
+        } catch (err) {
+            document.getElementById('mentors-table-container').innerHTML = `
+                <div class="empty">
+                    <i class="fas fa-exclamation-circle"></i> Could not load mentors
+                </div>`;
+        }
+    }
+
+    // ── Load Mentorship Requests ──────────────────────────────────
+    async function loadMentorRequests() {
+        try {
+            const res  = await fetch('http://localhost:5000/api/admin/mentors/requests');
+            const data = await res.json();
+
+            if (!data.success) return;
+
+            const requests = data.data;
+            document.getElementById('stat-total-requests').textContent = requests.length;
+
+            if (requests.length === 0) {
+                document.getElementById('requests-table-container').innerHTML = `
+                    <div class="empty">
+                        <i class="fas fa-inbox"></i> No mentorship requests yet
+                    </div>`;
+                return;
+            }
+
+            let html = `<table>
+                <thead>
+                    <tr>
+                        <th>Mentor</th>
+                        <th>Department</th>
+                        <th>Topics</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            requests.forEach(r => {
+                const date = new Date(r.created_at).toLocaleDateString();
+                const msg  = r.message.length > 60 ? r.message.substring(0, 60) + '...' : r.message;
+                html += `<tr>
+                    <td><strong>${r.mentor_name}</strong></td>
+                    <td>${r.mentor_dept.toUpperCase()}</td>
+                    <td>${r.topics || '—'}</td>
+                    <td>${msg}</td>
+                    <td><span class="status-badge status-${r.status}">${r.status}</span></td>
+                    <td>${date}</td>
+                </tr>`;
+            });
+
+            html += `</tbody></table>`;
+            document.getElementById('requests-table-container').innerHTML = html;
+
+        } catch (err) {
+            document.getElementById('requests-table-container').innerHTML = `
+                <div class="empty">
+                    <i class="fas fa-exclamation-circle"></i> Could not load requests
+                </div>`;
+        }
+    }
+
+    // ── Approve Mentor ────────────────────────────────────────────
+    async function approveMentor(id) {
+        if (!confirm('এই mentor কে approve করবেন?')) return;
+        try {
+            const res  = await fetch(`http://localhost:5000/api/admin/mentors/${id}/approve`, {
+                method: 'PATCH'
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('✅ Mentor approved!');
+                loadPendingMentors();
+                // stat update
+                const curr = parseInt(document.getElementById('stat-approved-mentors').textContent) || 0;
+                document.getElementById('stat-approved-mentors').textContent = curr + 1;
+            } else {
+                alert('❌ ' + data.message);
+            }
+        } catch (err) {
+            alert('Server error.');
+        }
+    }
+
+    // ── Reject Mentor ─────────────────────────────────────────────
+    async function rejectMentor(id) {
+        if (!confirm('এই mentor কে reject করবেন?')) return;
+        try {
+            const res  = await fetch(`http://localhost:5000/api/admin/mentors/${id}/reject`, {
+                method: 'PATCH'
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('Mentor rejected.');
+                loadPendingMentors();
+                const curr = parseInt(document.getElementById('stat-rejected-mentors').textContent) || 0;
+                document.getElementById('stat-rejected-mentors').textContent = curr + 1;
+            } else {
+                alert('❌ ' + data.message);
+            }
+        } catch (err) {
+            alert('Server error.');
+        }
+    }
+    // Load Pending Jobs
+async function loadPendingJobs() {
+    try {
+        const res = await fetch('http://localhost:5000/api/admin/jobs');
+        const data = await res.json();
+
+        if (!data.success) return;
+
+        const jobs = data.jobs.filter(j => j.status === 'pending');
+
+        document.getElementById('job-count').textContent = jobs.length;
+
+        if (jobs.length === 0) {
+            document.getElementById('jobs-table-container').innerHTML = `
+                <div class="empty"><i class="fas fa-briefcase"></i> No pending job posts</div>`;
+            return;
+        }
+
+        let html = `<table>
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Salary</th>
+                    <th>Submitted</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+        jobs.forEach(j => {
+            const date = new Date(j.created_at).toLocaleDateString();
+            html += `<tr>
+                <td>
+                    <strong>${j.title}</strong>
+                    <br>
+                    <small style="color:var(--text-tertiary)">${j.department || ''}</small>
+                </td>
+                <td>${j.company || '—'}</td>
+                <td>${j.job_type}</td>
+                <td>${j.location}</td>
+                <td>${j.salary || '—'}</td>
+                <td>${date}</td>
+                <td>
+                    <div class="action-btns">
+                        <button class="btn btn-approve" onclick="updateJobStatus(${j.id}, 'approved')">
+                            <i class="fas fa-check"></i> Approve
+                        </button>
+                        <button class="btn btn-reject" onclick="updateJobStatus(${j.id}, 'rejected')">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
+        });
+
+        html += `</tbody></table>`;
+        document.getElementById('jobs-table-container').innerHTML = html;
+
+    } catch (err) {
+        document.getElementById('jobs-table-container').innerHTML = `
+            <div class="empty"><i class="fas fa-exclamation-circle"></i> Could not load jobs</div>`;
+    }
+}
+
+// Update Job Status
+async function updateJobStatus(id, status) {
+    if (!confirm(`এই job টি ${status} করবেন?`)) return;
+    try {
+        const res = await fetch(`http://localhost:5000/api/admin/jobs/${id}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert(`✅ Job ${status}!`);
+            loadPendingJobs();
+        } else {
+            alert('❌ ' + data.message);
+        }
+    } catch (err) {
+        alert('Server error.');
+    }
+}
     // Init
-    loadResources();
-    loadReports();
+loadResources();
+loadReports();
+loadPendingMentors();
+loadMentorRequests();
+loadPendingJobs();
 </script>
 
 </body>

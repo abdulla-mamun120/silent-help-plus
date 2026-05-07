@@ -983,164 +983,263 @@
 </div>
 
 <script>
-    /* ── Dark Mode ── */
-    const dmToggle = document.getElementById('dark-mode-toggle');
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        dmToggle.textContent = '☀️';
+  const API_BASE = 'http://localhost:5000/api';
+
+  const searchInput = document.getElementById('search-input');
+  const deptSel     = document.getElementById('dept-filter');
+  const listingSel  = document.getElementById('listing-filter');
+  const condSel     = document.getElementById('cond-filter');
+
+
+// Anonymous ID — localStorage থেকে নাও বা তৈরি করো
+const ANON_ID = localStorage.getItem('anonId') || 
+  'Anon_' + Math.random().toString(36).substr(2, 6).toUpperCase();
+localStorage.setItem('anonId', ANON_ID);
+
+// ── Books Load করো ──
+async function loadBooks(filters = {}) {
+  const qs = new URLSearchParams(filters).toString();
+  try {
+    const res  = await fetch(`${API_BASE}/books?${qs}`);
+    const data = await res.json();
+    if (data.success) renderBooks(data.books);
+  } catch (err) {
+    console.error('Failed to load books:', err);
+  }
+}
+
+// ── Books Render করো ──
+function renderBooks(books) {
+  const grid = document.getElementById('books-grid');
+  const emptyState = document.getElementById('empty-state');
+
+  if (books.length === 0) {
+    grid.innerHTML = '';
+    emptyState.style.display = 'block';
+    return;
+  }
+
+  emptyState.style.display = 'none';
+  const coverMap = { cse:'cover-cs', eee:'cover-eee', bba:'cover-bba', ce:'cover-ce', pharm:'cover-pharm' };
+  const emojiMap = { cse:'📘', eee:'📙', bba:'📗', ce:'📕', pharm:'📒' };
+  const badgeMap = { sell:'badge-sell', rent:'badge-rent', exchange:'badge-exchange' };
+  const labelMap = { sell:'For Sale', rent:'For Rent', exchange:'Exchange' };
+  const condMap  = { new:'cond-new', good:'cond-good', fair:'cond-fair' };
+  const condLabel = { new:'Like New', good:'Good', fair:'Fair' };
+
+  grid.innerHTML = books.map(book => {
+    const cover  = coverMap[book.dept]  || 'cover-other';
+    const emoji  = emojiMap[book.dept]  || '📓';
+    const badge  = badgeMap[book.type]  || 'badge-sell';
+    const label  = labelMap[book.type]  || book.type;
+    const cond   = condMap[book.condition]  || 'cond-good';
+    const cLabel = condLabel[book.condition] || book.condition;
+    const price  = book.type === 'exchange' ? 'Exchange' :
+                   book.type === 'rent'     ? `$${book.price}/mo` : `$${book.price}`;
+    const timeAgo = formatTime(book.created_at);
+
+    return `
+    <div class="book-card" data-type="${book.type}" data-dept="${book.dept || ''}" data-cond="${book.condition}">
+      <div class="book-cover ${cover}">
+        ${emoji}
+        <span class="listing-badge ${badge}">${label}</span>
+      </div>
+      <div class="book-body">
+        <div class="book-title">${book.title}</div>
+        <div class="book-author">${book.author || 'Unknown Author'}</div>
+        <div class="book-price-row">
+          <div>
+            <div class="book-price">${price}</div>
+          </div>
+          <span class="cond-badge ${cond}">${cLabel}</span>
+        </div>
+        <div class="book-details">
+          <span><i class="fas fa-tag"></i> ${book.dept ? book.dept.toUpperCase() : 'General'}</span>
+        </div>
+        <div class="book-actions">
+          <button class="btn-contact" type="button"
+            onclick="openContactModal('${book.seller_anon_id}', '${book.title}', ${book.id})">
+            <i class="fas fa-comment"></i> ${book.type === 'exchange' ? 'Propose Exchange' : 'Contact Seller'}
+          </button>
+          <button class="btn-wishlist" type="button"
+            onclick="toggleWishlistAPI(this, ${book.id})" aria-label="Add to wishlist">
+            <i class="fas fa-heart"></i>
+          </button>
+        </div>
+      </div>
+      <div class="book-footer">
+        <div class="seller-avatar" aria-hidden="true">👤</div>
+        <span>${book.seller_anon_id} · ${timeAgo}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function formatTime(dateStr) {
+  const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+  if (diff < 60)     return 'Just now';
+  if (diff < 3600)   return Math.floor(diff/60) + ' min ago';
+  if (diff < 86400)  return Math.floor(diff/3600) + ' hours ago';
+  if (diff < 604800) return Math.floor(diff/86400) + ' days ago';
+  return Math.floor(diff/604800) + ' weeks ago';
+}
+
+// ── List Form Submit → API ──
+document.getElementById('list-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const body = {
+    title:          document.getElementById('book-title').value.trim(),
+    author:         document.getElementById('book-author').value.trim(),
+    type:           document.getElementById('book-listing-type').value,
+    price:          document.getElementById('book-price').value || 0,
+    condition:      document.getElementById('book-condition').value,
+    dept:           document.getElementById('book-dept').value,
+    notes:          document.getElementById('book-notes').value,
+    seller_anon_id: ANON_ID,
+  };
+  if (!body.title || !body.type || !body.condition) {
+    alert('Please fill required fields.'); return;
+  }
+  try {
+    const res  = await fetch(`${API_BASE}/books`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.success) {
+      closeListModal();
+      this.reset();
+      loadBooks();
+      alert('Book listed successfully!');
     }
-    dmToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        dmToggle.textContent = isDark ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+  } catch (err) { alert('Error: ' + err.message); }
+});
+
+// ── Contact Modal → API ──
+let currentBookId = null;
+
+function openContactModal(seller, bookTitle, bookId) {
+  currentBookId = bookId;
+  document.getElementById('contact-modal-subtitle').textContent =
+    `Send a message to ${seller} about "${bookTitle}"`;
+  document.getElementById('contact-message').value =
+    `Hi, I am interested in your book "${bookTitle}". Is it still available?`;
+  document.getElementById('contact-modal').classList.add('show');
+}
+
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const message     = document.getElementById('contact-message').value.trim();
+  const contact_info = document.getElementById('contact-info').value.trim();
+  if (!message) { alert('Please write a message.'); return; }
+
+  try {
+    const res  = await fetch(`${API_BASE}/books/${currentBookId}/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sender_anon_id: ANON_ID, message, contact_info })
     });
-
-    /* ── Sidebar Toggle ── */
-    const sidebar     = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    document.getElementById('sidebar-toggle').addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle('mobile-open');
-        } else {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-        }
-    });
-
-    /* ── Filter Logic ── */
-    const cards       = Array.from(document.querySelectorAll('.book-card'));
-    const emptyState  = document.getElementById('empty-state');
-    const searchInput = document.getElementById('search-input');
-    const deptSel     = document.getElementById('dept-filter');
-    const listingSel  = document.getElementById('listing-filter');
-    const condSel     = document.getElementById('cond-filter');
-
-    function applyFilters() {
-        const q       = searchInput.value.toLowerCase().trim();
-        const dept    = deptSel.value;
-        const listing = listingSel.value;
-        const cond    = condSel.value;
-
-        let visible = 0;
-
-        cards.forEach(card => {
-            const titleText = card.querySelector('.book-title') ? card.querySelector('.book-title').textContent.toLowerCase() : '';
-            const authText  = card.querySelector('.book-author') ? card.querySelector('.book-author').textContent.toLowerCase() : '';
-
-            const matchSearch  = !q       || titleText.includes(q) || authText.includes(q);
-            const matchDept    = !dept    || card.dataset.dept === dept;
-            const matchListing = !listing || card.dataset.type === listing;
-            const matchCond    = !cond    || card.dataset.cond === cond;
-
-            const show = matchSearch && matchDept && matchListing && matchCond;
-            card.style.display = show ? '' : 'none';
-            if (show) visible++;
-        });
-
-        emptyState.style.display = visible === 0 ? 'block' : 'none';
+    const data = await res.json();
+    if (data.success) {
+      closeContactModal();
+      this.reset();
+      alert('Message sent anonymously!');
     }
+  } catch (err) { alert('Error: ' + err.message); }
+});
 
-    searchInput.addEventListener('input', applyFilters);
-    deptSel.addEventListener('change', applyFilters);
-    listingSel.addEventListener('change', applyFilters);
-    condSel.addEventListener('change', applyFilters);
-
-    document.getElementById('btn-clear').addEventListener('click', () => {
-        searchInput.value = '';
-        deptSel.value     = '';
-        listingSel.value  = '';
-        condSel.value     = '';
-        document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
-        document.querySelector('.type-tab[data-tab="all"]').classList.add('active');
-        applyFilters();
+// ── Wishlist → API ──
+async function toggleWishlistAPI(btn, bookId) {
+  try {
+    const res  = await fetch(`${API_BASE}/books/${bookId}/wishlist`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_anon_id: ANON_ID })
     });
+    const data = await res.json();
+    btn.classList.toggle('wishlisted', data.wishlisted);
+  } catch (err) { console.error(err); }
+}
 
-    /* ── Type Tabs ── */
-    document.querySelectorAll('.type-tab').forEach(tab => {
-        tab.addEventListener('click', function () {
-            document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
+// ── Filter → API ──
+function getFilters() {
+  return {
+    search:    document.getElementById('search-input').value.trim(),
+    type:      document.getElementById('listing-filter').value,
+    dept:      document.getElementById('dept-filter').value,
+    condition: document.getElementById('cond-filter').value,
+  };
+}
 
-            const filter = this.dataset.tab;
-            cards.forEach(card => {
-                card.style.display = (filter === 'all' || card.dataset.type === filter) ? '' : 'none';
-            });
+searchInput.addEventListener('input', () => loadBooks(getFilters()));
+deptSel.addEventListener('change',    () => loadBooks(getFilters()));
+listingSel.addEventListener('change', () => loadBooks(getFilters()));
+condSel.addEventListener('change',    () => loadBooks(getFilters()));
 
-            const visible = cards.filter(c => c.style.display !== 'none').length;
-            emptyState.style.display = visible === 0 ? 'block' : 'none';
+document.getElementById('btn-clear').addEventListener('click', () => {
+  searchInput.value = deptSel.value = listingSel.value = condSel.value = '';
+  document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.type-tab[data-tab="all"]').classList.add('active');
+  loadBooks();
+});
 
-            searchInput.value = '';
-            deptSel.value     = '';
-            listingSel.value  = '';
-            condSel.value     = '';
-        });
-    });
+// Page load এ books আনো
+loadBooks();
+// ── Dark Mode ──
+const dmToggle = document.getElementById('dark-mode-toggle');
+if (localStorage.getItem('darkMode') === 'enabled') {
+  document.body.classList.add('dark-mode');
+  dmToggle.textContent = '☀️';
+}
+dmToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  dmToggle.textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+});
 
-    /* ── Wishlist Toggle ── */
-    function toggleWishlist(btn) {
-        btn.classList.toggle('wishlisted');
-    }
+// ── Sidebar Toggle ──
+const sidebar     = document.getElementById('sidebar');
+const mainContent = document.getElementById('main-content');
+document.getElementById('sidebar-toggle').addEventListener('click', () => {
+  if (window.innerWidth <= 768) {
+    sidebar.classList.toggle('mobile-open');
+  } else {
+    sidebar.classList.toggle('collapsed');
+    mainContent.classList.toggle('expanded');
+  }
+});
 
-    /* ── List a Book Modal ── */
-    const listModal = document.getElementById('list-modal');
+// ── List Modal ──
+const listModal = document.getElementById('list-modal');
 
-    function openListModal() { listModal.classList.add('show'); }
-    function closeListModal() { listModal.classList.remove('show'); }
+function openListModal() { listModal.classList.add('show'); }
+function closeListModal() { listModal.classList.remove('show'); }
 
-    document.getElementById('btn-list-book').addEventListener('click', openListModal);
-    document.getElementById('list-modal-close').addEventListener('click', closeListModal);
-    document.getElementById('list-modal-cancel').addEventListener('click', closeListModal);
-    listModal.addEventListener('click', e => { if (e.target === listModal) closeListModal(); });
+document.getElementById('btn-list-book').addEventListener('click', openListModal);
+document.getElementById('list-modal-close').addEventListener('click', closeListModal);
+document.getElementById('list-modal-cancel').addEventListener('click', closeListModal);
+listModal.addEventListener('click', e => { if (e.target === listModal) closeListModal(); });
 
-    document.getElementById('list-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const title = document.getElementById('book-title').value.trim();
-        const type  = document.getElementById('book-listing-type').value;
-        const cond  = document.getElementById('book-condition').value;
-        if (!title || !type || !cond) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-        closeListModal();
-        this.reset();
-        alert('Your book has been listed successfully! Other students can now see it.');
-    });
+// ── Contact Modal ──
+const contactModal = document.getElementById('contact-modal');
 
-    /* ── Contact Seller Modal ── */
-    const contactModal = document.getElementById('contact-modal');
+function closeContactModal() { contactModal.classList.remove('show'); }
 
-    function openContactModal(seller, bookTitle) {
-        document.getElementById('contact-modal-subtitle').textContent =
-            'Send a message to ' + seller + ' about "' + bookTitle + '"';
-        document.getElementById('contact-message').value =
-            'Hi, I am interested in your book "' + bookTitle + '". Is it still available?';
-        contactModal.classList.add('show');
-    }
+document.getElementById('contact-modal-close').addEventListener('click', closeContactModal);
+document.getElementById('contact-modal-cancel').addEventListener('click', closeContactModal);
+contactModal.addEventListener('click', e => { if (e.target === contactModal) closeContactModal(); });
 
-    function closeContactModal() { contactModal.classList.remove('show'); }
-
-    document.getElementById('contact-modal-close').addEventListener('click', closeContactModal);
-    document.getElementById('contact-modal-cancel').addEventListener('click', closeContactModal);
-    contactModal.addEventListener('click', e => { if (e.target === contactModal) closeContactModal(); });
-
-    document.getElementById('contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const msg = document.getElementById('contact-message').value.trim();
-        if (!msg) { alert('Please write a message first.'); return; }
-        closeContactModal();
-        this.reset();
-        alert('Message sent anonymously! The seller will be notified.');
-    });
-
-    /* ── Pagination (UI only) ── */
-    document.querySelectorAll('.page-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            if (this.querySelector('i')) return;
-            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
+// ── Type Tabs ──
+document.querySelectorAll('.type-tab').forEach(tab => {
+  tab.addEventListener('click', function () {
+    document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.tab;
+    loadBooks(filter === 'all' ? {} : { type: filter });
+  });
+});
 </script>
 
 </body>

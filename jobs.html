@@ -445,9 +445,18 @@
 
     <!-- Page Header -->
     <div class="page-header">
-        <h1><i class="fas fa-briefcase"></i> Job Board</h1>
-        <p>Part-time jobs, internships, and full-time positions for students</p>
-    </div>
+    <h1><i class="fas fa-briefcase"></i> Job Board</h1>
+    <p>Part-time jobs, internships, and full-time positions for students</p>
+    <a href="/post-job" style="
+        display: inline-block; margin-top: 15px;
+        padding: 10px 22px;
+        background: white; color: #9C27B0;
+        border-radius: 8px; font-weight: 600;
+        font-size: 14px; text-decoration: none;
+    ">
+        <i class="fas fa-plus-circle"></i> Post a Job
+    </a>
+</div>
 
     <!-- Stats -->
     <div class="stats-row">
@@ -516,193 +525,8 @@
         <button class="type-chip" type="button" data-filter="remote">Remote</button>
     </div>
 
-    <!-- Jobs List -->
-    <div class="jobs-list" id="jobs-list">
-
-        <!-- Job 1 -->
-        <div class="job-card featured"
-             data-type="part-time"
-             data-location="hybrid"
-             data-field="tech">
-            <div class="company-logo" aria-label="TechSoft BD company logo">💻</div>
-            <div class="job-info">
-                <div class="job-title">Junior Web Developer</div>
-                <div class="company-name"><i class="fas fa-building"></i> TechSoft BD Ltd.</div>
-                <div class="job-meta">
-                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Dhaka (Hybrid)</span>
-                    <span class="job-meta-item"><i class="fas fa-clock"></i> 20 hrs/week</span>
-                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> CSE / EEE preferred</span>
-                </div>
-                <div class="tag-row">
-                    <span class="tag tag-part">Part-time</span>
-                    <span class="tag tag-featured">⭐ Featured</span>
-                </div>
-                <span class="salary-badge">💰 $600 – $900 / month</span>
-            </div>
-            <div class="job-actions">
-                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Junior Web Developer')">
-                    Apply Now
-                </button>
-                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
-                    <i class="fas fa-heart"></i> Save
-                </button>
-                <div class="posted-date">Posted 2 days ago</div>
-            </div>
-        </div>
-
-        <!-- Job 2 -->
-        <div class="job-card"
-             data-type="internship"
-             data-location="onsite"
-             data-field="business">
-            <div class="company-logo" aria-label="BRAC Bank company logo">📊</div>
-            <div class="job-info">
-                <div class="job-title">Business Analyst Intern</div>
-                <div class="company-name"><i class="fas fa-building"></i> BRAC Bank Limited</div>
-                <div class="job-meta">
-                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Dhaka (On-site)</span>
-                    <span class="job-meta-item"><i class="fas fa-clock"></i> 3-month internship</span>
-                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> BBA / Finance</span>
-                </div>
-                <div class="tag-row">
-                    <span class="tag tag-intern">Internship</span>
-                </div>
-                <span class="salary-badge">💰 $300 – $400 / month</span>
-            </div>
-            <div class="job-actions">
-                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Business Analyst Intern')">
-                    Apply Now
-                </button>
-                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
-                    <i class="fas fa-heart"></i> Save
-                </button>
-                <div class="posted-date">Posted 3 days ago</div>
-            </div>
-        </div>
-
-        <!-- Job 3 -->
-        <div class="job-card"
-             data-type="internship"
-             data-location="remote"
-             data-field="design">
-            <div class="company-logo" aria-label="Creative Studio X company logo">🎨</div>
-            <div class="job-info">
-                <div class="job-title">UI/UX Design Intern</div>
-                <div class="company-name"><i class="fas fa-building"></i> Creative Studio X</div>
-                <div class="job-meta">
-                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Remote</span>
-                    <span class="job-meta-item"><i class="fas fa-clock"></i> 6-month internship</span>
-                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> All departments</span>
-                </div>
-                <div class="tag-row">
-                    <span class="tag tag-intern">Internship</span>
-                    <span class="tag tag-remote">Remote</span>
-                </div>
-                <span class="salary-badge">💰 $250 – $350 / month</span>
-            </div>
-            <div class="job-actions">
-                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'UI/UX Design Intern')">
-                    Apply Now
-                </button>
-                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
-                    <i class="fas fa-heart"></i> Save
-                </button>
-                <div class="posted-date">Posted 1 week ago</div>
-            </div>
-        </div>
-
-        <!-- Job 4 -->
-        <div class="job-card"
-             data-type="part-time"
-             data-location="remote"
-             data-field="education">
-            <div class="company-logo" aria-label="EduConnect company logo">📚</div>
-            <div class="job-info">
-                <div class="job-title">Online Tutor (Math &amp; Science)</div>
-                <div class="company-name"><i class="fas fa-building"></i> EduConnect Platform</div>
-                <div class="job-meta">
-                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Remote (Flexible)</span>
-                    <span class="job-meta-item"><i class="fas fa-clock"></i> 10–15 hrs/week</span>
-                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> CSE / EEE / Math</span>
-                </div>
-                <div class="tag-row">
-                    <span class="tag tag-part">Part-time</span>
-                    <span class="tag tag-remote">Remote</span>
-                </div>
-                <span class="salary-badge">💰 $15 – $25 / hour</span>
-            </div>
-            <div class="job-actions">
-                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Online Tutor')">
-                    Apply Now
-                </button>
-                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
-                    <i class="fas fa-heart"></i> Save
-                </button>
-                <div class="posted-date">Posted 5 days ago</div>
-            </div>
-        </div>
-
-        <!-- Job 5 -->
-        <div class="job-card"
-             data-type="full-time"
-             data-location="onsite"
-             data-field="engineering">
-            <div class="company-logo" aria-label="Bashundhara Group company logo">🏗️</div>
-            <div class="job-info">
-                <div class="job-title">Civil Engineering Graduate Trainee</div>
-                <div class="company-name"><i class="fas fa-building"></i> Bashundhara Group</div>
-                <div class="job-meta">
-                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Dhaka (On-site)</span>
-                    <span class="job-meta-item"><i class="fas fa-clock"></i> Full-time</span>
-                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> Civil Engineering</span>
-                </div>
-                <div class="tag-row">
-                    <span class="tag tag-full">Full-time</span>
-                </div>
-                <span class="salary-badge">💰 $800 – $1,200 / month</span>
-            </div>
-            <div class="job-actions">
-                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Civil Engineering Graduate Trainee')">
-                    Apply Now
-                </button>
-                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
-                    <i class="fas fa-heart"></i> Save
-                </button>
-                <div class="posted-date">Posted today</div>
-            </div>
-        </div>
-
-        <!-- Job 6 -->
-        <div class="job-card"
-             data-type="part-time"
-             data-location="onsite"
-             data-field="health">
-            <div class="company-logo" aria-label="Square Pharmaceuticals company logo">💊</div>
-            <div class="job-info">
-                <div class="job-title">Pharmacy Research Assistant</div>
-                <div class="company-name"><i class="fas fa-building"></i> Square Pharmaceuticals</div>
-                <div class="job-meta">
-                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> Dhaka (On-site)</span>
-                    <span class="job-meta-item"><i class="fas fa-clock"></i> 25 hrs/week</span>
-                    <span class="job-meta-item"><i class="fas fa-graduation-cap"></i> Pharmacy students</span>
-                </div>
-                <div class="tag-row">
-                    <span class="tag tag-part">Part-time</span>
-                </div>
-                <span class="salary-badge">💰 $500 – $700 / month</span>
-            </div>
-            <div class="job-actions">
-                <button class="btn-apply-job" type="button" onclick="applyJob(this, 'Pharmacy Research Assistant')">
-                    Apply Now
-                </button>
-                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
-                    <i class="fas fa-heart"></i> Save
-                </button>
-                <div class="posted-date">Posted 4 days ago</div>
-            </div>
-        </div>
-
-    </div>
+<div class="jobs-list" id="jobs-list">
+</div>
 
     <!-- Empty State -->
     <div class="empty-state" id="empty-state">
@@ -726,134 +550,196 @@
 </main>
 
 <script>
-    /* ── Dark Mode ── */
-    const dmToggle = document.getElementById('dark-mode-toggle');
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        dmToggle.textContent = '☀️';
+   // ── Dark Mode ──
+const dmToggle = document.getElementById('dark-mode-toggle');
+if (localStorage.getItem('darkMode') === 'enabled') {
+    document.body.classList.add('dark-mode');
+    dmToggle.textContent = '☀️';
+}
+dmToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    dmToggle.textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+});
+
+// ── Sidebar Toggle ──
+const sidebar = document.getElementById('sidebar');
+const mainContent = document.getElementById('main-content');
+document.getElementById('sidebar-toggle').addEventListener('click', () => {
+    if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('mobile-open');
+    } else {
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded');
     }
-    dmToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        dmToggle.textContent = isDark ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-    });
+});
 
-    /* ── Sidebar Toggle ── */
-    const sidebar     = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    document.getElementById('sidebar-toggle').addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle('mobile-open');
-        } else {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-        }
-    });
+// ── Helpers ──
+function timeAgo(dateStr) {
+    const now = new Date();
+    const posted = new Date(dateStr);
+    const diff = Math.floor((now - posted) / (1000 * 60 * 60 * 24));
+    if (diff === 0) return 'Posted today';
+    if (diff === 1) return 'Posted 1 day ago';
+    if (diff < 7) return `Posted ${diff} days ago`;
+    if (diff < 14) return 'Posted 1 week ago';
+    return `Posted ${Math.floor(diff / 7)} weeks ago`;
+}
 
-    /* ── Filter Logic ── */
-    const cards      = Array.from(document.querySelectorAll('.job-card'));
+function getTypeTag(type) {
+    const map = {
+        'full-time': '<span class="tag tag-full">Full-time</span>',
+        'part-time': '<span class="tag tag-part">Part-time</span>',
+        'internship': '<span class="tag tag-intern">Internship</span>'
+    };
+    return map[type] || '';
+}
+
+function getEmoji(field) {
+    const map = {
+        tech: '💻', business: '📊', design: '🎨',
+        education: '📚', engineering: '🏗️', health: '💊'
+    };
+    return map[field] || '🏢';
+}
+
+// ── Render Jobs ──
+function renderJobs(jobs) {
+    const list = document.getElementById('jobs-list');
     const emptyState = document.getElementById('empty-state');
-    const searchInput   = document.getElementById('search-input');
-    const typeSelect    = document.getElementById('type-filter');
-    const locationSelect = document.getElementById('location-filter');
-    const fieldSelect   = document.getElementById('field-filter');
 
-    function applyFilters() {
-        const q        = searchInput.value.toLowerCase().trim();
-        const type     = typeSelect.value;
-        const location = locationSelect.value;
-        const field    = fieldSelect.value;
-
-        let visible = 0;
-
-        cards.forEach(card => {
-            const titleEl = card.querySelector('.job-title');
-            const compEl  = card.querySelector('.company-name');
-            const text    = (titleEl ? titleEl.textContent : '') + ' ' + (compEl ? compEl.textContent : '');
-
-            const matchSearch   = !q        || text.toLowerCase().includes(q);
-            const matchType     = !type     || card.dataset.type === type;
-            const matchLocation = !location || card.dataset.location === location;
-            const matchField    = !field    || card.dataset.field === field;
-
-            const show = matchSearch && matchType && matchLocation && matchField;
-            card.style.display = show ? '' : 'none';
-            if (show) visible++;
-        });
-
-        emptyState.style.display = visible === 0 ? 'block' : 'none';
+    if (jobs.length === 0) {
+        list.innerHTML = '';
+        emptyState.style.display = 'block';
+        return;
     }
 
-    searchInput.addEventListener('input', applyFilters);
-    typeSelect.addEventListener('change', applyFilters);
-    locationSelect.addEventListener('change', applyFilters);
-    fieldSelect.addEventListener('change', applyFilters);
+    emptyState.style.display = 'none';
+    list.innerHTML = jobs.map(job => `
+        <div class="job-card ${job.is_featured ? 'featured' : ''}"
+             data-type="${job.job_type}"
+             data-location="${job.location}"
+             data-field="${job.field || ''}">
+            <div class="company-logo">${getEmoji(job.field)}</div>
+            <div class="job-info">
+                <div class="job-title">${job.title}</div>
+                <div class="company-name"><i class="fas fa-building"></i> ${job.company}</div>
+                <div class="job-meta">
+                    <span class="job-meta-item"><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                    ${job.hours_per_week ? `<span class="job-meta-item"><i class="fas fa-clock"></i> ${job.hours_per_week}</span>` : ''}
+                    ${job.department ? `<span class="job-meta-item"><i class="fas fa-graduation-cap"></i> ${job.department}</span>` : ''}
+                </div>
+                <div class="tag-row">
+                    ${getTypeTag(job.job_type)}
+                    ${job.location === 'remote' ? '<span class="tag tag-remote">Remote</span>' : ''}
+                    ${job.is_featured ? '<span class="tag tag-featured">⭐ Featured</span>' : ''}
+                </div>
+                ${job.salary ? `<span class="salary-badge">💰 ${job.salary}</span>` : ''}
+            </div>
+            <div class="job-actions">
+                <button class="btn-apply-job" type="button" onclick="applyJob(this, '${job.title.replace(/'/g, "\\'")}')">
+                    Apply Now
+                </button>
+                <button class="btn-save-job" type="button" onclick="toggleSaveJob(this)" aria-label="Save job">
+                    <i class="fas fa-heart"></i> Save
+                </button>
+                <div class="posted-date">${timeAgo(job.created_at)}</div>
+            </div>
+        </div>
+    `).join('');
+}
 
-    document.getElementById('btn-clear').addEventListener('click', () => {
-        searchInput.value      = '';
-        typeSelect.value       = '';
-        locationSelect.value   = '';
-        fieldSelect.value      = '';
+// ── Fetch Jobs from API ──
+async function fetchJobs() {
+    const search   = document.getElementById('search-input').value;
+    const job_type = document.getElementById('type-filter').value;
+    const location = document.getElementById('location-filter').value;
+    const field    = document.getElementById('field-filter').value;
+
+    const params = new URLSearchParams();
+    if (search)   params.append('search', search);
+    if (job_type) params.append('job_type', job_type);
+    if (location) params.append('location', location);
+    if (field)    params.append('field', field);
+
+    try {
+        const res  = await fetch(`/api/jobs?${params.toString()}`);
+        const data = await res.json();
+        if (data.success) renderJobs(data.jobs);
+    } catch (err) {
+        console.error('Failed to fetch jobs:', err);
+    }
+}
+
+// ── Filters ──
+document.getElementById('search-input').addEventListener('input', fetchJobs);
+document.getElementById('type-filter').addEventListener('change', fetchJobs);
+document.getElementById('location-filter').addEventListener('change', fetchJobs);
+document.getElementById('field-filter').addEventListener('change', fetchJobs);
+
+document.getElementById('btn-clear').addEventListener('click', () => {
+    document.getElementById('search-input').value = '';
+    document.getElementById('type-filter').value = '';
+    document.getElementById('location-filter').value = '';
+    document.getElementById('field-filter').value = '';
+    document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
+    document.querySelector('.type-chip[data-filter="all"]').classList.add('active');
+    fetchJobs();
+});
+
+// ── Type Chips ──
+document.querySelectorAll('.type-chip').forEach(chip => {
+    chip.addEventListener('click', function () {
         document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
-        document.querySelector('.type-chip[data-filter="all"]').classList.add('active');
-        applyFilters();
-    });
+        this.classList.add('active');
 
-    /* ── Type Chips ── */
-    document.querySelectorAll('.type-chip').forEach(chip => {
-        chip.addEventListener('click', function () {
-            document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
+        const filter = this.dataset.filter;
+        document.getElementById('type-filter').value = '';
+        document.getElementById('location-filter').value = '';
+        document.getElementById('field-filter').value = '';
+        document.getElementById('search-input').value = '';
 
-            const filter = this.dataset.filter;
-
-            cards.forEach(card => {
-                if (filter === 'all') {
-                    card.style.display = '';
-                } else if (filter === 'remote') {
-                    card.style.display = card.dataset.location === 'remote' ? '' : 'none';
-                } else {
-                    card.style.display = card.dataset.type === filter ? '' : 'none';
-                }
-            });
-
-            const visible = cards.filter(c => c.style.display !== 'none').length;
-            emptyState.style.display = visible === 0 ? 'block' : 'none';
-
-            /* reset dropdowns when using chips */
-            typeSelect.value     = '';
-            locationSelect.value = '';
-            fieldSelect.value    = '';
-            searchInput.value    = '';
-        });
-    });
-
-    /* ── Apply Button ── */
-    function applyJob(btn, title) {
-        if (confirm('Apply for "' + title + '"?\n\nYou will be redirected to the company\'s application portal.')) {
-            btn.textContent = '✓ Applied!';
-            btn.style.background = 'linear-gradient(135deg,#4CAF50,#66BB6A)';
-            btn.disabled = true;
+        if (filter === 'all') {
+            fetchJobs();
+        } else if (filter === 'remote') {
+            document.getElementById('location-filter').value = 'remote';
+            fetchJobs();
+        } else {
+            document.getElementById('type-filter').value = filter;
+            fetchJobs();
         }
-    }
-
-    /* ── Save Button ── */
-    function toggleSaveJob(btn) {
-        btn.classList.toggle('saved');
-        btn.innerHTML = btn.classList.contains('saved')
-            ? '<i class="fas fa-heart"></i> Saved'
-            : '<i class="fas fa-heart"></i> Save';
-    }
-
-    /* ── Pagination (UI only) ── */
-    document.querySelectorAll('.page-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            if (this.querySelector('i')) return;
-            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
     });
+});
+
+// ── Apply Button ──
+function applyJob(btn, title) {
+    if (confirm(`Apply for "${title}"?\n\nYou will be redirected to the company's application portal.`)) {
+        btn.textContent = '✓ Applied!';
+        btn.style.background = 'linear-gradient(135deg,#4CAF50,#66BB6A)';
+        btn.disabled = true;
+    }
+}
+
+// ── Save Button ──
+function toggleSaveJob(btn) {
+    btn.classList.toggle('saved');
+    btn.innerHTML = btn.classList.contains('saved')
+        ? '<i class="fas fa-heart"></i> Saved'
+        : '<i class="fas fa-heart"></i> Save';
+}
+
+// ── Pagination (UI only) ──
+document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        if (this.querySelector('i')) return;
+        document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+// ── Initial Load ──
+fetchJobs();
 </script>
 
 </body>
