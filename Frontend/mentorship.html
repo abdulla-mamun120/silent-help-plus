@@ -550,7 +550,7 @@
     <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
 
     <div class="sidebar-divider"></div>
-    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    <a class="nav-item" href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
 </aside>
 
 <!-- Main Content -->
@@ -768,6 +768,15 @@
 </div>
 
 <script>
+    /* ── Auth Check & User Load ── */
+const userData = localStorage.getItem('user');
+if (!userData) {
+    window.location.href = 'login.html';
+} else {
+    const user = JSON.parse(userData);
+    document.querySelector('.sidebar-user-name').textContent = user.name;
+    document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+}
    /* ── Config ── */
 const API_BASE = 'http://localhost:5000/api';
 
@@ -1169,7 +1178,13 @@ async function viewProfile(mentorId) {
         console.error('viewProfile error:', err);
         alert('Could not load profile.');
     }
-}
+}/* ── Logout ── */
+document.getElementById('logout-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+});
 
 // ── Initial Load ──
 fetchMentors();

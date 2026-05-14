@@ -530,7 +530,7 @@
         <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
         <div class="sidebar-user-name">John Student</div>
         <div class="sidebar-user-dept">CSE Department</div>
-        <div class="sidebar-user-id">Anon_CS_2431</div>
+        <div class="sidebar-user-id"></div>
     </div>
 
     <div class="nav-section-title">Main Menu</div>
@@ -548,7 +548,7 @@
     <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
 
     <div class="sidebar-divider"></div>
-    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    <a class="nav-item" href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
 </aside>
 
 <!-- Main Content -->
@@ -569,19 +569,19 @@
     <div class="stats-row">
         <div class="stat-card">
             <div class="stat-icon teal"><i class="fas fa-book-open"></i></div>
-            <div class="stat-info"><h3>82</h3><p>Active Listings</p></div>
+            <div class="stat-info"><h3 id="stat-active">0</h3><p>Active Listings</p></div>
         </div>
         <div class="stat-card">
             <div class="stat-icon blue"><i class="fas fa-tag"></i></div>
-            <div class="stat-info"><h3>45</h3><p>For Sale</p></div>
+            <div class="stat-info"><h3 id="stat-sale">0</h3><p>For Sale</p></div>
         </div>
         <div class="stat-card">
             <div class="stat-icon green"><i class="fas fa-redo"></i></div>
-            <div class="stat-info"><h3>27</h3><p>For Rent</p></div>
+            <div class="stat-info"><h3 id="stat-rent">0</h3><p>For Rent</p></div>
         </div>
         <div class="stat-card">
             <div class="stat-icon orange"><i class="fas fa-piggy-bank"></i></div>
-            <div class="stat-info"><h3>$200+</h3><p>Avg Savings</p></div>
+            <div class="stat-info"><h3 id="stat-savings">$0</h3><p>Avg Savings</p></div>
         </div>
     </div>
 
@@ -631,243 +631,8 @@
     </div>
 
     <!-- Books Grid -->
-    <div class="books-grid" id="books-grid">
+<div class="books-grid" id="books-grid"></div>
 
-        <!-- Book 1 -->
-        <div class="book-card" data-type="sell" data-dept="cse" data-cond="good">
-            <div class="book-cover cover-cs">
-                📘
-                <span class="listing-badge badge-sell">For Sale</span>
-            </div>
-            <div class="book-body">
-                <div class="book-title">Introduction to Algorithms (3rd Ed.)</div>
-                <div class="book-author">Cormen, Leiserson, Rivest, Stein</div>
-                <div class="book-price-row">
-                    <div>
-                        <div class="book-price">$28</div>
-                        <div class="book-original">Original: $75</div>
-                    </div>
-                    <span class="cond-badge cond-good">Good</span>
-                </div>
-                <div class="book-details">
-                    <span><i class="fas fa-tag"></i> CSE</span>
-                    <span><i class="fas fa-layer-group"></i> 2nd–4th year</span>
-                </div>
-                <div class="book-actions">
-                    <button
-                        class="btn-contact"
-                        type="button"
-                        onclick="openContactModal('Anon_CS_2431', 'Introduction to Algorithms')"
-                    >
-                        <i class="fas fa-comment"></i> Contact Seller
-                    </button>
-                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="book-footer">
-                <div class="seller-avatar" aria-hidden="true">👤</div>
-                <span>Anon_CS_2431 &middot; 2 days ago</span>
-            </div>
-        </div>
-
-        <!-- Book 2 -->
-        <div class="book-card" data-type="rent" data-dept="eee" data-cond="new">
-            <div class="book-cover cover-eee">
-                📙
-                <span class="listing-badge badge-rent">For Rent</span>
-            </div>
-            <div class="book-body">
-                <div class="book-title">Engineering Electromagnetics</div>
-                <div class="book-author">William H. Hayt</div>
-                <div class="book-price-row">
-                    <div>
-                        <div class="book-price">$8/mo</div>
-                        <div class="book-original">Original: $60</div>
-                    </div>
-                    <span class="cond-badge cond-new">Like New</span>
-                </div>
-                <div class="book-details">
-                    <span><i class="fas fa-tag"></i> EEE</span>
-                    <span><i class="fas fa-calendar"></i> Min 1 month</span>
-                </div>
-                <div class="book-actions">
-                    <button
-                        class="btn-contact"
-                        type="button"
-                        onclick="openContactModal('Anon_EEE_1892', 'Engineering Electromagnetics')"
-                    >
-                        <i class="fas fa-comment"></i> Contact Seller
-                    </button>
-                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="book-footer">
-                <div class="seller-avatar" aria-hidden="true">👤</div>
-                <span>Anon_EEE_1892 &middot; 1 week ago</span>
-            </div>
-        </div>
-
-        <!-- Book 3 -->
-        <div class="book-card" data-type="sell" data-dept="bba" data-cond="good">
-            <div class="book-cover cover-bba">
-                📗
-                <span class="listing-badge badge-sell">For Sale</span>
-            </div>
-            <div class="book-body">
-                <div class="book-title">Principles of Marketing (16th Ed.)</div>
-                <div class="book-author">Philip Kotler &amp; Gary Armstrong</div>
-                <div class="book-price-row">
-                    <div>
-                        <div class="book-price">$22</div>
-                        <div class="book-original">Original: $65</div>
-                    </div>
-                    <span class="cond-badge cond-good">Good</span>
-                </div>
-                <div class="book-details">
-                    <span><i class="fas fa-tag"></i> BBA</span>
-                    <span><i class="fas fa-layer-group"></i> 2nd year</span>
-                </div>
-                <div class="book-actions">
-                    <button
-                        class="btn-contact"
-                        type="button"
-                        onclick="openContactModal('Anon_BBA_3156', 'Principles of Marketing')"
-                    >
-                        <i class="fas fa-comment"></i> Contact Seller
-                    </button>
-                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="book-footer">
-                <div class="seller-avatar" aria-hidden="true">👤</div>
-                <span>Anon_BBA_3156 &middot; 3 days ago</span>
-            </div>
-        </div>
-
-        <!-- Book 4 -->
-        <div class="book-card" data-type="exchange" data-dept="cse" data-cond="good">
-            <div class="book-cover cover-cs">
-                📓
-                <span class="listing-badge badge-exchange">Exchange</span>
-            </div>
-            <div class="book-body">
-                <div class="book-title">Computer Networks (5th Ed.)</div>
-                <div class="book-author">Andrew S. Tanenbaum</div>
-                <div class="book-price-row">
-                    <div>
-                        <div class="book-price">Exchange</div>
-                        <div class="book-original">Want: OS Book</div>
-                    </div>
-                    <span class="cond-badge cond-good">Good</span>
-                </div>
-                <div class="book-details">
-                    <span><i class="fas fa-tag"></i> CSE</span>
-                    <span><i class="fas fa-exchange-alt"></i> Swap offer</span>
-                </div>
-                <div class="book-actions">
-                    <button
-                        class="btn-contact"
-                        type="button"
-                        onclick="openContactModal('Anon_CS_4782', 'Computer Networks')"
-                    >
-                        <i class="fas fa-comment"></i> Propose Exchange
-                    </button>
-                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="book-footer">
-                <div class="seller-avatar" aria-hidden="true">👤</div>
-                <span>Anon_CS_4782 &middot; 5 days ago</span>
-            </div>
-        </div>
-
-        <!-- Book 5 -->
-        <div class="book-card" data-type="sell" data-dept="ce" data-cond="fair">
-            <div class="book-cover cover-ce">
-                📕
-                <span class="listing-badge badge-sell">For Sale</span>
-            </div>
-            <div class="book-body">
-                <div class="book-title">Structural Analysis (10th Ed.)</div>
-                <div class="book-author">Russell C. Hibbeler</div>
-                <div class="book-price-row">
-                    <div>
-                        <div class="book-price">$35</div>
-                        <div class="book-original">Original: $90</div>
-                    </div>
-                    <span class="cond-badge cond-fair">Fair</span>
-                </div>
-                <div class="book-details">
-                    <span><i class="fas fa-tag"></i> Civil Eng.</span>
-                    <span><i class="fas fa-layer-group"></i> 3rd year</span>
-                </div>
-                <div class="book-actions">
-                    <button
-                        class="btn-contact"
-                        type="button"
-                        onclick="openContactModal('Anon_CE_2019', 'Structural Analysis')"
-                    >
-                        <i class="fas fa-comment"></i> Contact Seller
-                    </button>
-                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="book-footer">
-                <div class="seller-avatar" aria-hidden="true">👤</div>
-                <span>Anon_CE_2019 &middot; Today</span>
-            </div>
-        </div>
-
-        <!-- Book 6 -->
-        <div class="book-card" data-type="rent" data-dept="pharm" data-cond="new">
-            <div class="book-cover cover-pharm">
-                📒
-                <span class="listing-badge badge-rent">For Rent</span>
-            </div>
-            <div class="book-body">
-                <div class="book-title">Pharmacology &amp; Pharmacotherapeutics</div>
-                <div class="book-author">R.S. Satoskar</div>
-                <div class="book-price-row">
-                    <div>
-                        <div class="book-price">$10/mo</div>
-                        <div class="book-original">Original: $55</div>
-                    </div>
-                    <span class="cond-badge cond-new">Like New</span>
-                </div>
-                <div class="book-details">
-                    <span><i class="fas fa-tag"></i> Pharmacy</span>
-                    <span><i class="fas fa-calendar"></i> Min 2 months</span>
-                </div>
-                <div class="book-actions">
-                    <button
-                        class="btn-contact"
-                        type="button"
-                        onclick="openContactModal('Anon_PH_1045', 'Pharmacology &amp; Pharmacotherapeutics')"
-                    >
-                        <i class="fas fa-comment"></i> Contact Seller
-                    </button>
-                    <button class="btn-wishlist" type="button" onclick="toggleWishlist(this)" aria-label="Add to wishlist">
-                        <i class="fas fa-heart"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="book-footer">
-                <div class="seller-avatar" aria-hidden="true">👤</div>
-                <span>Anon_PH_1045 &middot; 2 days ago</span>
-            </div>
-        </div>
-
-    </div>
 
     <!-- Empty State -->
     <div class="empty-state" id="empty-state">
@@ -983,6 +748,16 @@
 </div>
 
 <script>
+    /* ── Auth Check & User Load ── */
+const userData = localStorage.getItem('user');
+if (!userData) {
+    window.location.href = 'login.html';
+} else {
+    const user = JSON.parse(userData);
+    document.querySelector('.sidebar-user-name').textContent = user.name;
+    document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+    document.querySelector('.sidebar-user-id').textContent = user.anonymous_id || '';
+}
   const API_BASE = 'http://localhost:5000/api';
 
   const searchInput = document.getElementById('search-input');
@@ -991,18 +766,20 @@
   const condSel     = document.getElementById('cond-filter');
 
 
-// Anonymous ID — localStorage থেকে নাও বা তৈরি করো
-const ANON_ID = localStorage.getItem('anonId') || 
+const user = JSON.parse(localStorage.getItem('user'));
+const ANON_ID = user?.anonymous_id || 
   'Anon_' + Math.random().toString(36).substr(2, 6).toUpperCase();
-localStorage.setItem('anonId', ANON_ID);
 
-// ── Books Load করো ──
+
 async function loadBooks(filters = {}) {
   const qs = new URLSearchParams(filters).toString();
   try {
     const res  = await fetch(`${API_BASE}/books?${qs}`);
     const data = await res.json();
-    if (data.success) renderBooks(data.books);
+    if (data.success) {
+  renderBooks(data.books);
+  updateStats(data.books);
+}
   } catch (err) {
     console.error('Failed to load books:', err);
   }
@@ -1087,6 +864,11 @@ function formatTime(dateStr) {
 // ── List Form Submit → API ──
 document.getElementById('list-form').addEventListener('submit', async function(e) {
   e.preventDefault();
+
+  const submitBtn = this.querySelector('.btn-submit');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
   const body = {
     title:          document.getElementById('book-title').value.trim(),
     author:         document.getElementById('book-author').value.trim(),
@@ -1096,10 +878,16 @@ document.getElementById('list-form').addEventListener('submit', async function(e
     dept:           document.getElementById('book-dept').value,
     notes:          document.getElementById('book-notes').value,
     seller_anon_id: ANON_ID,
+    owner_id:       user?.id,
   };
+
   if (!body.title || !body.type || !body.condition) {
-    alert('Please fill required fields.'); return;
+    alert('Please fill required fields.');
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-check"></i> List My Book';
+    return;
   }
+
   try {
     const res  = await fetch(`${API_BASE}/books`, {
       method: 'POST',
@@ -1107,13 +895,21 @@ document.getElementById('list-form').addEventListener('submit', async function(e
       body: JSON.stringify(body)
     });
     const data = await res.json();
+
     if (data.success) {
       closeListModal();
       this.reset();
       loadBooks();
       alert('Book listed successfully!');
+    } else {
+      alert('Failed: ' + (data.error || 'Unknown error'));
     }
-  } catch (err) { alert('Error: ' + err.message); }
+  } catch (err) {
+    alert('Error: ' + err.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="fas fa-check"></i> List My Book';
+  }
 });
 
 // ── Contact Modal → API ──
@@ -1239,6 +1035,18 @@ document.querySelectorAll('.type-tab').forEach(tab => {
     const filter = this.dataset.tab;
     loadBooks(filter === 'all' ? {} : { type: filter });
   });
+});
+function updateStats(books) {
+  document.getElementById('stat-active').textContent = books.length;
+  document.getElementById('stat-sale').textContent = books.filter(b => b.type === 'sell').length;
+  document.getElementById('stat-rent').textContent = books.filter(b => b.type === 'rent').length;
+}
+/* ── Logout ── */
+document.getElementById('logout-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
 });
 </script>
 

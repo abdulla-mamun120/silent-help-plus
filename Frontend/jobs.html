@@ -437,7 +437,7 @@
     <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
 
     <div class="sidebar-divider"></div>
-    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    <a class="nav-item" href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
 </aside>
 
 <!-- Main Content -->
@@ -447,34 +447,34 @@
     <div class="page-header">
     <h1><i class="fas fa-briefcase"></i> Job Board</h1>
     <p>Part-time jobs, internships, and full-time positions for students</p>
-    <a href="/post-job" style="
-        display: inline-block; margin-top: 15px;
-        padding: 10px 22px;
-        background: white; color: #9C27B0;
-        border-radius: 8px; font-weight: 600;
-        font-size: 14px; text-decoration: none;
-    ">
-        <i class="fas fa-plus-circle"></i> Post a Job
-    </a>
+    <a href="post-job.html" style="
+    display: inline-block; margin-top: 15px;
+    padding: 10px 22px;
+    background: white; color: #9C27B0;
+    border-radius: 8px; font-weight: 600;
+    font-size: 14px; text-decoration: none;
+">
+    <i class="fas fa-plus-circle"></i> Post a Job
+</a>
 </div>
 
     <!-- Stats -->
     <div class="stats-row">
         <div class="stat-card">
             <div class="stat-icon purple"><i class="fas fa-briefcase"></i></div>
-            <div class="stat-info"><h3>47</h3><p>Active Jobs</p></div>
+            <div class="stat-info"><h3 id="stat-total">0</h3><p>Active Jobs</p></div>
         </div>
         <div class="stat-card">
             <div class="stat-icon green"><i class="fas fa-user-tie"></i></div>
-            <div class="stat-info"><h3>18</h3><p>Internships</p></div>
+            <div class="stat-info"><h3 id="stat-intern">0</h3><p>Internships</p></div>
         </div>
         <div class="stat-card">
             <div class="stat-icon blue"><i class="fas fa-laptop-house"></i></div>
-            <div class="stat-info"><h3>12</h3><p>Remote Jobs</p></div>
+            <div class="stat-info"><h3 id="stat-remote">0</h3><p>Remote Jobs</p></div>
         </div>
         <div class="stat-card">
             <div class="stat-icon orange"><i class="fas fa-plus-circle"></i></div>
-            <div class="stat-info"><h3>9</h3><p>New Today</p></div>
+            <div class="stat-info"><h3 id="stat-today">0</h3><p>New Today</p></div>
         </div>
     </div>
 
@@ -535,21 +535,23 @@
     </div>
 
     <!-- Pagination -->
-    <div class="pagination">
-        <button class="page-btn" type="button" aria-label="Previous page">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="page-btn active" type="button">1</button>
-        <button class="page-btn" type="button">2</button>
-        <button class="page-btn" type="button">3</button>
-        <button class="page-btn" type="button" aria-label="Next page">
-            <i class="fas fa-chevron-right"></i>
-        </button>
+    <div class="pagination" id="pagination">
     </div>
 
 </main>
-
 <script>
+    let currentPage = 1;
+const JOBS_PER_PAGE = 10;
+    /* ── Auth Check & User Load ── */
+const userData = localStorage.getItem('user');
+if (!userData) {
+    window.location.href = 'login.html';
+} else {
+    const user = JSON.parse(userData);
+    document.querySelector('.sidebar-user-name').textContent = user.name;
+    document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+    document.querySelector('.sidebar-user-id').textContent = user.anonymous_id || '';
+}
    // ── Dark Mode ──
 const dmToggle = document.getElementById('dark-mode-toggle');
 if (localStorage.getItem('darkMode') === 'enabled') {
@@ -651,7 +653,7 @@ function renderJobs(jobs) {
 }
 
 // ── Fetch Jobs from API ──
-async function fetchJobs() {
+async function fetchJobs(page = 1) {
     const search   = document.getElementById('search-input').value;
     const job_type = document.getElementById('type-filter').value;
     const location = document.getElementById('location-filter').value;
@@ -662,21 +664,72 @@ async function fetchJobs() {
     if (job_type) params.append('job_type', job_type);
     if (location) params.append('location', location);
     if (field)    params.append('field', field);
+    params.append('page', page);
+    params.append('limit', JOBS_PER_PAGE);
 
     try {
         const res  = await fetch(`/api/jobs?${params.toString()}`);
         const data = await res.json();
-        if (data.success) renderJobs(data.jobs);
+        if (data.success) {
+            renderJobs(data.jobs);
+            renderPagination(data.pagination);
+        }
     } catch (err) {
         console.error('Failed to fetch jobs:', err);
     }
 }
+function renderPagination(pagination) {
+    const container = document.getElementById('pagination');
+    const { page, totalPages } = pagination;
 
+    if (totalPages <= 1) {
+        container.innerHTML = '';
+        return;
+    }
+
+    let html = '';
+
+    // Previous button
+    html += `<button class="page-btn" type="button" 
+                ${page === 1 ? 'disabled style="opacity:0.4;cursor:not-allowed"' : ''}
+                onclick="goToPage(${page - 1})">
+                <i class="fas fa-chevron-left"></i>
+             </button>`;
+
+    // Page number buttons
+    for (let i = 1; i <= totalPages; i++) {
+        // অনেক page থাকলে dots দেখাও
+        if (
+            i === 1 || i === totalPages ||
+            (i >= page - 1 && i <= page + 1)
+        ) {
+            html += `<button class="page-btn ${i === page ? 'active' : ''}" 
+                        type="button" onclick="goToPage(${i})">${i}</button>`;
+        } else if (i === page - 2 || i === page + 2) {
+            html += `<button class="page-btn" disabled style="opacity:0.4">...</button>`;
+        }
+    }
+
+    // Next button
+    html += `<button class="page-btn" type="button"
+                ${page === totalPages ? 'disabled style="opacity:0.4;cursor:not-allowed"' : ''}
+                onclick="goToPage(${page + 1})">
+                <i class="fas fa-chevron-right"></i>
+             </button>`;
+
+    container.innerHTML = html;
+}
+
+function goToPage(page) {
+    currentPage = page;
+    fetchJobs(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 // ── Filters ──
-document.getElementById('search-input').addEventListener('input', fetchJobs);
-document.getElementById('type-filter').addEventListener('change', fetchJobs);
-document.getElementById('location-filter').addEventListener('change', fetchJobs);
-document.getElementById('field-filter').addEventListener('change', fetchJobs);
+document.getElementById('search-input').addEventListener('input', () => { currentPage = 1; fetchJobs(1); });
+document.getElementById('type-filter').addEventListener('change', () => { currentPage = 1; fetchJobs(1); });
+document.getElementById('location-filter').addEventListener('change', () => { currentPage = 1; fetchJobs(1); });
+document.getElementById('field-filter').addEventListener('change', () => { currentPage = 1; fetchJobs(1); });
 
 document.getElementById('btn-clear').addEventListener('click', () => {
     document.getElementById('search-input').value = '';
@@ -711,7 +764,20 @@ document.querySelectorAll('.type-chip').forEach(chip => {
         }
     });
 });
-
+async function loadStats() {
+    try {
+        const res  = await fetch('/api/jobs/stats');
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('stat-total').textContent  = data.total;
+            document.getElementById('stat-intern').textContent = data.internships;
+            document.getElementById('stat-remote').textContent = data.remote;
+            document.getElementById('stat-today').textContent  = data.new_today;
+        }
+    } catch (err) {
+        console.error('Stats load failed:', err);
+    }
+}
 // ── Apply Button ──
 function applyJob(btn, title) {
     if (confirm(`Apply for "${title}"?\n\nYou will be redirected to the company's application portal.`)) {
@@ -737,9 +803,16 @@ document.querySelectorAll('.page-btn').forEach(btn => {
         this.classList.add('active');
     });
 });
-
+/* ── Logout ── */
+document.getElementById('logout-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+});
 // ── Initial Load ──
-fetchJobs();
+fetchJobs(1);
+loadStats();
 </script>
 
 </body>

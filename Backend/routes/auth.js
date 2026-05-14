@@ -5,44 +5,42 @@ const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 
 // Register
-router.post('/register', (req, res) => {
-  const { name, email, password, department, student_id } = req.body;
+router.post('/register', async (req, res) => {
+  try {
+    const { name, email, password, department, student_id } = req.body;
 
-  // Check if user exists
-  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-    if (err) return res.status(500).json({ message: 'Database error' });
-    if (results.length > 0) return res.status(400).json({ message: 'Email already exists' });
+    const [existing] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (existing.length > 0) return res.status(400).json({ message: 'Email already exists' });
 
-    // Hash password
     const hashedPassword = bcrypt.hashSync(password, 10);
+    const anonymous_id = `Anon_${department.substring(0,3).toUpperCase()}_${Math.floor(1000 + Math.random() * 9000)}`;
 
-    // Insert user
-    db.query(
-      'INSERT INTO users (name, email, password, department, student_id) VALUES (?, ?, ?, ?, ?)',
-      [name, email, hashedPassword, department, student_id],
-      (err, result) => {
-        if (err) return res.status(500).json({ message: 'Registration failed' });
-        res.status(201).json({ message: 'Registration successful!' });
-      }
-    );
-  });
+    await db.query(
+  'INSERT INTO users (name, email, password, department, student_id, anonymous_id) VALUES (?, ?, ?, ?, ?, ?)',
+  [name, email, hashedPassword, department, student_id, anonymous_id]
+);
+
+    res.status(201).json({ message: 'Registration successful!' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Registration failed' });
+  }
 });
 
 // Login
-router.post('/login', (req, res) => {
-  const { email, password } = req.body;
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-    if (err) return res.status(500).json({ message: 'Database error' });
+    const [results] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
     if (results.length === 0) return res.status(400).json({ message: 'User not found' });
 
     const user = results[0];
 
-    // Check password
     const isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Wrong password' });
 
-    // Generate JWT token
     const token = jwt.sign(
       { id: user.id, department: user.department },
       process.env.JWT_SECRET,
@@ -53,13 +51,18 @@ router.post('/login', (req, res) => {
       message: 'Login successful!',
       token,
       user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        department: user.department
-      }
+  id: user.id,
+  name: user.name,
+  email: user.email,
+  department: user.department,
+  anonymous_id: user.anonymous_id
+}
     });
-  });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Login failed' });
+  }
 });
 
 module.exports = router;

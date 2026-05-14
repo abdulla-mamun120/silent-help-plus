@@ -40,20 +40,28 @@ router.get('/', (req, res) => {
   });
 });
 
-// POST /api/books — নতুন book list করো
+let lastInsert = {};
+
 router.post('/', (req, res) => {
-  const { title, author, type, price, condition, dept, notes } = req.body;
+  const { title, author, type, price, condition, dept, notes, owner_id } = req.body;
 
   if (!title || !type || !condition) {
     return res.status(400).json({ success: false, error: 'title, type, condition required' });
   }
 
-  const owner_id = 1;
+  const key = `${owner_id}-${title}-${type}`;
+  const now = Date.now();
+  if (lastInsert[key] && now - lastInsert[key] < 3000) {
+    return res.status(429).json({ success: false, error: 'Duplicate request' });
+  }
+  lastInsert[key] = now;
+
+  const finalOwnerId = owner_id || 1;
 
   db.query(
     `INSERT INTO book_exchange (owner_id, book_title, author, type, price, book_condition, dept, notes)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [owner_id, title, author || null, type, price || null, condition, dept || null, notes || null],
+    [finalOwnerId, title, author || null, type, price || 0, condition, dept || null, notes || null],
     (err, result) => {
       if (err) return res.status(500).json({ success: false, error: err.message });
 

@@ -566,7 +566,9 @@
     <a class="nav-item active" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
 
     <div class="sidebar-divider"></div>
-    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    <a class="nav-item" href="#" id="logout-btn">
+    <i class="fas fa-sign-out-alt"></i> Logout
+</a>
 </aside>
 
 <!-- Main Content -->
@@ -994,7 +996,7 @@ reportForm.addEventListener('submit', async function (e) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                userId:      1,  
+                userId: JSON.parse(localStorage.getItem('user')).id,
                 reportType:  reportType.value,
                 description: description
             })
@@ -1033,6 +1035,21 @@ reportForm.addEventListener('submit', async function (e) {
             successModal.classList.remove('show');
         }
     });
+    
+const userData = localStorage.getItem('user');
+if (!userData) {
+    window.location.href = 'login.html';
+} else {
+    const user = JSON.parse(userData);
+    document.querySelector('.sidebar-user-name').textContent = user.name;
+    document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+}
+document.getElementById('logout-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+});
 </script>
 
 </body>

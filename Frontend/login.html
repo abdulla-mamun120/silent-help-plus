@@ -170,10 +170,10 @@
 <body>
 
 <nav class="navbar">
-    <a href="/" class="logo">Silent Help Plus</a>
+    <a href="index.html" class="logo">Silent Help Plus</a>
     <div class="nav-right">
         <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
-        <a href="/register" class="btn-register">Register</a>
+        <a href="register.html" class="btn-register">Register</a>
     </div>
 </nav>
 
@@ -316,10 +316,10 @@
             const result = await res.json();
 
             if (result.token) {
-                localStorage.setItem('token', result.token);
-                localStorage.setItem('user', JSON.stringify(result.user));
-                window.location.href = 'http://localhost:5000/dashboard';
-            } else {
+    localStorage.setItem('token', result.token);
+    localStorage.setItem('user', JSON.stringify(result.user));
+    window.location.href = 'dashboard.html';  
+} else {
                 document.getElementById('alert-text').textContent = result.message || 'Invalid email or password.';
                 alertBox.classList.add('show');
                 btn.disabled = false;

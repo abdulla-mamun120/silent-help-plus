@@ -97,5 +97,46 @@ router.post('/:id/save', authMiddleware, async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+// POST - নতুন scholarship post করা
+router.post('/', authMiddleware, async (req, res) => {
+  try {
+    const {
+      title, organization, amount, description,
+      deadline, eligibility, min_cgpa,
+      total_awards, is_renewable
+    } = req.body;
+
+    if (!title || !organization || !amount || !deadline || !eligibility) {
+      return res.status(400).json({ success: false, message: 'Required fields missing!' });
+    }
+
+    const now = new Date();
+    const deadlineDate = new Date(deadline);
+    const daysLeft = Math.ceil((deadlineDate - now) / (1000 * 60 * 60 * 24));
+
+    let deadline_urgency = 'later';
+    if (daysLeft <= 14) deadline_urgency = 'urgent';
+    else if (daysLeft <= 30) deadline_urgency = 'month';
+
+    const [result] = await db.query(
+      `INSERT INTO scholarships 
+       (title, organization, amount, description, deadline, deadline_urgency,
+        eligibility, min_cgpa, total_awards, is_renewable, is_new, is_active, posted_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 1, ?)`,
+      [
+        title, organization, amount, description, deadline, deadline_urgency,
+        eligibility, min_cgpa || null, total_awards || 1, is_renewable ? 1 : 0,
+        req.user.id
+      ]
+    );
+
+    res.json({ success: true, message: 'Scholarship posted successfully!', id: result.insertId });
+
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+module.exports = router;
 
 module.exports = router;

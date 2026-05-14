@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarships - Silent Help Plus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565C0;
+            --secondary-green: #4CAF50;
+            --accent-orange: #FF9800;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --light-blue: #E3F2FD;
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-tertiary: #757575;
+            --sidebar-width: 260px;
+            --navbar-height: 65px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-secondary);
+        }
+
+        body.dark-mode {
+            --white: #1E1E1E;
+            --light-gray: #121212;
+            --light-blue: #1A2332;
+            --text-primary: #E0E0E0;
+            --text-secondary: #CCCCCC;
+            --text-tertiary: #999999;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: var(--navbar-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0 25px; z-index: 1000;
+        }
+        .navbar-left { display: flex; align-items: center; gap: 18px; }
+        .sidebar-toggle {
+            background: none; border: none;
+            font-size: 20px; cursor: pointer;
+            color: var(--text-secondary);
+        }
+        .logo {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text; text-decoration: none;
+        }
+        .navbar-right { display: flex; align-items: center; gap: 18px; }
+        .nav-icon-btn {
+            background: none; border: none;
+            font-size: 18px; cursor: pointer;
+            color: var(--text-tertiary); position: relative;
+        }
+        .notif-badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 16px; height: 16px;
+            background-color: #F44336; border-radius: 50%;
+            font-size: 9px; color: white;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 16px; cursor: pointer;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: var(--navbar-height); left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--navbar-height));
+            background-color: var(--white);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto; transition: transform 0.3s;
+            z-index: 900; padding: 20px 0;
+        }
+        .sidebar.collapsed { transform: translateX(-100%); }
+        .sidebar-user {
+            padding: 15px 20px 20px;
+            border-bottom: 1px solid #E0E0E0; margin-bottom: 15px;
+        }
+        .sidebar-user-avatar {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            color: white; font-size: 22px; margin-bottom: 10px;
+        }
+        .sidebar-user-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .sidebar-user-dept { font-size: 12px; color: var(--text-tertiary); }
+        .sidebar-user-id { font-size: 11px; color: var(--secondary-green); margin-top: 4px; font-weight: 500; }
+        .nav-section-title {
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px 6px;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 20px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px;
+            font-weight: 500; transition: all 0.2s;
+            border: none; background: none; width: 100%;
+            text-align: left; cursor: pointer;
+        }
+        .nav-item:hover { background-color: var(--light-blue); color: var(--primary-blue); }
+        .nav-item.active {
+            background-color: var(--light-blue); color: var(--primary-blue);
+            border-right: 3px solid var(--primary-blue);
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+        .nav-badge {
+            margin-left: auto; background-color: var(--primary-blue);
+            color: white; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+        }
+        .sidebar-divider { height: 1px; background-color: #E0E0E0; margin: 12px 20px; }
+
+        /* Main */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--navbar-height);
+            padding: 30px; transition: margin-left 0.3s;
+        }
+        .main-content.expanded { margin-left: 0; }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+            border-radius: 16px; padding: 30px;
+            margin-bottom: 25px; color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 15px;
+        }
+        .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 5px; }
+        .page-header p { opacity: 0.9; font-size: 14px; }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 18px; margin-bottom: 25px;
+        }
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 12px; padding: 18px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 14px;
+        }
+        .stat-icon {
+            width: 46px; height: 46px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: white; flex-shrink: 0;
+        }
+        .stat-icon.orange { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+        .stat-icon.green  { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+        .stat-icon.red    { background: linear-gradient(135deg, #F44336, #E57373); }
+        .stat-icon.blue   { background: linear-gradient(135deg, #1565C0, #1976D2); }
+        .stat-info h3 { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
+        .stat-info p  { font-size: 12px; color: var(--text-tertiary); }
+
+        /* Filters Bar */
+        .filters-bar {
+            background-color: var(--white); border-radius: 12px;
+            padding: 18px 22px; margin-bottom: 22px;
+            display: flex; gap: 12px; align-items: center;
+            flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .search-box { flex: 1; min-width: 200px; position: relative; }
+        .search-box i {
+            position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%); color: var(--text-tertiary); font-size: 14px;
+        }
+        .search-input {
+            width: 100%; padding: 10px 15px 10px 38px;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary);
+            transition: all 0.2s;
+        }
+        .search-input:focus { outline: none; border-color: var(--accent-orange); background-color: var(--white); }
+        .filter-select {
+            padding: 10px 15px; border: 1.5px solid #E0E0E0;
+            border-radius: 8px; font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-gray); color: var(--text-primary); cursor: pointer;
+        }
+        .filter-select:focus { outline: none; border-color: var(--accent-orange); }
+        .btn-clear-filter {
+            padding: 10px 18px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 13px; font-family: 'Poppins', sans-serif;
+            color: var(--text-tertiary); cursor: pointer; transition: all 0.2s;
+        }
+        .btn-clear-filter:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+
+        /* Scholarship Cards */
+        .scholarships-list { display: flex; flex-direction: column; gap: 18px; }
+
+        .scholarship-card {
+            background-color: var(--white);
+            border-radius: 14px; padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 5px solid var(--accent-orange);
+            transition: all 0.3s; position: relative;
+        }
+        .scholarship-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.11);
+        }
+        .scholarship-card.urgent   { border-left-color: #F44336; }
+        .scholarship-card.new-item { border-left-color: var(--secondary-green); }
+
+        /* Expired Card */
+        .scholarship-card.expired {
+            border-left-color: #9E9E9E;
+            opacity: 0.72;
+            filter: grayscale(55%);
+        }
+        .scholarship-card.expired:hover { transform: none; }
+
+        .expired-badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: #9E9E9E; color: white;
+            padding: 9px 20px; border-radius: 8px;
+            font-size: 13px; font-weight: 600;
+        }
+
+        .card-top {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; margin-bottom: 12px; gap: 15px;
+        }
+        .scholarship-title {
+            font-size: 18px; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 4px;
+        }
+        .scholarship-org {
+            font-size: 13px; color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .amount-badge {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+            color: white; padding: 8px 18px;
+            border-radius: 20px; font-weight: 700;
+            font-size: 17px; white-space: nowrap; flex-shrink: 0;
+        }
+
+        /* Deadline Corner */
+        .deadline-corner {
+            position: absolute; top: 0; right: 0;
+            color: white;
+            padding: 7px 14px; border-radius: 0 14px 0 10px;
+            font-size: 11px; font-weight: 700;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .deadline-corner.urgent-corner {
+            background: linear-gradient(135deg, #F44336, #E57373);
+            animation: pulse 2s infinite;
+        }
+        .deadline-corner.soon-corner {
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+        }
+        .deadline-corner.closed-corner { background: #9E9E9E; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.75; }
+        }
+
+        .scholarship-desc {
+            font-size: 14px; line-height: 1.7;
+            color: var(--text-secondary); margin-bottom: 14px;
+        }
+        .scholarship-meta {
+            display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 14px;
+        }
+        .meta-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 13px; color: var(--text-tertiary);
+        }
+        .meta-item i { color: var(--accent-orange); width: 14px; }
+        .meta-item.urgent-date { color: #F44336; }
+        .meta-item.urgent-date i { color: #F44336; }
+
+        /* Requirements Section */
+        .requirements-section {
+            background: var(--light-gray);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 14px;
+        }
+        .requirements-title {
+            font-size: 11px; font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 0.8px;
+            margin-bottom: 8px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .req-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .req-item:last-child { margin-bottom: 0; }
+        .req-item i { color: var(--accent-orange); font-size: 11px; width: 12px; }
+
+        .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+        .tag {
+            padding: 4px 12px; border-radius: 12px;
+            font-size: 11px; font-weight: 600;
+        }
+        .tag-dept    { background-color: #E3F2FD; color: var(--primary-blue); }
+        .tag-type    { background-color: #FFF3E0; color: #E65100; }
+        .tag-new     { background-color: #E8F5E9; color: #2E7D32; }
+        .tag-urgent  { background-color: #FFEBEE; color: #C62828; }
+        .tag-expired { background: #F5F5F5; color: #9E9E9E; }
+
+        .card-actions { display: flex; gap: 12px; align-items: center; }
+
+        .btn-apply {
+            padding: 10px 26px;
+            background: linear-gradient(135deg, var(--accent-orange), #FFB74D);
+            color: white; border: none; border-radius: 8px;
+            font-weight: 600; font-size: 14px; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            display: flex; align-items: center; gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-apply:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,152,0,0.35); }
+        .btn-apply:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-save {
+            padding: 10px 18px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-save:hover { border-color: var(--accent-orange); color: var(--accent-orange); }
+        .btn-save.saved {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            background-color: #FFF3E0;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center; padding: 70px 20px;
+            color: var(--text-tertiary); display: none;
+        }
+        .empty-state i { font-size: 60px; margin-bottom: 15px; opacity: 0.3; display: block; }
+        .empty-state p { font-size: 16px; }
+
+        /* Pagination */
+        .pagination {
+            display: flex; justify-content: center;
+            gap: 8px; margin-top: 30px;
+        }
+        .page-btn {
+            width: 38px; height: 38px;
+            border: 1.5px solid #E0E0E0; background: var(--white);
+            border-radius: 8px; cursor: pointer;
+            font-family: 'Poppins', sans-serif; font-size: 14px;
+            transition: all 0.2s; display: flex;
+            align-items: center; justify-content: center;
+            color: var(--text-secondary);
+        }
+        .page-btn.active { background-color: var(--accent-orange); color: white; border-color: var(--accent-orange); font-weight: 600; }
+        .page-btn:hover:not(.active) { border-color: var(--accent-orange); color: var(--accent-orange); }
+
+        /* Apply Modal */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55); z-index: 2000;
+            align-items: center; justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: var(--white); border-radius: 16px;
+            padding: 32px; width: 100%; max-width: 460px;
+            margin: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: modalIn 0.25s ease;
+        }
+        @keyframes modalIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+        .modal-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 6px;
+        }
+        .modal-header h2 { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .modal-close {
+            background: none; border: none; font-size: 22px;
+            cursor: pointer; color: var(--text-tertiary); line-height: 1;
+        }
+        .modal-scholarship-name {
+            font-size: 13px; color: var(--accent-orange);
+            font-weight: 600; margin-bottom: 22px;
+        }
+        .modal-field { margin-bottom: 16px; }
+        .modal-field label {
+            font-size: 13px; font-weight: 600;
+            color: var(--text-secondary); display: block; margin-bottom: 6px;
+        }
+        .modal-field input {
+            width: 100%; padding: 11px 15px;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            background: var(--light-gray); color: var(--text-primary);
+            transition: border-color 0.2s;
+        }
+        .modal-field input:focus { outline: none; border-color: var(--accent-orange); background: var(--white); }
+        .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
+        .btn-modal-submit {
+            flex: 1; padding: 12px;
+            background: linear-gradient(135deg, #FF9800, #FFB74D);
+            color: white; border: none; border-radius: 8px;
+            font-size: 14px; font-weight: 600;
+            font-family: 'Poppins', sans-serif; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-modal-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(255,152,0,0.35); }
+        .btn-modal-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-modal-cancel {
+            padding: 12px 20px; background: none;
+            border: 1.5px solid #E0E0E0; border-radius: 8px;
+            font-size: 14px; font-family: 'Poppins', sans-serif;
+            cursor: pointer; color: var(--text-tertiary); transition: all 0.2s;
+        }
+        .btn-modal-cancel:hover { border-color: #9E9E9E; color: var(--text-secondary); }
+.btn-post-scholarship {
+    padding: 12px 24px;
+    background: white;
+    color: var(--accent-orange);
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+.btn-post-scholarship:hover {
+    background: var(--accent-orange);
+    color: white;
+}
+        /* Responsive */
+        @media (max-width: 1024px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px 15px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .card-top { flex-direction: column; }
+            .amount-badge { align-self: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a href="index.html" class="logo">Silent Help Plus</a>
+    </div>
+    <div class="navbar-right">
+        <button class="nav-icon-btn" id="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+        <button class="nav-icon-btn" aria-label="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notif-badge">5</span>
+        </button>
+        <div class="user-avatar" role="img" aria-label="User avatar">
+            <i class="fas fa-user"></i>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+        <div class="sidebar-user-avatar"><i class="fas fa-user-graduate"></i></div>
+       <div class="sidebar-user-name"></div>
+<div class="sidebar-user-dept"></div>
+<div class="sidebar-user-id"></div>
+    </div>
+
+    <div class="nav-section-title">Main Menu</div>
+    <a class="nav-item" href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a class="nav-item" href="qa.html"><i class="fas fa-question-circle"></i> Q&amp;A Forum <span class="nav-badge">12</span></a>
+    <a class="nav-item" href="resources.html"><i class="fas fa-book"></i> Study Resources</a>
+
+    <div class="nav-section-title">Opportunities</div>
+    <a class="nav-item active" href="scholarships.html"><i class="fas fa-graduation-cap"></i> Scholarships <span class="nav-badge" id="sidebar-badge">0</span></a>
+    <a class="nav-item" href="jobs.html"><i class="fas fa-briefcase"></i> Job Board</a>
+    <a class="nav-item" href="books.html"><i class="fas fa-book-open"></i> Book Exchange</a>
+
+    <div class="nav-section-title">Connect</div>
+    <a class="nav-item" href="mentorship.html"><i class="fas fa-users"></i> Mentorship</a>
+    <a class="nav-item" href="report.html"><i class="fas fa-shield-alt"></i> Report Issue</a>
+
+    <div class="sidebar-divider"></div>
+    <a class="nav-item" href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content" id="main-content">
+
+    <!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h1><i class="fas fa-graduation-cap"></i> Scholarship Hub</h1>
+        <p>Discover funding opportunities available to all university students</p>
+    </div>
+    <button class="btn-post-scholarship" onclick="openPostModal()" type="button">
+        <i class="fas fa-plus"></i> Post Scholarship
+    </button>
+</div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-graduation-cap"></i></div>
+            <div class="stat-info"><h3 id="stat-active">—</h3><p>Active Scholarships</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-clock"></i></div>
+            <div class="stat-info"><h3 id="stat-expiring">—</h3><p>Expiring Soon</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-plus-circle"></i></div>
+            <div class="stat-info"><h3 id="stat-new">—</h3><p>New This Week</p></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-dollar-sign"></i></div>
+            <div class="stat-info"><h3 id="stat-total">—</h3><p>Total Value</p></div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" class="search-input" id="search-input"
+                placeholder="Search scholarships..." aria-label="Search scholarships">
+        </div>
+        <select class="filter-select" id="eligibility-filter" aria-label="Filter by eligibility">
+            <option value="">All Eligibility</option>
+            <option value="merit">Merit-based</option>
+            <option value="need">Need-based</option>
+            <option value="research">Research</option>
+            <option value="leadership">Leadership</option>
+        </select>
+        <select class="filter-select" id="deadline-filter" aria-label="Filter by deadline">
+            <option value="">Any Deadline</option>
+            <option value="urgent">Urgent (within 2 weeks)</option>
+            <option value="month">Within 1 month</option>
+            <option value="later">Later</option>
+        </select>
+        <select class="filter-select" id="amount-filter" aria-label="Filter by amount">
+            <option value="">Any Amount</option>
+            <option value="low">Under $2,000</option>
+            <option value="mid">$2,000 – $6,000</option>
+            <option value="high">Above $6,000</option>
+        </select>
+        <button class="btn-clear-filter" id="btn-clear" type="button">
+            <i class="fas fa-times"></i> Clear
+        </button>
+    </div>
+
+    <!-- Scholarship List -->
+    <div class="scholarships-list" id="scholarships-list"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state">
+        <i class="fas fa-search"></i>
+        <p>No scholarships found matching your filters.</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button class="page-btn" type="button" aria-label="Previous page">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="page-btn active" type="button">1</button>
+        <button class="page-btn" type="button">2</button>
+        <button class="page-btn" type="button">3</button>
+        <button class="page-btn" type="button" aria-label="Next page">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+</main>
+
+<!-- Apply Modal -->
+<div class="modal-overlay" id="apply-modal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2><i class="fas fa-graduation-cap" style="color:#FF9800;"></i> Apply for Scholarship</h2>
+            <button class="modal-close" id="modal-close-btn" aria-label="Close modal">✕</button>
+        </div>
+        <p class="modal-scholarship-name" id="modal-scholarship-name"></p>
+
+        <div class="modal-field">
+            <label for="apply-name">Full Name *</label>
+            <input type="text" id="apply-name" placeholder="Your full name">
+        </div>
+        <div class="modal-field">
+            <label for="apply-email">Email *</label>
+            <input type="email" id="apply-email" placeholder="your@email.com">
+        </div>
+        <div class="modal-field">
+            <label for="apply-phone">Phone *</label>
+            <input type="tel" id="apply-phone" placeholder="01XXXXXXXXX">
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-modal-submit" id="modal-submit-btn" type="button">
+                <i class="fas fa-paper-plane"></i> Submit Application
+            </button>
+            <button class="btn-modal-cancel" id="modal-cancel-btn" type="button">Cancel</button>
+        </div>
+    </div>
+</div>
+<!-- Post Scholarship Modal -->
+<div class="modal-overlay" id="post-modal">
+    <div class="modal-box" style="max-width:560px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-graduation-cap" style="color:#FF9800;"></i> Post a Scholarship</h2>
+            <button class="modal-close" onclick="closePostModal()">✕</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px;">
+            <div class="modal-field" style="grid-column:span 2;">
+                <label>Scholarship Title *</label>
+                <input type="text" id="post-title" placeholder="e.g. Merit Excellence Scholarship">
+            </div>
+            <div class="modal-field">
+                <label>Organization *</label>
+                <input type="text" id="post-org" placeholder="e.g. University Foundation">
+            </div>
+            <div class="modal-field">
+                <label>Amount (USD) *</label>
+                <input type="number" id="post-amount" placeholder="e.g. 5000">
+            </div>
+            <div class="modal-field" style="grid-column:span 2;">
+                <label>Description</label>
+                <input type="text" id="post-desc" placeholder="Brief description of the scholarship">
+            </div>
+            <div class="modal-field">
+                <label>Deadline *</label>
+                <input type="date" id="post-deadline">
+            </div>
+            <div class="modal-field">
+                <label>Eligibility *</label>
+                <select id="post-eligibility" class="filter-select" style="width:100%; padding:11px 15px;">
+                    <option value="">Select type</option>
+                    <option value="merit">Merit-based</option>
+                    <option value="need">Need-based</option>
+                    <option value="research">Research</option>
+                    <option value="leadership">Leadership</option>
+                </select>
+            </div>
+            <div class="modal-field">
+                <label>Minimum CGPA</label>
+                <input type="number" id="post-cgpa" placeholder="e.g. 3.5" step="0.01" min="0" max="4">
+            </div>
+            <div class="modal-field">
+                <label>Total Awards</label>
+                <input type="number" id="post-awards" placeholder="e.g. 5" min="1">
+            </div>
+            <div class="modal-field" style="grid-column:span 2; display:flex; align-items:center; gap:10px;">
+                <input type="checkbox" id="post-renewable" style="width:auto;">
+                <label for="post-renewable" style="margin:0; cursor:pointer;">Renewable annually</label>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-modal-submit" id="post-submit-btn" onclick="submitPostScholarship()" type="button">
+                <i class="fas fa-paper-plane"></i> Post Scholarship
+            </button>
+            <button class="btn-modal-cancel" onclick="closePostModal()" type="button">Cancel</button>
+        </div>
+    </div>
+</div>
+<script>
+    /* ════════════════════════════════════
+       Dark Mode
+    ════════════════════════════════════ */
+    const dmToggle = document.getElementById('dark-mode-toggle');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        dmToggle.textContent = '☀️';
+    }
+    dmToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        dmToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    });
+
+    /* ════════════════════════════════════
+       Sidebar Toggle
+    ════════════════════════════════════ */
+    const sidebar    = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+    });
+
+    /* ════════════════════════════════════
+       Modal State
+    ════════════════════════════════════ */
+    let currentApplyId  = null;
+    let currentApplyBtn = null;
+    const savedSet = new Set();
+
+    const applyModal    = document.getElementById('apply-modal');
+    const modalSubmitBtn = document.getElementById('modal-submit-btn');
+
+    document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+    document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
+    applyModal.addEventListener('click', e => { if (e.target === applyModal) closeModal(); });
+    modalSubmitBtn.addEventListener('click', submitApplication);
+
+    function openApplyModal(btn, id, name) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Please login first to apply!');
+            window.location.href = '/login';
+            return;
+        }
+        currentApplyId  = id;
+        currentApplyBtn = btn;
+        document.getElementById('modal-scholarship-name').textContent = '🎓 ' + name;
+        document.getElementById('apply-name').value  = '';
+        document.getElementById('apply-email').value = '';
+        document.getElementById('apply-phone').value = '';
+        modalSubmitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+        modalSubmitBtn.disabled  = false;
+        applyModal.classList.add('open');
+    }
+
+    function closeModal() {
+        applyModal.classList.remove('open');
+    }
+
+    async function submitApplication() {
+        const name  = document.getElementById('apply-name').value.trim();
+        const email = document.getElementById('apply-email').value.trim();
+        const phone = document.getElementById('apply-phone').value.trim();
+
+        if (!name || !email || !phone) {
+            alert('Please fill in all fields!');
+            return;
+        }
+
+        modalSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+        modalSubmitBtn.disabled  = true;
+
+        try {
+            const res  = await fetch(`/api/scholarships/${currentApplyId}/apply`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, phone })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                closeModal();
+                currentApplyBtn.innerHTML = '<i class="fas fa-check"></i> Applied!';
+                currentApplyBtn.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
+                currentApplyBtn.disabled = true;
+            } else {
+                alert(data.message || 'Something went wrong!');
+                modalSubmitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+                modalSubmitBtn.disabled  = false;
+            }
+        } catch (err) {
+            alert('Network error. Please try again.');
+            modalSubmitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+            modalSubmitBtn.disabled  = false;
+        }
+    }
+
+    /* ════════════════════════════════════
+       Save / Unsave
+    ════════════════════════════════════ */
+    async function toggleSave(btn, id) {
+        try {
+            const res  = await fetch(`/api/scholarships/${id}/save`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await res.json();
+
+            if (data.saved) {
+                savedSet.add(id);
+                btn.classList.add('saved');
+                btn.innerHTML = '<i class="fas fa-bookmark"></i> Saved';
+            } else {
+                savedSet.delete(id);
+                btn.classList.remove('saved');
+                btn.innerHTML = '<i class="far fa-bookmark"></i> Save';
+            }
+        } catch (err) {
+            alert('Network error. Please try again.');
+        }
+    }
+
+    /* ════════════════════════════════════
+       Render Scholarships
+    ════════════════════════════════════ */
+    function renderScholarships(data) {
+        const list       = document.getElementById('scholarships-list');
+        const emptyState = document.getElementById('empty-state');
+        list.innerHTML   = '';
+
+        if (!data || data.length === 0) {
+            emptyState.style.display = 'block';
+            updateStats([]);
+            return;
+        }
+        emptyState.style.display = 'none';
+        updateStats(data);
+
+        data.forEach(s => {
+            const now      = new Date();
+            const deadline = new Date(s.deadline);
+            const daysLeft = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24));
+            const isExpired = daysLeft < 0;
+            const isUrgent  = s.deadline_urgency === 'urgent' && !isExpired;
+            const isSoon    = s.deadline_urgency === 'month'  && !isExpired;
+            const isNew     = s.is_new == 1;
+            const isSaved   = savedSet.has(s.id);
+
+            const deadlineFormatted = deadline.toLocaleDateString('en-US', {
+                month: 'long', day: 'numeric', year: 'numeric'
+            });
+
+            /* ── Deadline corner badge ── */
+            let cornerBadge = '';
+            if (isExpired) {
+                cornerBadge = `<div class="deadline-corner closed-corner">
+                    <i class="fas fa-lock"></i> Closed
+                </div>`;
+            } else if (isUrgent) {
+                cornerBadge = `<div class="deadline-corner urgent-corner">
+                    <i class="fas fa-fire"></i> ${daysLeft} day${daysLeft !== 1 ? 's' : ''} left!
+                </div>`;
+            } else if (isSoon) {
+                cornerBadge = `<div class="deadline-corner soon-corner">
+                    <i class="fas fa-clock"></i> ${daysLeft} days left
+                </div>`;
+            }
+
+            /* ── Requirements ── */
+            let reqItems = '';
+            if (s.min_cgpa) {
+                reqItems += `<div class="req-item"><i class="fas fa-star"></i> Minimum CGPA: ${s.min_cgpa}</div>`;
+            }
+            if (s.eligibility === 'research') {
+                reqItems += `<div class="req-item"><i class="fas fa-file-alt"></i> Research proposal required</div>`;
+            }
+            if (s.eligibility === 'need') {
+                reqItems += `<div class="req-item"><i class="fas fa-file-alt"></i> Income certificate required</div>`;
+            }
+            if (s.eligibility === 'leadership') {
+                reqItems += `<div class="req-item"><i class="fas fa-certificate"></i> Leadership proof / recommendation letter</div>`;
+            }
+            reqItems += `<div class="req-item"><i class="fas fa-id-card"></i> Student ID &amp; transcript required</div>`;
+
+            /* ── Action button ── */
+            const actionBtn = isExpired
+                ? `<span class="expired-badge"><i class="fas fa-lock"></i> Application Closed</span>`
+                : `<button class="btn-apply" type="button"
+                    onclick="openApplyModal(this, ${s.id}, '${s.title.replace(/'/g, "\\'")}')">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                   </button>`;
+
+            /* ── Tags ── */
+            let tags = `
+                <span class="tag tag-dept">All Departments</span>
+                <span class="tag tag-type">${s.eligibility.charAt(0).toUpperCase() + s.eligibility.slice(1)}</span>
+                ${isNew     ? '<span class="tag tag-new">New</span>'         : ''}
+                ${isUrgent  ? '<span class="tag tag-urgent">Urgent</span>'   : ''}
+                ${isExpired ? '<span class="tag tag-expired">Expired</span>' : ''}
+            `;
+
+            list.innerHTML += `
+            <div class="scholarship-card ${isExpired ? 'expired' : ''} ${isUrgent ? 'urgent' : ''} ${isNew && !isExpired ? 'new-item' : ''}">
+                ${cornerBadge}
+                <div class="card-top">
+                    <div>
+                        <div class="scholarship-title">${s.title}</div>
+                        <div class="scholarship-org">
+                            <i class="fas fa-university"></i> ${s.organization}
+                        </div>
+                    </div>
+                    <div class="amount-badge">$${Number(s.amount).toLocaleString()}</div>
+                </div>
+
+                <p class="scholarship-desc">${s.description}</p>
+
+                <div class="scholarship-meta">
+                    <span class="meta-item ${isUrgent ? 'urgent-date' : ''}">
+                        <i class="fas fa-calendar-${isExpired ? 'times' : 'alt'}"></i>
+                        ${isExpired ? 'Expired: ' : 'Deadline: '}${deadlineFormatted}
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-users"></i> ${s.total_awards} award${s.total_awards > 1 ? 's' : ''} available
+                    </span>
+                    ${s.is_renewable ? `<span class="meta-item"><i class="fas fa-redo"></i> Renewable annually</span>` : ''}
+                </div>
+
+                <div class="requirements-section">
+                    <div class="requirements-title">
+                        <i class="fas fa-clipboard-list" style="color:var(--accent-orange);"></i> Requirements
+                    </div>
+                    ${reqItems}
+                </div>
+
+                <div class="tag-row">${tags}</div>
+
+                <div class="card-actions">
+                    ${actionBtn}
+                    ${!isExpired ? `
+                    <button class="btn-save ${isSaved ? 'saved' : ''}" type="button"
+                        id="save-btn-${s.id}"
+                        onclick="toggleSave(this, ${s.id})">
+                        <i class="fa${isSaved ? 's' : 'r'} fa-bookmark"></i>
+                        ${isSaved ? 'Saved' : 'Save'}
+                    </button>` : ''}
+                </div>
+            </div>`;
+        });
+    }
+
+    /* ════════════════════════════════════
+       Dynamic Stats Update
+    ════════════════════════════════════ */
+    function updateStats(data) {
+        const now      = new Date();
+        const active   = data.filter(s => new Date(s.deadline) >= now).length;
+        const expiring = data.filter(s => s.deadline_urgency === 'urgent' && new Date(s.deadline) >= now).length;
+        const newCount = data.filter(s => s.is_new == 1 && new Date(s.deadline) >= now).length;
+        const total    = data.reduce((sum, s) => sum + Number(s.amount), 0);
+
+        document.getElementById('stat-active').textContent   = active;
+        document.getElementById('stat-expiring').textContent = expiring;
+        document.getElementById('stat-new').textContent      = newCount;
+        document.getElementById('stat-total').textContent    =
+            total >= 1000000
+                ? `$${(total / 1000000).toFixed(1)}M`
+                : `$${(total / 1000).toFixed(0)}K`;
+
+        document.getElementById('sidebar-badge').textContent = active;
+    }
+
+    /* ════════════════════════════════════
+       Load Scholarships from API
+    ════════════════════════════════════ */
+const MOCK_SCHOLARSHIPS = [
+    {
+        id: 1,
+        title: "Merit Excellence Scholarship",
+        organization: "University Foundation",
+        amount: 5000,
+        description: "Awarded to students with outstanding academic performance. This scholarship supports high-achieving students across all departments to continue their excellence.",
+        deadline: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+        deadline_urgency: "urgent",
+        eligibility: "merit",
+        min_cgpa: 3.7,
+        total_awards: 5,
+        is_renewable: 1,
+        is_new: 1
+    },
+    {
+        id: 2,
+        title: "Need-Based Financial Aid Grant",
+        organization: "Student Welfare Committee",
+        amount: 3000,
+        description: "Financial assistance for students from low-income families. Priority is given to students demonstrating genuine financial hardship.",
+        deadline: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+        deadline_urgency: "month",
+        eligibility: "need",
+        min_cgpa: null,
+        total_awards: 10,
+        is_renewable: 0,
+        is_new: 0
+    },
+    {
+        id: 3,
+        title: "Research Innovation Award",
+        organization: "Science & Technology Board",
+        amount: 8000,
+        description: "Supports students engaged in cutting-edge research projects. Applicants must submit a detailed research proposal for review by the committee.",
+        deadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString(),
+        deadline_urgency: "later",
+        eligibility: "research",
+        min_cgpa: 3.5,
+        total_awards: 3,
+        is_renewable: 1,
+        is_new: 1
+    },
+    {
+        id: 4,
+        title: "Leadership Development Scholarship",
+        organization: "Alumni Association",
+        amount: 4500,
+        description: "For students who have demonstrated exceptional leadership in campus activities, clubs, or community service.",
+        deadline: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+        deadline_urgency: "urgent",
+        eligibility: "leadership",
+        min_cgpa: 3.2,
+        total_awards: 4,
+        is_renewable: 0,
+        is_new: 0
+    },
+    {
+        id: 5,
+        title: "STEM Future Scholarship",
+        organization: "Tech Industry Partners",
+        amount: 6000,
+        description: "Encouraging students in Science, Technology, Engineering and Math fields to pursue innovation and academic excellence.",
+        deadline: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+        deadline_urgency: "urgent",
+        eligibility: "merit",
+        min_cgpa: 3.6,
+        total_awards: 6,
+        is_renewable: 1,
+        is_new: 0
+    },
+    {
+        id: 6,
+        title: "Community Service Grant",
+        organization: "Social Welfare Foundation",
+        amount: 2500,
+        description: "Recognizing students who actively contribute to community service and social development programs.",
+        deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        deadline_urgency: "month",
+        eligibility: "leadership",
+        min_cgpa: null,
+        total_awards: 8,
+        is_renewable: 0,
+        is_new: 1
+    }
+];
+
+async function loadScholarships(filters = {}) {
+    let data = [...MOCK_SCHOLARSHIPS];
+
+    // Search filter
+    if (filters.search) {
+        const q = filters.search.toLowerCase();
+        data = data.filter(s =>
+            s.title.toLowerCase().includes(q) ||
+            s.organization.toLowerCase().includes(q) ||
+            s.description.toLowerCase().includes(q)
+        );
+    }
+
+    // Eligibility filter
+    if (filters.eligibility) {
+        data = data.filter(s => s.eligibility === filters.eligibility);
+    }
+
+    // Deadline filter
+    if (filters.deadline) {
+        const now = new Date();
+        data = data.filter(s => {
+            const days = Math.ceil((new Date(s.deadline) - now) / (1000 * 60 * 60 * 24));
+            if (filters.deadline === 'urgent') return days >= 0 && days <= 14;
+            if (filters.deadline === 'month')  return days >= 0 && days <= 30;
+            if (filters.deadline === 'later')  return days > 30;
+            return true;
+        });
+    }
+
+    // Amount filter
+    if (filters.amount) {
+        data = data.filter(s => {
+            if (filters.amount === 'low')  return s.amount < 2000;
+            if (filters.amount === 'mid')  return s.amount >= 2000 && s.amount <= 6000;
+            if (filters.amount === 'high') return s.amount > 6000;
+            return true;
+        });
+    }
+
+    renderScholarships(data);
+}
+
+    /* ════════════════════════════════════
+       Filter Logic
+    ════════════════════════════════════ */
+    function applyFilters() {
+        const filters     = {};
+        const q           = document.getElementById('search-input').value.trim();
+        const eligibility = document.getElementById('eligibility-filter').value;
+        const deadline    = document.getElementById('deadline-filter').value;
+        const amount      = document.getElementById('amount-filter').value;
+
+        if (q)           filters.search      = q;
+        if (eligibility) filters.eligibility = eligibility;
+        if (deadline)    filters.deadline    = deadline;
+        if (amount)      filters.amount      = amount;
+
+        loadScholarships(filters);
+    }
+
+    document.getElementById('search-input').addEventListener('input', applyFilters);
+    document.getElementById('eligibility-filter').addEventListener('change', applyFilters);
+    document.getElementById('deadline-filter').addEventListener('change', applyFilters);
+    document.getElementById('amount-filter').addEventListener('change', applyFilters);
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+        document.getElementById('search-input').value       = '';
+        document.getElementById('eligibility-filter').value = '';
+        document.getElementById('deadline-filter').value    = '';
+        document.getElementById('amount-filter').value      = '';
+        loadScholarships();
+    });
+
+    /* ════════════════════════════════════
+       Pagination (UI only)
+    ════════════════════════════════════ */
+    document.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (this.querySelector('i')) return;
+            document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+const userData = localStorage.getItem('user');
+if (!userData) {
+    window.location.href = 'login.html';
+} else {
+    const user = JSON.parse(userData);
+    document.querySelector('.sidebar-user-name').textContent = user.name;
+    document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+    document.querySelector('.sidebar-user-id').textContent = user.anonymous_id || '';
+}
+    /* ════════════════════════════════════
+       Initial Load
+    ════════════════════════════════════ */
+    loadScholarships();
+</script>
+
+</body>
+</html>
