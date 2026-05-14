@@ -11,9 +11,9 @@ const {
 const { verifyToken } = require('../middleware/auth');
 
 // Public
+router.get('/stats', require('../controllers/mentorshipController').getMentorStats);
 router.get('/', getAllMentors);
 router.get('/:id/profile', getMentorProfile);
-router.get('/stats', require('../controllers/mentorshipController').getMentorStats);
 
 router.post('/register', verifyToken, registerMentor);
 router.post('/request/send', verifyToken, sendRequest);

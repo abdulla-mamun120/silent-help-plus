@@ -933,7 +933,12 @@ async function fetchMentors(params = {}) {
         const query = new URLSearchParams(params).toString();
         const url   = `${API_BASE}/mentors${query ? '?' + query : ''}`;
 
-        const res  = await fetch(url);
+        const token = localStorage.getItem('token');
+const res = await fetch(url, {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+});
         const data = await res.json();
 
         if (data.success) {
@@ -994,7 +999,12 @@ document.getElementById('btn-clear').addEventListener('click', () => {
 });
 async function fetchStats() {
     try {
-        const res  = await fetch(`${API_BASE}/mentors/stats`);
+        const token = localStorage.getItem('token');
+const res = await fetch(`${API_BASE}/mentors/stats`, {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+});
         const data = await res.json();
 
         if (data.success) {
