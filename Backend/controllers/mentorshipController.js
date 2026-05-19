@@ -35,7 +35,7 @@ const getAllMentors = async (req, res) => {
 
         query += ` ORDER BY m.rating DESC`;
 
-        const [mentors] = await db.promise().query(query, params);
+        const [mentors] = await db.query(query, params);
         res.json({ success: true, data: mentors });
 
     } catch (error) {
@@ -47,7 +47,7 @@ const getAllMentors = async (req, res) => {
 // GET /api/mentors/:id/profile
 const getMentorProfile = async (req, res) => {
     try {
-        const [rows] = await db.promise().query(
+        const [rows] = await db.query(
             `SELECT 
                 m.id, m.anonymous_id, m.department, m.year,
                 m.expertise, m.bio, m.hours_per_week,
@@ -76,7 +76,7 @@ const registerMentor = async (req, res) => {
         const { expertise, year, hours_per_week, department, bio, contact_preference } = req.body;
         const user_id = req.user.id;
 
-        const [existing] = await db.promise().query(
+        const [existing] = await db.query(
             `SELECT id FROM mentors WHERE user_id = ? AND is_active = TRUE`,
             [user_id]
         );
@@ -90,7 +90,7 @@ const registerMentor = async (req, res) => {
 
         const anonymous_id = generateAnonId(department);
 
-        await db.promise().query(
+        await db.query(
             `INSERT INTO mentors 
                 (user_id, anonymous_id, department, year, expertise, bio, hours_per_week, contact_preference)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -119,7 +119,7 @@ const sendRequest = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Message is required' });
         }
 
-        const [existing] = await db.promise().query(
+        const [existing] = await db.query(
             `SELECT id FROM mentorship_requests 
              WHERE from_user_id = ? AND to_mentor_id = ? AND status = 'pending'`,
             [from_user_id, to_mentor_id]
@@ -132,7 +132,7 @@ const sendRequest = async (req, res) => {
             });
         }
 
-        await db.promise().query(
+        await db.query(
             `INSERT INTO mentorship_requests (from_user_id, to_mentor_id, message, topics)
              VALUES (?, ?, ?, ?)`,
             [from_user_id, to_mentor_id, message, topics || null]
@@ -159,7 +159,7 @@ const updateRequestStatus = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid status' });
         }
 
-        const [result] = await db.promise().query(
+        const [result] = await db.query(
             `UPDATE mentorship_requests SET status = ? WHERE id = ?`,
             [status, request_id]
         );
@@ -169,12 +169,12 @@ const updateRequestStatus = async (req, res) => {
         }
 
         if (status === 'accepted') {
-            const [reqRow] = await db.promise().query(
+            const [reqRow] = await db.query(
                 `SELECT to_mentor_id FROM mentorship_requests WHERE id = ?`,
                 [request_id]
             );
             if (reqRow.length > 0) {
-                await db.promise().query(
+                await db.query(
                     `UPDATE mentors SET total_mentees = total_mentees + 1 WHERE id = ?`,
                     [reqRow[0].to_mentor_id]
                 );
@@ -190,7 +190,7 @@ const updateRequestStatus = async (req, res) => {
 };
 const getMentorStats = async (req, res) => {
     try {
-        const [[mentorStats]] = await db.promise().query(`
+        const [[mentorStats]] = await db.query(`
             SELECT 
                 COUNT(*) as total_mentors,
                 ROUND(AVG(rating), 1) as avg_rating
@@ -198,7 +198,7 @@ const getMentorStats = async (req, res) => {
             WHERE status = 'approved' AND is_active = TRUE
         `);
 
-        const [[requestStats]] = await db.promise().query(`
+        const [[requestStats]] = await db.query(`
             SELECT COUNT(*) as total_connections
             FROM mentorship_requests
             WHERE status = 'accepted'
