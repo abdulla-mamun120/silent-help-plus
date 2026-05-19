@@ -343,7 +343,7 @@
     // Load Resources
     async function loadResources() {
         try {
-            const res = await fetch('http://localhost:5000/api/admin/resources');
+            const res = await fetch('https://silent-help-plus.onrender.com/api/admin/resources');
             const data = await res.json();
 
             if (!data.success) return;
@@ -406,7 +406,7 @@
     // Load Reports
     async function loadReports() {
         try {
-            const res = await fetch('http://localhost:5000/api/admin/reports');
+            const res = await fetch('https://silent-help-plus.onrender.com/api/admin/reports');
             const data = await res.json();
 
             if (!data.success) return;
@@ -470,7 +470,7 @@
     // Update Resource Status
     async function updateResource(id, status) {
         try {
-            const res = await fetch(`http://localhost:5000/api/admin/resources/${id}`, {
+            const res = await fetch(`https://silent-help-plus.onrender.com/api/admin/resources/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -488,7 +488,7 @@
     // Update Report Status
     async function updateReport(id, status) {
         try {
-            const res = await fetch(`http://localhost:5000/api/admin/reports/${id}`, {
+            const res = await fetch(`https://silent-help-plus.onrender.com/api/admin/reports/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
@@ -505,7 +505,7 @@
 // ── Load Pending Mentors ──────────────────────────────────────
     async function loadPendingMentors() {
         try {
-            const res  = await fetch('http://localhost:5000/api/admin/mentors/pending');
+            const res  = await fetch('https://silent-help-plus.onrender.com/api/admin/mentors/pending');
             const data = await res.json();
 
             if (!data.success) return;
@@ -579,7 +579,7 @@
     // ── Load Mentorship Requests ──────────────────────────────────
     async function loadMentorRequests() {
         try {
-            const res  = await fetch('http://localhost:5000/api/admin/mentors/requests');
+            const res  = await fetch('https://silent-help-plus.onrender.com/api/admin/mentors/requests');
             const data = await res.json();
 
             if (!data.success) return;
@@ -636,7 +636,7 @@
     async function approveMentor(id) {
         if (!confirm('এই mentor কে approve করবেন?')) return;
         try {
-            const res  = await fetch(`http://localhost:5000/api/admin/mentors/${id}/approve`, {
+            const res  = await fetch(`https://silent-help-plus.onrender.com/api/admin/mentors/${id}/approve`, {
                 method: 'PATCH'
             });
             const data = await res.json();
@@ -658,7 +658,7 @@
     async function rejectMentor(id) {
         if (!confirm('এই mentor কে reject করবেন?')) return;
         try {
-            const res  = await fetch(`http://localhost:5000/api/admin/mentors/${id}/reject`, {
+            const res  = await fetch(`https://silent-help-plus.onrender.com/api/admin/mentors/${id}/reject`, {
                 method: 'PATCH'
             });
             const data = await res.json();
@@ -677,7 +677,7 @@
     // Load Pending Jobs
 async function loadPendingJobs() {
     try {
-        const res = await fetch('http://localhost:5000/api/admin/jobs');
+        const res = await fetch('https://silent-help-plus.onrender.com/api/admin/jobs');
         const data = await res.json();
 
         if (!data.success) return;
@@ -745,7 +745,7 @@ async function loadPendingJobs() {
 async function updateJobStatus(id, status) {
     if (!confirm(`এই job টি ${status} করবেন?`)) return;
     try {
-        const res = await fetch(`http://localhost:5000/api/admin/jobs/${id}/status`, {
+        const res = await fetch(`https://silent-help-plus.onrender.com/api/admin/jobs/${id}/status`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status })

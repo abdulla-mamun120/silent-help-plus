@@ -865,7 +865,7 @@ async function loadMentors() {
         const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user'));
 
-        const res = await fetch(`http://localhost:5000/api/mentors?dept=${user.department}`, {
+        const res = await fetch(`https://silent-help-plus.onrender.com/api/mentors?dept=${user.department}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -899,7 +899,7 @@ async function connectMentor(mentorId) {
 
     try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/mentors/request/send', {
+        const res = await fetch('https://silent-help-plus.onrender.com/api/mentors/request/send', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -923,7 +923,7 @@ async function loadQuestions() {
         const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user'));
 
-        const res = await fetch(`http://localhost:5000/api/helprequests?department=${user.department}`, {
+        const res = await fetch(`https://silent-help-plus.onrender.com/api/helprequests?department=${user.department}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 

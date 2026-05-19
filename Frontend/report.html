@@ -992,7 +992,7 @@ reportForm.addEventListener('submit', async function (e) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
 
     try {
-        const response = await fetch('http://localhost:5000/api/reports', {
+        const response = await fetch('https://silent-help-plus.onrender.com/api/reports', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

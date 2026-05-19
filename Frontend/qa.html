@@ -905,7 +905,7 @@
         // Load Questions from Backend
         function loadQuestions() {
             const user = JSON.parse(localStorage.getItem('user'));
-            fetch('http://localhost:5000/api/questions?department=' + user.department)
+            fetch('https://silent-help-plus.onrender.com/api/questions?department=' + user.department)
             .then(res => res.json())
             .then(questions => {
                 const list = document.getElementById('questions-list');
@@ -950,7 +950,7 @@
 
             const user = JSON.parse(localStorage.getItem('user'));
 
-            fetch('http://localhost:5000/api/questions', {
+            fetch('https://silent-help-plus.onrender.com/api/questions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
