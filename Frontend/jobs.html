@@ -668,7 +668,7 @@ async function fetchJobs(page = 1) {
     params.append('limit', JOBS_PER_PAGE);
 
     try {
-        const res  = await fetch(`/api/jobs?${params.toString()}`);
+        const res = await fetch(`https://silent-help-plus.onrender.com/api/jobs?${params.toString()}`);
         const data = await res.json();
         if (data.success) {
             renderJobs(data.jobs);
@@ -766,7 +766,7 @@ document.querySelectorAll('.type-chip').forEach(chip => {
 });
 async function loadStats() {
     try {
-        const res  = await fetch('/api/jobs/stats');
+        const res = await fetch('https://silent-help-plus.onrender.com/api/jobs/stats');
         const data = await res.json();
         if (data.success) {
             document.getElementById('stat-total').textContent  = data.total;
