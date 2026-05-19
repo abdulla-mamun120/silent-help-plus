@@ -451,9 +451,13 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
 
         try {
-            const res = await fetch('https://silent-help-plus.onrender.com/api/jobs/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+          const token = localStorage.getItem('token');
+const res = await fetch('https://silent-help-plus.onrender.com/api/jobs/submit', {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    },
                 body: JSON.stringify({ title, company, job_type, location, field, salary, hours_per_week, department, deadline, description, is_featured })
             });
 

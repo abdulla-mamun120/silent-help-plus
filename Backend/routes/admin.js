@@ -98,6 +98,21 @@ router.post('/jobs', async (req, res) => {
     }
 });
 
+router.put('/jobs/:id/status', async (req, res) => {
+    const { status } = req.body;
+
+    if (!['approved', 'rejected'].includes(status)) {
+        return res.status(400).json({ success: false, message: 'Invalid status' });
+    }
+
+    try {
+        await db.query(`UPDATE job_posts SET status = ? WHERE id = ?`, [status, req.params.id]);
+        res.json({ success: true, message: `Job ${status}!` });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 router.put('/jobs/:id', async (req, res) => {
     const { title, company, job_type, location, field, salary,
             hours_per_week, department, is_featured, deadline } = req.body;
