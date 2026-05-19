@@ -615,125 +615,6 @@
             <!-- Questions List -->
             <div id="questions-list">
 
-                <div class="question-card" data-dept="CSE">
-                    <div class="question-card-top">
-                        <div class="question-title">How to implement Binary Search Tree delete operation in C++?</div>
-                        <span class="answer-count">8 ans</span>
-                    </div>
-                    <div class="question-tags">
-                        <span class="tag tag-cs">CSE</span>
-                        <span class="tag tag-topic">Data Structures</span>
-                        <span class="tag tag-topic">C++</span>
-                    </div>
-                    <div class="question-preview">
-                        I'm having trouble understanding the delete operation in BST especially when the node has two children. Can someone explain the logic with code?
-                    </div>
-                    <div class="question-footer">
-                        <div class="question-meta">
-                            <span><i class="fas fa-user-secret"></i> Anon_CS_2431</span>
-                            <span><i class="fas fa-clock"></i> 2 hours ago</span>
-                        </div>
-                        <button class="vote-btn" onclick="vote(this)">
-                            <i class="fas fa-arrow-up"></i> <span>15</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="question-card" data-dept="CSE">
-                    <div class="question-card-top">
-                        <div class="question-title">Best free resources for learning Machine Learning from scratch?</div>
-                        <span class="answer-count">5 ans</span>
-                    </div>
-                    <div class="question-tags">
-                        <span class="tag tag-cs">CSE</span>
-                        <span class="tag tag-topic">Machine Learning</span>
-                        <span class="tag tag-topic">Python</span>
-                    </div>
-                    <div class="question-preview">
-                        I want to start learning ML but don't know where to begin. What are the best free resources, courses, or books for a beginner?
-                    </div>
-                    <div class="question-footer">
-                        <div class="question-meta">
-                            <span><i class="fas fa-user-secret"></i> Anon_CS_1102</span>
-                            <span><i class="fas fa-clock"></i> 5 hours ago</span>
-                        </div>
-                        <button class="vote-btn" onclick="vote(this)">
-                            <i class="fas fa-arrow-up"></i> <span>21</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="question-card" data-dept="CSE">
-                    <div class="question-card-top">
-                        <div class="question-title">Explain database normalization (1NF, 2NF, 3NF) with examples</div>
-                        <span class="answer-count">3 ans</span>
-                    </div>
-                    <div class="question-tags">
-                        <span class="tag tag-cs">CSE</span>
-                        <span class="tag tag-topic">Database</span>
-                        <span class="tag tag-topic">DBMS</span>
-                    </div>
-                    <div class="question-preview">
-                        I understand the theory but struggle with applying normalization to real tables. Can someone show practical examples?
-                    </div>
-                    <div class="question-footer">
-                        <div class="question-meta">
-                            <span><i class="fas fa-user-secret"></i> Anon_CS_3344</span>
-                            <span><i class="fas fa-clock"></i> 1 day ago</span>
-                        </div>
-                        <button class="vote-btn" onclick="vote(this)">
-                            <i class="fas fa-arrow-up"></i> <span>9</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="question-card" data-dept="EEE">
-                    <div class="question-card-top">
-                        <div class="question-title">How to solve Thevenin's theorem for complex circuits?</div>
-                        <span class="answer-count zero">0 ans</span>
-                    </div>
-                    <div class="question-tags">
-                        <span class="tag tag-eee">EEE</span>
-                        <span class="tag tag-topic">Circuit Analysis</span>
-                    </div>
-                    <div class="question-preview">
-                        I have a circuit with multiple voltage and current sources. Struggling to find the Thevenin equivalent. Need step by step help.
-                    </div>
-                    <div class="question-footer">
-                        <div class="question-meta">
-                            <span><i class="fas fa-user-secret"></i> Anon_EEE_1892</span>
-                            <span><i class="fas fa-clock"></i> 3 hours ago</span>
-                        </div>
-                        <button class="vote-btn" onclick="vote(this)">
-                            <i class="fas fa-arrow-up"></i> <span>7</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="question-card" data-dept="BBA">
-                    <div class="question-card-top">
-                        <div class="question-title">What are the most important topics for Marketing 101 final exam?</div>
-                        <span class="answer-count">12 ans</span>
-                    </div>
-                    <div class="question-tags">
-                        <span class="tag tag-bba">BBA</span>
-                        <span class="tag tag-topic">Marketing</span>
-                        <span class="tag tag-topic">Exam Prep</span>
-                    </div>
-                    <div class="question-preview">
-                        Final exam is in 2 weeks. Which chapters and concepts should I focus on? Any tips from seniors who took this course?
-                    </div>
-                    <div class="question-footer">
-                        <div class="question-meta">
-                            <span><i class="fas fa-user-secret"></i> Anon_BBA_3156</span>
-                            <span><i class="fas fa-clock"></i> 1 day ago</span>
-                        </div>
-                        <button class="vote-btn" onclick="vote(this)">
-                            <i class="fas fa-arrow-up"></i> <span>23</span>
-                        </button>
-                    </div>
-                </div>
-
             </div>
 
             <!-- Right Sidebar -->
@@ -756,7 +637,7 @@
                     </div>
                     <div class="trending-item">
                         <div class="trending-num">03</div>
-                        <div>
+                     <div class="question-card" data-dept="CSE">   <div>
                             <div class="trending-title">Marketing 101 exam topics?</div>
                             <div class="trending-meta">23 votes • 12 answers</div>
                         </div>
@@ -904,11 +785,17 @@
 
         // Load Questions from Backend
         function loadQuestions() {
-            const user = JSON.parse(localStorage.getItem('user'));
-            fetch('https://silent-help-plus.onrender.com/api/questions?department=' + user.department)
-            .then(res => res.json())
-            .then(questions => {
-                const list = document.getElementById('questions-list');
+    const userData = localStorage.getItem('user');
+    if (!userData) return;
+    
+    const user = JSON.parse(userData);
+    console.log('Loading for dept:', user.department);
+
+    fetch('https://silent-help-plus.onrender.com/api/questions?department=' + user.department)
+    .then(res => res.json())
+    .then(questions => {
+        console.log('Questions received:', questions);
+        const list = document.getElementById('questions-list');
                 if (questions.length === 0) {
                     list.innerHTML = '<p style="text-align:center; color:var(--text-tertiary); padding:30px;">No questions yet. Be the first to ask!</p>';
                     return;
@@ -954,11 +841,12 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    user_id: user.id,
-                    department: dept,
-                    category: category,
-                    question_text: title
-                })
+    user_id: user.id,
+    department: dept,
+    category: category,
+    question_text: title,
+    details: document.getElementById('q-details').value.trim() // ← যোগ করুন
+})
             })
             .then(res => res.json())
             .then(result => {
