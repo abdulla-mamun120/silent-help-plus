@@ -767,13 +767,13 @@
         }
     });
 
-    // Ask Modal
+    // Modal
     const modal = document.getElementById('modal-overlay');
     document.getElementById('ask-btn').addEventListener('click', () => modal.classList.add('show'));
     document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
     modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
 
-    // Load user info
+    // User info
     const userData = localStorage.getItem('user');
     if (!userData) {
         window.location.href = 'login.html';
@@ -787,17 +787,14 @@
     function loadQuestions() {
         const userData = localStorage.getItem('user');
         if (!userData) return;
-
         const user = JSON.parse(userData);
-        console.log('Loading for dept:', user.department);
 
         fetch('https://silent-help-plus.onrender.com/api/questions?department=' + user.department)
         .then(res => res.json())
         .then(questions => {
-            console.log('Questions received:', questions);
             const list = document.getElementById('questions-list');
             if (questions.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:var(--text-tertiary); padding:30px;">No questions yet. Be the first to ask!</p>';
+                list.innerHTML = '<p style="text-align:center;color:var(--text-tertiary);padding:30px;">No questions yet. Be the first to ask!</p>';
                 return;
             }
             list.innerHTML = questions.map(q => `
@@ -827,51 +824,59 @@
 
     loadQuestions();
 
-    // Ask Form Submit
-const askForm = document.getElementById('ask-form');
-askForm.replaceWith(askForm.cloneNode(true));
+    // Form Submit — শুধু একবার attach হবে
+    let isSubmitting = false;
 
-document.getElementById('ask-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    const title = document.getElementById('q-title').value.trim();
-    const dept = document.getElementById('q-dept').value;
-    const category = document.getElementById('q-category').value;
+    document.getElementById('ask-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
 
-    if (!title) return;
+        if (isSubmitting) return; // duplicate block করো
+        isSubmitting = true;
 
-    const user = JSON.parse(localStorage.getItem('user'));
-    console.log('User data:', user);
-    console.log('Sending:', { user_id: user.id, department: dept, category, question_text: title });
+        const title = document.getElementById('q-title').value.trim();
+        const dept = document.getElementById('q-dept').value;
+        const category = document.getElementById('q-category').value;
 
-    fetch('https://silent-help-plus.onrender.com/api/questions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            user_id: user.id,
-            department: dept,
-            category: category,
-            question_text: title
+        if (!title) {
+            isSubmitting = false;
+            return;
+        }
+
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        fetch('https://silent-help-plus.onrender.com/api/questions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: user.id,
+                department: dept,
+                category: category,
+                question_text: title
+            })
         })
-    })
-    .then(res => {
-        console.log('Response status:', res.status);
-        return res.json();
-    })
-    .then(result => {
-        console.log('Result:', result);
-        modal.classList.remove('show');
-        alert('✅ Question posted anonymously as ' + result.anonymous_id);
-        this.reset();
-        loadQuestions();
-    })
-    .catch(err => {
-        console.error('Post error:', err);
-        alert('Something went wrong!');
+        .then(res => {
+            console.log('Response status:', res.status);
+            return res.json();
+        })
+        .then(result => {
+            console.log('Result:', result);
+            modal.classList.remove('show');
+            alert('✅ Question posted as ' + result.anonymous_id);
+            this.reset();
+            loadQuestions();
+        })
+        .catch(err => {
+            console.error('Post error:', err);
+            alert('Something went wrong!');
+        })
+        .finally(() => {
+            isSubmitting = false; // reset করো
+        });
     });
-});
 
-    // Vote Button
+    // Vote
     function vote(btn) {
         btn.classList.toggle('voted');
         const count = btn.querySelector('span');
@@ -897,7 +902,7 @@ document.getElementById('ask-form').addEventListener('submit', function(e) {
         });
     });
 
-    // Department Filter
+    // Dept Filter
     document.getElementById('dept-filter').addEventListener('change', function() {
         const dept = this.value;
         document.querySelectorAll('.question-card').forEach(card => {
