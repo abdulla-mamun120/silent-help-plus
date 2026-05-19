@@ -742,189 +742,164 @@
     </div>
 
     <script>
-        // Dark Mode
-        const dmToggle = document.getElementById('dark-mode-toggle');
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            dmToggle.textContent = '☀️';
-        }
-        dmToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            dmToggle.textContent = isDark ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDark ? 'enabled' : null);
-        });
-
-        // Sidebar Toggle
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-        document.getElementById('sidebar-toggle').addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('mobile-open');
-            } else {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
-            }
-        });
-
-        // Ask Modal
-        const modal = document.getElementById('modal-overlay');
-        document.getElementById('ask-btn').addEventListener('click', () => modal.classList.add('show'));
-        document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
-
-// Load user info
-        const userData = localStorage.getItem('user');
-        if (!userData) {
-            window.location.href = 'Frontend/login page/login.html';
-        } else {
-            const user = JSON.parse(userData);
-            document.querySelector('.sidebar-user-name').textContent = user.name;
-            document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
-        }
-
-        // Load Questions from Backend
-        function loadQuestions() {
-    const userData = localStorage.getItem('user');
-    if (!userData) return;
-    
-    const user = JSON.parse(userData);
-    console.log('Loading for dept:', user.department);
-
-    fetch('https://silent-help-plus.onrender.com/api/questions?department=' + user.department)
-    .then(res => res.json())
-    .then(questions => {
-        console.log('Questions received:', questions);
-        const list = document.getElementById('questions-list');
-                if (questions.length === 0) {
-                    list.innerHTML = '<p style="text-align:center; color:var(--text-tertiary); padding:30px;">No questions yet. Be the first to ask!</p>';
-                    return;
-                }
-                list.innerHTML = questions.map(q => `
-                    <div class="question-card" data-dept="${q.department}">
-                        <div class="question-card-top">
-                            <div class="question-title">${q.question_text}</div>
-                            <span class="answer-count zero">0 ans</span>
-                        </div>
-                        <div class="question-tags">
-                            <span class="tag tag-cs">${q.department}</span>
-                            ${q.category ? `<span class="tag tag-topic">${q.category}</span>` : ''}
-                        </div>
-                        <div class="question-footer">
-                            <div class="question-meta">
-                                <span><i class="fas fa-user-secret"></i> ${q.anonymous_id}</span>
-                                <span><i class="fas fa-clock"></i> ${new Date(q.created_at).toLocaleDateString()}</span>
-                            </div>
-                            <button class="vote-btn" onclick="vote(this)">
-                                <i class="fas fa-arrow-up"></i> <span>0</span>
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            })
-            .catch(err => console.error(err));
-        }
-
-        loadQuestions();
-
-        // Ask Form Submit
-        document.getElementById('ask-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const title = document.getElementById('q-title').value.trim();
-    const dept = document.getElementById('q-dept').value;
-    const category = document.getElementById('q-category').value;
-    if (!title) return;
-
-    const user = JSON.parse(localStorage.getItem('user'));
-    console.log('User data:', user); // ← user object দেখুন
-    console.log('Sending:', { user_id: user.id, department: dept, category, question_text: title });
-
-    fetch('https://silent-help-plus.onrender.com/api/questions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            user_id: user.id,
-            department: dept,
-            category: category,
-            question_text: title
-        })
-    })
-    .then(res => {
-        console.log('Response status:', res.status); // ← status দেখুন
-        return res.json();
-    })
-    .then(result => {
-        console.log('Result:', result); // ← result দেখুন
-        modal.classList.remove('show');
-        alert('✅ Question posted anonymously as ' + result.anonymous_id);
-        this.reset();
-        loadQuestions();
-    })
-    .catch(err => {
-        console.error('Post error:', err); // ← error দেখুন
-        alert('Something went wrong!');
+    // Dark Mode
+    const dmToggle = document.getElementById('dark-mode-toggle');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        dmToggle.textContent = '☀️';
+    }
+    dmToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        dmToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark ? 'enabled' : null);
     });
-});
-            const dept = document.getElementById('q-dept').value;
-            const category = document.getElementById('q-category').value;
-            if (!title) return;
 
-            const user = JSON.parse(localStorage.getItem('user'));
-
-            fetch('https://silent-help-plus.onrender.com/api/questions', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-    user_id: user.id,
-    department: dept,
-    category: category,
-    question_text: title,
-    details: document.getElementById('q-details').value.trim() // ← যোগ করুন
-})
-            })
-            .then(res => res.json())
-            .then(result => {
-                modal.classList.remove('show');
-                alert('✅ Question posted anonymously as ' + result.anonymous_id);
-                this.reset();
-                loadQuestions();
-            })
-            .catch(err => alert('Something went wrong!'));
-        });
-
-        // Vote Button
-        function vote(btn) {
-            btn.classList.toggle('voted');
-            const count = btn.querySelector('span');
-            count.textContent = btn.classList.contains('voted')
-                ? parseInt(count.textContent) + 1
-                : parseInt(count.textContent) - 1;
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('mobile-open');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
         }
+    });
 
-        // Filter Tabs
-        document.querySelectorAll('.filter-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+    // Ask Modal
+    const modal = document.getElementById('modal-overlay');
+    document.getElementById('ask-btn').addEventListener('click', () => modal.classList.add('show'));
+    document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('show'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
 
-        // Search
-        document.getElementById('search-input').addEventListener('input', function() {
-            const query = this.value.toLowerCase();
-            document.querySelectorAll('.question-card').forEach(card => {
-                const title = card.querySelector('.question-title').textContent.toLowerCase();
-                card.style.display = title.includes(query) ? 'block' : 'none';
-            });
-        });
+    // Load user info
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+        window.location.href = 'login.html';
+    } else {
+        const user = JSON.parse(userData);
+        document.querySelector('.sidebar-user-name').textContent = user.name;
+        document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+    }
 
-        // Department Filter
-        document.getElementById('dept-filter').addEventListener('change', function() {
-            const dept = this.value;
-            document.querySelectorAll('.question-card').forEach(card => {
-                card.style.display = (!dept || card.dataset.dept === dept) ? 'block' : 'none';
-            });
+    // Load Questions
+    function loadQuestions() {
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+
+        const user = JSON.parse(userData);
+        console.log('Loading for dept:', user.department);
+
+        fetch('https://silent-help-plus.onrender.com/api/questions?department=' + user.department)
+        .then(res => res.json())
+        .then(questions => {
+            console.log('Questions received:', questions);
+            const list = document.getElementById('questions-list');
+            if (questions.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:var(--text-tertiary); padding:30px;">No questions yet. Be the first to ask!</p>';
+                return;
+            }
+            list.innerHTML = questions.map(q => `
+                <div class="question-card" data-dept="${q.department}">
+                    <div class="question-card-top">
+                        <div class="question-title">${q.question_text}</div>
+                        <span class="answer-count zero">0 ans</span>
+                    </div>
+                    <div class="question-tags">
+                        <span class="tag tag-cs">${q.department}</span>
+                        ${q.category ? `<span class="tag tag-topic">${q.category}</span>` : ''}
+                    </div>
+                    <div class="question-footer">
+                        <div class="question-meta">
+                            <span><i class="fas fa-user-secret"></i> ${q.anonymous_id}</span>
+                            <span><i class="fas fa-clock"></i> ${new Date(q.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <button class="vote-btn" onclick="vote(this)">
+                            <i class="fas fa-arrow-up"></i> <span>0</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        })
+        .catch(err => console.error('Fetch error:', err));
+    }
+
+    loadQuestions();
+
+    // Ask Form Submit
+    document.getElementById('ask-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const title = document.getElementById('q-title').value.trim();
+        const dept = document.getElementById('q-dept').value;
+        const category = document.getElementById('q-category').value;
+
+        if (!title) return;
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        console.log('User data:', user);
+        console.log('Sending:', { user_id: user.id, department: dept, category, question_text: title });
+
+        fetch('https://silent-help-plus.onrender.com/api/questions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: user.id,
+                department: dept,
+                category: category,
+                question_text: title
+            })
+        })
+        .then(res => {
+            console.log('Response status:', res.status);
+            return res.json();
+        })
+        .then(result => {
+            console.log('Result:', result);
+            modal.classList.remove('show');
+            alert('✅ Question posted anonymously as ' + result.anonymous_id);
+            this.reset();
+            loadQuestions();
+        })
+        .catch(err => {
+            console.error('Post error:', err);
+            alert('Something went wrong!');
         });
-    </script>
+    });
+
+    // Vote Button
+    function vote(btn) {
+        btn.classList.toggle('voted');
+        const count = btn.querySelector('span');
+        count.textContent = btn.classList.contains('voted')
+            ? parseInt(count.textContent) + 1
+            : parseInt(count.textContent) - 1;
+    }
+
+    // Filter Tabs
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Search
+    document.getElementById('search-input').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        document.querySelectorAll('.question-card').forEach(card => {
+            const title = card.querySelector('.question-title').textContent.toLowerCase();
+            card.style.display = title.includes(query) ? 'block' : 'none';
+        });
+    });
+
+    // Department Filter
+    document.getElementById('dept-filter').addEventListener('change', function() {
+        const dept = this.value;
+        document.querySelectorAll('.question-card').forEach(card => {
+            card.style.display = (!dept || card.dataset.dept === dept) ? 'block' : 'none';
+        });
+    });
+</script>
 </body>
 </html>
