@@ -720,7 +720,8 @@
         formData.append('resource_type', document.getElementById('res-type').value);
         formData.append('subject', document.getElementById('res-subject').value);
         formData.append('description', document.getElementById('res-desc').value);
-        formData.append('userId', 1);
+        const user = JSON.parse(localStorage.getItem('user'));
+formData.append('userId', user.id);
 
         const submitBtn = document.querySelector('.btn-submit');
         submitBtn.disabled = true;
