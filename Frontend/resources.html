@@ -801,7 +801,12 @@ formData.append('userId', user.id);
             if (sem) url += `semester=${sem}&`;
             if (type) url += `resource_type=${type}&`;
 
-            const res = await fetch(url);
+            const token = localStorage.getItem('token');
+const res = await fetch(url, {
+    headers: {
+        'Authorization': `Bearer ${token}`
+    }
+});
             const data = await res.json();
 
             if (!data.success) return;
