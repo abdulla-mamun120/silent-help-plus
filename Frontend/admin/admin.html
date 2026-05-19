@@ -332,6 +332,19 @@
 </main>
 
 <script>
+    // Password Gate
+(function() {
+    const auth = sessionStorage.getItem('adminAuth');
+    if (auth !== 'true') {
+        const password = prompt('🔐 Admin Access Required:');
+        if (password === '120') {
+            sessionStorage.setItem('adminAuth', 'true');
+        } else {
+            alert('❌ Access Denied!');
+            window.location.href = 'dashboard.html';
+        }
+    }
+})();
     // Show Section
     function showSection(name) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));

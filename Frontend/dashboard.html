@@ -662,6 +662,11 @@
     </a>
 
     <div class="sidebar-divider"></div>
+    <!-- Admin Access -->
+<div class="sidebar-divider"></div>
+<a class="nav-item" href="#" id="admin-access-btn" style="color: var(--text-tertiary); font-size: 12px; opacity: 0.5;">
+    <i class="fas fa-lock"></i> Admin
+</a>
 
     <a class="nav-item" href="#" id="logout-btn">
         <i class="fas fa-sign-out-alt"></i> Logout
@@ -951,7 +956,17 @@ async function loadQuestions() {
             '<p style="color: var(--text-tertiary); font-size: 13px;">Failed to load questions.</p>';
     }
 }
-
+// Admin Access
+document.getElementById('admin-access-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    const password = prompt('🔐 Enter Admin Password:');
+    if (password === 'YourSecretPass123') {
+        sessionStorage.setItem('adminAuth', 'true');
+        window.location.href = 'admin.html';
+    } else if (password !== null) {
+        alert('❌ Wrong password!');
+    }
+});
 // Call on page load
 loadQuestions();
     </script>
