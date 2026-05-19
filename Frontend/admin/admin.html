@@ -337,7 +337,7 @@
     const auth = sessionStorage.getItem('adminAuth');
     if (auth !== 'true') {
         const password = prompt('🔐 Admin Access Required:');
-        if (password === '120') {
+        if (password === 'YourSecretPass123') {
             sessionStorage.setItem('adminAuth', 'true');
         } else {
             alert('❌ Access Denied!');

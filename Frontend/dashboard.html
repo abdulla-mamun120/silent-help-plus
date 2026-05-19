@@ -962,7 +962,7 @@ document.getElementById('admin-access-btn').addEventListener('click', function(e
     const password = prompt('🔐 Enter Admin Password:');
     if (password === 'YourSecretPass123') {
         sessionStorage.setItem('adminAuth', 'true');
-        window.location.href = 'admin.html';
+        window.location.href = 'admin/admin.html';
     } else if (password !== null) {
         alert('❌ Wrong password!');
     }
