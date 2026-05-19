@@ -828,44 +828,48 @@
     loadQuestions();
 
     // Ask Form Submit
-    document.getElementById('ask-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const title = document.getElementById('q-title').value.trim();
-        const dept = document.getElementById('q-dept').value;
-        const category = document.getElementById('q-category').value;
+const askForm = document.getElementById('ask-form');
+askForm.replaceWith(askForm.cloneNode(true));
 
-        if (!title) return;
+document.getElementById('ask-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const title = document.getElementById('q-title').value.trim();
+    const dept = document.getElementById('q-dept').value;
+    const category = document.getElementById('q-category').value;
 
-        const user = JSON.parse(localStorage.getItem('user'));
-        console.log('User data:', user);
-        console.log('Sending:', { user_id: user.id, department: dept, category, question_text: title });
+    if (!title) return;
 
-        fetch('https://silent-help-plus.onrender.com/api/questions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                user_id: user.id,
-                department: dept,
-                category: category,
-                question_text: title
-            })
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log('User data:', user);
+    console.log('Sending:', { user_id: user.id, department: dept, category, question_text: title });
+
+    fetch('https://silent-help-plus.onrender.com/api/questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            user_id: user.id,
+            department: dept,
+            category: category,
+            question_text: title
         })
-        .then(res => {
-            console.log('Response status:', res.status);
-            return res.json();
-        })
-        .then(result => {
-            console.log('Result:', result);
-            modal.classList.remove('show');
-            alert('✅ Question posted anonymously as ' + result.anonymous_id);
-            this.reset();
-            loadQuestions();
-        })
-        .catch(err => {
-            console.error('Post error:', err);
-            alert('Something went wrong!');
-        });
+    })
+    .then(res => {
+        console.log('Response status:', res.status);
+        return res.json();
+    })
+    .then(result => {
+        console.log('Result:', result);
+        modal.classList.remove('show');
+        alert('✅ Question posted anonymously as ' + result.anonymous_id);
+        this.reset();
+        loadQuestions();
+    })
+    .catch(err => {
+        console.error('Post error:', err);
+        alert('Something went wrong!');
     });
+});
 
     // Vote Button
     function vote(btn) {
