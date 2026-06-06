@@ -742,6 +742,7 @@
     </div>
 
     <script>
+        const API_BASE = 'http://localhost:5000';
     // Dark Mode
     const dmToggle = document.getElementById('dark-mode-toggle');
     if (localStorage.getItem('darkMode') === 'enabled') {
@@ -789,7 +790,7 @@
         if (!userData) return;
         const user = JSON.parse(userData);
 
-        fetch('https://silent-help-plus.onrender.com/api/questions?department=' + user.department)
+        fetch(`${API_BASE}/api/questions?department=` + user.department)
         .then(res => res.json())
         .then(questions => {
             const list = document.getElementById('questions-list');
@@ -846,7 +847,7 @@
 
         const user = JSON.parse(localStorage.getItem('user'));
 
-        fetch('https://silent-help-plus.onrender.com/api/questions', {
+        fetch(`${API_BASE}/api/questions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

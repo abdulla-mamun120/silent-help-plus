@@ -10,14 +10,23 @@ const db = require('./config/db');
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+  'https://prismatic-macaron-50b20a.netlify.app',
+  'http://localhost:8888',
+  'http://localhost:3000',
+  'http://localhost:5000'
+];
+
 app.use(cors({
-    origin: 'https://prismatic-macaron-50b20a.netlify.app',
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'],
+  credentials: true
 }));
 
-app.options('*', cors());
+app.options(/.*/, cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../Frontend')));
@@ -68,6 +77,9 @@ app.get('/mentorship', (req, res) => {
 
 app.get('/report', (req, res) => {
     res.sendFile(path.join(__dirname, '../Frontend/report.html'));
+});
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, '../Frontend/admin.html'));
 });
 
 // Routes 

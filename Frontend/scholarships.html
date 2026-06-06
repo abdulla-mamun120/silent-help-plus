@@ -707,6 +707,7 @@
     </div>
 </div>
 <script>
+const API_BASE = 'http://localhost:5000';
     /* ════════════════════════════════════
        Dark Mode
     ════════════════════════════════════ */
@@ -787,7 +788,7 @@
         modalSubmitBtn.disabled  = true;
 
         try {
-            const res  = await fetch(`/api/scholarships/${currentApplyId}/apply`, {
+            const res = await fetch(`${API_BASE}/api/scholarships/${currentApplyId}/apply`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -819,7 +820,7 @@
     ════════════════════════════════════ */
     async function toggleSave(btn, id) {
         try {
-            const res  = await fetch(`/api/scholarships/${id}/save`, {
+            const res = await fetch(`${API_BASE}/api/scholarships/${id}/save`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -994,135 +995,32 @@
     /* ════════════════════════════════════
        Load Scholarships from API
     ════════════════════════════════════ */
-const MOCK_SCHOLARSHIPS = [
-    {
-        id: 1,
-        title: "Merit Excellence Scholarship",
-        organization: "University Foundation",
-        amount: 5000,
-        description: "Awarded to students with outstanding academic performance. This scholarship supports high-achieving students across all departments to continue their excellence.",
-        deadline: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-        deadline_urgency: "urgent",
-        eligibility: "merit",
-        min_cgpa: 3.7,
-        total_awards: 5,
-        is_renewable: 1,
-        is_new: 1
-    },
-    {
-        id: 2,
-        title: "Need-Based Financial Aid Grant",
-        organization: "Student Welfare Committee",
-        amount: 3000,
-        description: "Financial assistance for students from low-income families. Priority is given to students demonstrating genuine financial hardship.",
-        deadline: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
-        deadline_urgency: "month",
-        eligibility: "need",
-        min_cgpa: null,
-        total_awards: 10,
-        is_renewable: 0,
-        is_new: 0
-    },
-    {
-        id: 3,
-        title: "Research Innovation Award",
-        organization: "Science & Technology Board",
-        amount: 8000,
-        description: "Supports students engaged in cutting-edge research projects. Applicants must submit a detailed research proposal for review by the committee.",
-        deadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString(),
-        deadline_urgency: "later",
-        eligibility: "research",
-        min_cgpa: 3.5,
-        total_awards: 3,
-        is_renewable: 1,
-        is_new: 1
-    },
-    {
-        id: 4,
-        title: "Leadership Development Scholarship",
-        organization: "Alumni Association",
-        amount: 4500,
-        description: "For students who have demonstrated exceptional leadership in campus activities, clubs, or community service.",
-        deadline: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
-        deadline_urgency: "urgent",
-        eligibility: "leadership",
-        min_cgpa: 3.2,
-        total_awards: 4,
-        is_renewable: 0,
-        is_new: 0
-    },
-    {
-        id: 5,
-        title: "STEM Future Scholarship",
-        organization: "Tech Industry Partners",
-        amount: 6000,
-        description: "Encouraging students in Science, Technology, Engineering and Math fields to pursue innovation and academic excellence.",
-        deadline: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-        deadline_urgency: "urgent",
-        eligibility: "merit",
-        min_cgpa: 3.6,
-        total_awards: 6,
-        is_renewable: 1,
-        is_new: 0
-    },
-    {
-        id: 6,
-        title: "Community Service Grant",
-        organization: "Social Welfare Foundation",
-        amount: 2500,
-        description: "Recognizing students who actively contribute to community service and social development programs.",
-        deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-        deadline_urgency: "month",
-        eligibility: "leadership",
-        min_cgpa: null,
-        total_awards: 8,
-        is_renewable: 0,
-        is_new: 1
-    }
-];
-
 async function loadScholarships(filters = {}) {
-    let data = [...MOCK_SCHOLARSHIPS];
+    try {
+        const params = new URLSearchParams();
+        if (filters.search)      params.append('search', filters.search);
+        if (filters.eligibility) params.append('eligibility', filters.eligibility);
+        if (filters.deadline)    params.append('deadline', filters.deadline);
+        if (filters.amount)      params.append('amount', filters.amount);
 
-    // Search filter
-    if (filters.search) {
-        const q = filters.search.toLowerCase();
-        data = data.filter(s =>
-            s.title.toLowerCase().includes(q) ||
-            s.organization.toLowerCase().includes(q) ||
-            s.description.toLowerCase().includes(q)
-        );
-    }
-
-    // Eligibility filter
-    if (filters.eligibility) {
-        data = data.filter(s => s.eligibility === filters.eligibility);
-    }
-
-    // Deadline filter
-    if (filters.deadline) {
-        const now = new Date();
-        data = data.filter(s => {
-            const days = Math.ceil((new Date(s.deadline) - now) / (1000 * 60 * 60 * 24));
-            if (filters.deadline === 'urgent') return days >= 0 && days <= 14;
-            if (filters.deadline === 'month')  return days >= 0 && days <= 30;
-            if (filters.deadline === 'later')  return days > 30;
-            return true;
+        const res = await fetch(`${API_BASE}/api/scholarships?${params.toString()}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
         });
-    }
+        const json = await res.json();
 
-    // Amount filter
-    if (filters.amount) {
-        data = data.filter(s => {
-            if (filters.amount === 'low')  return s.amount < 2000;
-            if (filters.amount === 'mid')  return s.amount >= 2000 && s.amount <= 6000;
-            if (filters.amount === 'high') return s.amount > 6000;
-            return true;
-        });
+        if (json.success) {
+            renderScholarships(json.data);
+        } else {
+            console.error(json.message);
+        }
+    } catch (err) {
+        console.error('Failed to load scholarships:', err);
     }
-
-    renderScholarships(data);
 }
+
+    
 
     /* ════════════════════════════════════
        Filter Logic
@@ -1173,6 +1071,63 @@ if (!userData) {
     document.querySelector('.sidebar-user-name').textContent = user.name;
     document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
     document.querySelector('.sidebar-user-id').textContent = user.anonymous_id || '';
+}
+function openPostModal() {
+    document.getElementById('post-modal').classList.add('open');
+}
+
+function closePostModal() {
+    document.getElementById('post-modal').classList.remove('open');
+}
+
+async function submitPostScholarship() {
+    const title       = document.getElementById('post-title').value.trim();
+    const org         = document.getElementById('post-org').value.trim();
+    const amount      = document.getElementById('post-amount').value.trim();
+    const desc        = document.getElementById('post-desc').value.trim();
+    const deadline    = document.getElementById('post-deadline').value;
+    const eligibility = document.getElementById('post-eligibility').value;
+    const min_cgpa    = document.getElementById('post-cgpa').value;
+    const total_awards = document.getElementById('post-awards').value;
+    const is_renewable = document.getElementById('post-renewable').checked;
+
+    if (!title || !org || !amount || !deadline || !eligibility) {
+        alert('Please fill in all required fields!');
+        return;
+    }
+
+    const btn = document.getElementById('post-submit-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+    btn.disabled  = true;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/scholarships`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                title, organization: org, amount, description: desc,
+                deadline, eligibility, min_cgpa: min_cgpa || null,
+                total_awards: total_awards || 1, is_renewable
+            })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            closePostModal();
+            alert('Scholarship posted successfully!');
+            loadScholarships(); // real data reload
+        } else {
+            alert(data.message || 'Something went wrong!');
+        }
+    } catch (err) {
+        alert('Network error. Please try again.');
+    } finally {
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Post Scholarship';
+        btn.disabled  = false;
+    }
 }
     /* ════════════════════════════════════
        Initial Load
