@@ -1,0 +1,13 @@
+[dev]
+  framework = "#custom"
+  command = "node Backend/server.js"
+  targetPort = 5000
+  port = 8888
+  publish = "Frontend"
+  autoLaunch = false
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://localhost:5000/api/:splat"
+  status = 200
+  force = true

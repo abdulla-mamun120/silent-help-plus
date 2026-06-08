@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
-// Get all questions (department filter)
+// Get all questions
 router.get('/', (req, res) => {
     const { department } = req.query;
     let query = 'SELECT * FROM help_requests ORDER BY created_at DESC';
@@ -23,17 +23,24 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const { user_id, department, category, question_text } = req.body;
 
-    // Generate anonymous ID
+    if (!user_id || !question_text) {
+        return res.status(400).json({ message: 'user_id and question_text are required' });
+    }
+
     const anonymous_id = 'Anon_' + department + '_' + Math.floor(1000 + Math.random() * 9000);
 
     db.query(
-        'INSERT INTO help_requests (user_id, anonymous_id, department, category, question_text) VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO help_requests (user_id, anonymous_id, department, category, question_text, votes) VALUES (?, ?, ?, ?, ?, 0)',
         [user_id, anonymous_id, department, category, question_text],
         (err, result) => {
-            if (err) return res.status(500).json({ message: 'Failed to post question' });
-            res.status(201).json({ 
+            if (err) {
+                console.error('Insert error:', err);
+                return res.status(500).json({ message: 'Failed to post question' });
+            }
+            res.status(201).json({
                 message: 'Question posted successfully!',
-                anonymous_id: anonymous_id
+                anonymous_id: anonymous_id,
+                id: result.insertId
             });
         }
     );
@@ -42,11 +49,18 @@ router.post('/', (req, res) => {
 // Vote on a question
 router.post('/:id/vote', (req, res) => {
     const { id } = req.params;
+
     db.query(
         'UPDATE help_requests SET votes = votes + 1 WHERE id = ?',
         [id],
-        (err) => {
-            if (err) return res.status(500).json({ message: 'Vote failed' });
+        (err, result) => {
+            if (err) {
+                console.error('Vote error:', err);
+                return res.status(500).json({ message: 'Vote failed' });
+            }
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ message: 'Question not found' });
+            }
             res.json({ message: 'Voted successfully!' });
         }
     );

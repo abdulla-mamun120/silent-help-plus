@@ -897,6 +897,7 @@ if (!userData) {
     const user = JSON.parse(userData);
     document.querySelector('.sidebar-user-name').textContent = user.name;
     document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
+    document.querySelector('.sidebar-user-id').textContent = user.anonymous_id || '';
 }
     // Init
     loadResourcesFromDB();

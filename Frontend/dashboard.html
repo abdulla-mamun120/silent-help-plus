@@ -316,7 +316,7 @@
         /* ── Content Grid ── */
         .content-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 22px;
             margin-bottom: 22px;
         }
@@ -686,16 +686,48 @@
         <!-- Content Grid -->
         <div class="content-grid">
 
-            <!-- Recent Questions -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Recent Q&A in Your Department</h2>
-                    <a href="qa.html" class="card-link">View All →</a>
-                </div>
-                <div id="question-list">
-    <p style="color: var(--text-tertiary); font-size: 13px;">Loading questions...</p>
+            <!-- Safe Space Reminders -->
+<div class="card" style="background: linear-gradient(135deg, #f0f7ff 0%, #e8f5e9 100%); border: none;">
+    <div class="card-header" style="margin-bottom:16px;">
+        <h2 style="background: linear-gradient(135deg, #1565C0, #4CAF50); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+            🛡️ You Are Not Alone
+        </h2>
+        <span style="font-size: 11px; color: var(--text-tertiary); font-weight:600; letter-spacing:1px; text-transform:uppercase;">Safe Space</span>
+    </div>
+
+    <!-- Reminder 1 -->
+    <div style="display:flex; gap:14px; align-items:flex-start; padding:14px; margin-bottom:10px; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+        <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#1565C0,#1976D2); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <i class="fas fa-heart" style="color:white; font-size:18px;"></i>
+        </div>
+        <div>
+            <div style="font-size:14px; font-weight:600; color:#1565C0; margin-bottom:4px;">You Are Never Alone</div>
+            <div style="font-size:12px; color:var(--text-tertiary); line-height:1.7;">Thousands of students on this platform face the same challenges as you. Never hesitate to share your questions or problems.</div>
+        </div>
+    </div>
+
+    <!-- Reminder 2 -->
+    <div style="display:flex; gap:14px; align-items:flex-start; padding:14px; margin-bottom:10px; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+        <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#4CAF50,#43A047); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <i class="fas fa-shield-alt" style="color:white; font-size:18px;"></i>
+        </div>
+        <div>
+            <div style="font-size:14px; font-weight:600; color:#2E7D32; margin-bottom:4px;">Your Identity is Protected</div>
+            <div style="font-size:12px; color:var(--text-tertiary); line-height:1.7;">Everything here is 100% anonymous. Feel free to ask for help on any topic — no one will ever know who you are.</div>
+        </div>
+    </div>
+
+    <!-- Reminder 3 -->
+    <div style="display:flex; gap:14px; align-items:flex-start; padding:14px; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+        <div style="width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,#FF9800,#F57C00); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <i class="fas fa-hands-helping" style="color:white; font-size:18px;"></i>
+        </div>
+        <div>
+            <div style="font-size:14px; font-weight:600; color:#E65100; margin-bottom:4px;">Together We Rise</div>
+            <div style="font-size:12px; color:var(--text-tertiary); line-height:1.7;">Find a mentor, ask questions, share resources. Silent Help Plus is always here to support you every step of the way.</div>
+        </div>
+    </div>
 </div>
-            </div>
 
             <!-- Quick Actions -->
             <div class="card">
@@ -728,95 +760,6 @@
             </div>
         </div>
 
-        <!-- Bottom Grid -->
-        <div class="bottom-grid">
-
-            <!-- Opportunities -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Latest Opportunities</h2>
-                    <a href="scholarships.html" class="card-link">View All →</a>
-                </div>
-
-                <div class="opportunity-item">
-                    <div class="opp-icon scholarship"><i class="fas fa-graduation-cap"></i></div>
-                    <div class="opp-info">
-                        <div class="opp-title">Merit Scholarship 2025</div>
-                        <div class="opp-meta">Deadline: March 15 • $5,000</div>
-                    </div>
-                    <span class="opp-tag tag-green">Open</span>
-                </div>
-
-                <div class="opportunity-item">
-                    <div class="opp-icon job"><i class="fas fa-briefcase"></i></div>
-                    <div class="opp-info">
-                        <div class="opp-title">Junior Developer Intern</div>
-                        <div class="opp-meta">TechCorp BD • Part-time</div>
-                    </div>
-                    <span class="opp-tag tag-purple">New</span>
-                </div>
-
-                <div class="opportunity-item">
-                    <div class="opp-icon scholarship"><i class="fas fa-graduation-cap"></i></div>
-                    <div class="opp-info">
-                        <div class="opp-title">Need-Based Financial Aid</div>
-                        <div class="opp-meta">Deadline: Feb 28 • $2,000</div>
-                    </div>
-                    <span class="opp-tag tag-green">Open</span>
-                </div>
-            </div>
-
-            <!-- Mentors -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Available Mentors</h2>
-                    <a href="mentorship.html" class="card-link">View All →</a>
-                </div>
-                <div id="mentor-list">
-    <p style="color: var(--text-tertiary); font-size: 13px;">Loading mentors...</p>
-</div>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="card">
-                <div class="card-header">
-                    <h2>Your Recent Activity</h2>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-dot dot-blue"></div>
-                    <div>
-                        <div class="activity-text">You asked a question about BST in C++</div>
-                        <div class="activity-time">2 hours ago</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-dot dot-green"></div>
-                    <div>
-                        <div class="activity-text">Uploaded "Data Structures Notes Sem 4"</div>
-                        <div class="activity-time">1 day ago</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-dot dot-orange"></div>
-                    <div>
-                        <div class="activity-text">Applied for Merit Scholarship 2025</div>
-                        <div class="activity-time">3 days ago</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-dot dot-purple"></div>
-                    <div>
-                        <div class="activity-text">Connected with mentor Senior_CS_001</div>
-                        <div class="activity-time">5 days ago</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </main>
 
     <script>
@@ -855,6 +798,7 @@
             document.querySelector('.sidebar-user-name').textContent = user.name;
             document.querySelector('.sidebar-user-dept').textContent = user.department + ' Department';
             document.querySelector('.page-header h1').textContent = 'Welcome back, ' + user.name.split(' ')[0] + '! 👋';
+            document.querySelector('.sidebar-user-id').textContent = user.anonymous_id || '';
         }
 
         // Logout
@@ -864,98 +808,8 @@
     localStorage.removeItem('user');
     window.location.href = '/login';
 });
-// Load Mentors
-async function loadMentors() {
-    try {
-        const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user'));
 
-        const res = await fetch(`https://silent-help-plus.onrender.com/api/mentors?dept=${user.department}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
 
-        const result = await res.json();
-        const mentorList = document.getElementById('mentor-list');
-
-        if (result.success && result.data.length > 0) {
-            mentorList.innerHTML = result.data.slice(0, 3).map(mentor => `
-                <div class="mentor-item">
-                    <div class="mentor-avatar"><i class="fas fa-user"></i></div>
-                    <div>
-                        <div class="mentor-name">${mentor.anonymous_id}</div>
-                        <div class="mentor-skill">${mentor.expertise}</div>
-                    </div>
-                    <button class="btn-connect" onclick="connectMentor(${mentor.id})">Connect</button>
-                </div>
-            `).join('');
-        } else {
-            mentorList.innerHTML = '<p style="color: var(--text-tertiary); font-size: 13px;">No mentors available right now.</p>';
-        }
-    } catch (err) {
-        document.getElementById('mentor-list').innerHTML = 
-            '<p style="color: var(--text-tertiary); font-size: 13px;">Failed to load mentors.</p>';
-    }
-}
-
-// Connect Button
-async function connectMentor(mentorId) {
-    const message = prompt('Write a short message to the mentor:');
-    if (!message) return;
-
-    try {
-        const token = localStorage.getItem('token');
-        const res = await fetch('https://silent-help-plus.onrender.com/api/mentors/request/send', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ to_mentor_id: mentorId, message })
-        });
-
-        const result = await res.json();
-        alert(result.message);
-    } catch (err) {
-        alert('Something went wrong!');
-    }
-}
-
-// Call on page load
-loadMentors();
-// Load Questions
-async function loadQuestions() {
-    try {
-        const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user'));
-
-        const res = await fetch(`https://silent-help-plus.onrender.com/api/helprequests?department=${user.department}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        const result = await res.json();
-        const questionList = document.getElementById('question-list');
-
-        if (result.length > 0) {
-            questionList.innerHTML = result.slice(0, 3).map(q => `
-                <div class="question-item">
-                    <div class="question-top">
-                        <div class="question-title">${q.question_text}</div>
-                        <span class="question-dept dept-cs">${q.department}</span>
-                    </div>
-                    <div class="question-meta">
-                        <span><i class="fas fa-user"></i> ${q.anonymous_id}</span>
-                        <span><i class="fas fa-arrow-up"></i> ${q.votes} votes</span>
-                    </div>
-                </div>
-            `).join('');
-        } else {
-            questionList.innerHTML = '<p style="color: var(--text-tertiary); font-size: 13px;">No questions yet in your department.</p>';
-        }
-    } catch (err) {
-        document.getElementById('question-list').innerHTML =
-            '<p style="color: var(--text-tertiary); font-size: 13px;">Failed to load questions.</p>';
-    }
-}
 // Admin Access
 document.getElementById('admin-access-btn').addEventListener('click', function(e) {
     e.preventDefault();
@@ -967,8 +821,7 @@ document.getElementById('admin-access-btn').addEventListener('click', function(e
         alert('❌ Wrong password!');
     }
 });
-// Call on page load
-loadQuestions();
+
     </script>
 </body>
 </html>
